@@ -1,0 +1,34 @@
+version: '3'
+services:
+  db_retana:
+    image: postgres:15
+    volumes:
+      - odoo_pg_data_retana:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    restart: always
+    container_name: db_retana
+
+  odoo_17_retana:
+    image: odoo:17
+    depends_on:
+      - db_retana
+    ports:
+      - "8080:8069"    # Cambiado de 8069 a 8080 externamente
+    volumes:
+      - odoo_data_retana:/var/lib/odoo
+      - ./extra-addons:/mnt/extra-addons
+      - ./config/local.conf:/etc/odoo/odoo.conf
+    environment:
+      - HOST=db_retana
+      - USER=odoo
+      - PASSWORD=odoo
+    restart: always
+    container_name: odoo_17_retana
+    command: -- -i base --dev=reload  # Habilitar reinicio automático en desarrollo
+
+volumes:
+  odoo_pg_data_retana:
+  odoo_data_retana:
