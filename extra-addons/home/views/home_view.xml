@@ -1,0 +1,13 @@
+<odoo>
+    <record id="action_home_view" model="ir.actions.client">
+        <field name="name">Inicio</field>
+        <field name="tag">home_view_tag</field>
+    </record>
+
+    <menuitem id="menu_home_view"
+                name="Inicio"
+                action="action_home_view"
+                sequence="1"
+                parent="base.menu_custom"/>
+
+</odoo>
