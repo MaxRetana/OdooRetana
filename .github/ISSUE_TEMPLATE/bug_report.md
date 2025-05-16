@@ -1,7 +1,7 @@
 ---
 name: Reportar un Bug
 about: Reporta un error para que podamos arreglarlo 🐞
-title: "[BUG]🐞 "
+title: "🐞[BUG] "
 labels: bug
 assignees: MaxRetana
 

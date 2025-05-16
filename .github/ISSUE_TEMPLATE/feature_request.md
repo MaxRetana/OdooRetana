@@ -1,7 +1,7 @@
 ---
 name: Solicitud de nueva funcionalidad
 about: Sugiere una mejora o nueva funcionalidad 🚀
-title: "[FEATURE]🚀 "
+title: "🚀[FEATURE] "
 labels: enhancement
 assignees: MaxRetana
 
