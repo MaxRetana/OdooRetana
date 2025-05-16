@@ -20,9 +20,9 @@
       <form string="Teacher">
         <sheet>
           <group>
-            <field name="name" string="Name"/>
-            <field name="email" string="Email"/>
-            <field name="phone" string="Phone"/>
+            <field name="name" string="Name" required="1"/>
+            <field name="email" string="Email" required="1"/>
+            <field name="phone" string="Phone" required="1"/>
             <field name="is_teacher" string="Is Teacher"/>
           </group>
         </sheet>
@@ -49,9 +49,9 @@
       <form string="Students">
         <sheet>
           <group>
-            <field name="name" string="Name"/>
-            <field name="email" string="Email"/>
-            <field name="phone" string="Phone"/>
+            <field name="name" string="Name" required="1"/>
+            <field name="email" string="Email" required="1"/>
+            <field name="phone" string="Phone" required="1"/>
             <field name="is_student" string="Is Student"/>
           </group>
         </sheet>
@@ -59,33 +59,32 @@
     </field>
   </record>
 
-  <record id="res_partner_form_inhert" model="ir.ui.view">
-    <field name="name">res.partner.form.inhert</field>
-    <field name="model">res.partner</field>
-    <field name="inherit_id" ref="base.view_partner_form"/>
-    <field name="arch" type="xml">
-      <xpath expr="//field[@name='category_id']" position="after">
-        <field name="is_teacher" string="Is Teacher"/>
-        <field name="is_student" string="Is Student"/>
-      </xpath>
-    </field>
-  </record>
-  
+    <record id="res_partner_form_inhert" model="ir.ui.view">
+        <field name="name">res.partner.form.inhert</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_teacher" string="Is Teacher"/>
+                <field name="is_student" string="Is Student"/>
+            </xpath>
+        </field>
+    </record>
 
-  <record id="teachers_action" model="ir.actions.act_window">
-    <field name="name">Teachers</field>
-    <field name="res_model">res.partner</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_ids" eval="[(5,0,0), (0,0,{'view_mode': 'tree', 'view_id': ref('teachers_tree_view')}), (0,0,{'view_mode': 'form', 'view_id': ref('teachers_form_view')})]"/>
-    <field name="domain">[('is_teacher', '=', True)]</field>
-  </record>
+    <record id="teachers_action" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5,0,0), (0,0,{'view_mode': 'tree', 'view_id': ref('teachers_tree_view')}), (0,0,{'view_mode': 'form', 'view_id': ref('teachers_form_view')})]"/>
+        <field name="domain">[('is_teacher', '=', True)]</field>
+    </record>
 
-  <record id="students_action" model="ir.actions.act_window">
-    <field name="name">Students</field>
-    <field name="res_model">res.partner</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_ids" eval="[(5,0,0), (0,0,{'view_mode': 'tree', 'view_id': ref('students_tree_view')}), (0,0,{'view_mode': 'form', 'view_id': ref('students_form_view')})]"/>
-    <field name="domain">[('is_student', '=', True)]</field>
-  </record>
+    <record id="students_action" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5,0,0), (0,0,{'view_mode': 'tree', 'view_id': ref('students_tree_view')}), (0,0,{'view_mode': 'form', 'view_id': ref('students_form_view')})]"/>
+        <field name="domain">[('is_student', '=', True)]</field>
+    </record>
 
 </odoo>

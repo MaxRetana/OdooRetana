@@ -171,7 +171,6 @@ etc/
 #extra-addons/
 nginx/
 odoo-web-data/
-requirements.txt
 volumes
 addons
 addons/

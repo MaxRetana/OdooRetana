@@ -14,8 +14,7 @@
         'views/res_partner_views.xml',
         'views/grades_evaluation_views.xml',
         'views/grades_manager_menu.xml',
-        
-      ],
+    ],
     'license': 'AGPL-3',
     'application': True,
     'installable': True,

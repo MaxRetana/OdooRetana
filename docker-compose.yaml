@@ -27,7 +27,7 @@ services:
       - PASSWORD=odoo
     restart: always
     container_name: odoo_17_retana
-    command: -- -i base --dev=reload  # Habilitar reinicio automático en desarrollo
+    command: -- -i base --dev all  # Habilitar reinicio automático en desarrollo
 
 volumes:
   odoo_pg_data_retana:
