@@ -19,8 +19,6 @@ class HomeDashboard(models.Model):
                 ('state', '=', 'installed'),
                 ('application', '=', True)
             ])
-            for app in apps:
-                _logger.debug("Found installed app: %s", app.name)
             
             app_list = []
             for app in apps:
