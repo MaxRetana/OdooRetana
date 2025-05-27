@@ -19,9 +19,14 @@ class HomeDashboard(models.Model):
                 ('state', '=', 'installed'),
                 ('application', '=', True)
             ])
+            for app in apps:
+                _logger.debug("Found installed app: %s", app.name)
             
             app_list = []
             for app in apps:
+                if app.name == 'custom_home_dashboard':
+                    # Skip the custom home dashboard module itself
+                    continue
                 # Get the menu associated with this app
                 menu = self.env['ir.ui.menu'].search([
                     ('name', '=', app.shortdesc or app.name),
@@ -63,22 +68,35 @@ class HomeDashboard(models.Model):
                 'web_icon': False,
             })
             
-            # Add Apps dynamically by searching for the correct menu
-            apps_menu = self.env['ir.ui.menu'].search([
-                ('name', '=', 'Apps'),
-                ('parent_id', '=', False)
-            ], limit=1)
+            # CORRECCIÓN: Usar el menú correcto para Apps
+            # Opción 1: Buscar por el external ID correcto
+            try:
+                apps_menu_id = self.env.ref('base.menu_management').id
+            except:
+                # Opción 2: Si no existe, buscar por varios nombres posibles
+                apps_menu = self.env['ir.ui.menu'].search([
+                    '|', '|', '|',
+                    ('name', '=', 'Apps'),
+                    ('name', '=', 'Applications'),
+                    ('name', '=', 'Aplicaciones'),
+                    ('name', 'ilike', 'app'),
+                    ('parent_id', '=', False)
+                ], limit=1)
+                apps_menu_id = apps_menu.id if apps_menu else False
+            
             app_list.append({
                 'id': 'apps',
                 'name': 'Apps',
                 'technical_name': 'apps',
-                'summary': 'Manage installed applications',
-                'description': 'Access and manage installed applications',
+                'summary': 'Manage and install applications',
+                'description': 'Access the app store to install and manage applications',
                 'author': 'Odoo',
                 'website': '',
                 'icon': 'fa-th-large',
-                'menu_id': apps_menu.id if apps_menu else False,
-                'web_icon': apps_menu.web_icon if apps_menu else False,
+                'menu_id': apps_menu_id,
+                'web_icon': False,
+                # IMPORTANTE: Añadir acción específica para Apps
+                'action_type': 'apps_store'
             })
             
             return app_list
@@ -137,8 +155,30 @@ class HomeDashboard(models.Model):
         return 'fa-cube'
     
     @api.model
-    def open_app(self, menu_id):
-        """Open application by menu ID"""
+    def open_app(self, menu_id, action_type=None):
+        """Open application by menu ID or special action"""
+        
+        # CORRECCIÓN: Manejar caso especial para Apps
+        if action_type == 'apps_store':
+            # Opción 1: Redirigir directamente a la acción de Apps
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'apps',
+                'target': 'current',
+            }
+        
+        # ALTERNATIVA: Si la opción anterior no funciona, usar esta
+        # if action_type == 'apps_store':
+        #     return {
+        #         'type': 'ir.actions.act_window',
+        #         'name': 'Apps',
+        #         'res_model': 'ir.module.module',
+        #         'view_mode': 'kanban,tree,form',
+        #         'domain': [('application', '=', True)],
+        #         'context': {'search_default_name': 1},
+        #         'target': 'current',
+        #     }
+        
         if not menu_id:
             return False
             
