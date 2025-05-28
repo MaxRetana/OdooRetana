@@ -1,6 +1,6 @@
 {
     'name': 'Custom Home Dashboard',
-    'version': '16.0.1',
+    'version': '17.0.1',
     'category': 'Tools',
     'summary': 'Custom Home Dashboard with App Cards',
     'description': """
@@ -16,8 +16,8 @@
         - Responsive design
         - Modern UI
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'MaxRetana',
+    'website': 'https://github.com/MaxRetana',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
