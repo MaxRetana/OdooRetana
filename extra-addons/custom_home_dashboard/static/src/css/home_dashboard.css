@@ -1,0 +1,225 @@
+/* Home Dashboard Styles */
+.home_dashboard_container {
+    padding: 20px;
+    background: linear-gradient(135deg, #111 0%, #333 100%);
+    min-height: 100vh;
+}
+
+.home_dashboard_header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+.home_dashboard_header h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+    color: #fff;
+
+    /* text-shadow: 0 2px 4px rgba(0,0,0,0.7); */
+}
+
+.home_dashboard_header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-weight: 300;
+    color: #e0e0e0;
+}
+
+.home_dashboard_apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.app_card {
+    background: #181818;
+    border-radius: 15px;
+    padding: 5px 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.app_card:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #fff, #444);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.app_card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.app_card:hover:before {
+    opacity: 1;
+}
+
+.app_card:active {
+    transform: translateY(-4px);
+}
+
+.app_icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+    display: block;
+}
+
+.app_name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.app_summary {
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 0;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.app_card.no-summary .app_summary {
+    height: auto;
+}
+
+/* Loading state */
+.apps_loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #fff;
+}
+
+.apps_loading i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+    color: #fff;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.apps_loading p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    color: #e0e0e0;
+}
+
+/* Empty state */
+.apps_empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #fff;
+}
+
+.apps_empty i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+    color: #fff;
+}
+
+.apps_empty h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.apps_empty p {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: #e0e0e0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .home_dashboard_apps {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 0 15px;
+    }
+    
+    .home_dashboard_header h1 {
+        font-size: 2rem;
+    }
+    
+    .home_dashboard_header p {
+        font-size: 1rem;
+    }
+    
+    .app_card {
+        padding: 25px 20px;
+    }
+    
+    .app_icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .app_name {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home_dashboard_apps {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+    
+    .home_dashboard_container {
+        padding: 15px;
+    }
+}
+
+/* Animation for cards appearing */
+.app_card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.app_card:nth-child(1) { animation-delay: 0.1s; }
+.app_card:nth-child(2) { animation-delay: 0.2s; }
+.app_card:nth-child(3) { animation-delay: 0.3s; }
+.app_card:nth-child(4) { animation-delay: 0.4s; }
+.app_card:nth-child(5) { animation-delay: 0.5s; }
+.app_card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

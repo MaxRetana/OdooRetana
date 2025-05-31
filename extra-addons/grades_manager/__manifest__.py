@@ -3,7 +3,7 @@
     'name': 'Grades Manager',
     'summary': 'Manage student grades and performance',
     'description': 'This module allows teachers to manage student grades, track performance, and generate reports.',
-    'author': 'MaxRetana XD',
+    'author': 'MaxRetana',
     'category': 'Base',
     'version': '17.0.0.1',
     'depends': ['base'],
