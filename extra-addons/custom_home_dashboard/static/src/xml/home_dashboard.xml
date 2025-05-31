@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="custom_home_dashboard.HomeDashboard" owl="1">
+        <div class="home_dashboard_container">
+            <div class="home_dashboard_header">
+                <h1>Bienvenido a tu Panel de Control</h1>
+                <p>Selecciona una aplicación para comenzar</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div t-if="state.loading" class="apps_loading">
+                <i class="fa fa-spinner"></i>
+                <p>Cargando aplicaciones...</p>
+            </div>
+            
+            <!-- Error State -->
+            <div t-elif="state.error" class="apps_empty">
+                <i class="fa fa-exclamation-triangle"></i>
+                <h3>Error al cargar las aplicaciones</h3>
+                <p>Por favor, recarga la página o contacta al administrador</p>
+            </div>
+            
+            <!-- Empty State -->
+            <div t-elif="!state.apps.length" class="apps_empty">
+                <i class="fa fa-cube"></i>
+                <h3>No se encontraron aplicaciones</h3>
+                <p>No hay aplicaciones instaladas para mostrar</p>
+            </div>
+            
+            <!-- Apps Grid -->
+            <div t-else="" class="home_dashboard_apps">
+                <div t-foreach="state.apps" t-as="app" t-key="app.id" 
+                     class="app_card" 
+                     t-on-click="() => this.openApp(app)"
+                     t-att-title="app.description">
+                    
+                    <div t-if="app.web_icon and app.web_icon.includes(',')" class="app_icon">
+                        <img t-att-src="'/web/image/ir.ui.menu/' + app.menu_id + '/web_icon'" 
+                             alt="" 
+                             style="width: 56px; height: 56px; object-fit: contain;"/>
+                    </div>
+                    <div t-else="" class="app_icon">
+                        <i t-att-class="getAppIcon(app)"></i>
+                    </div>
+                    
+                    <h3 class="app_name" t-esc="app.name"></h3>
+                    <p class="app_summary" t-esc="app.summary"></p>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

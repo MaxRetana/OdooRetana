@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_home_dashboard_root"
+              name="Home Dashboard"
+              sequence="1"
+              web_icon="custom_home_dashboard,static/description/icon.png"
+              action="action_home_dashboard_client"/>
+</odoo>
