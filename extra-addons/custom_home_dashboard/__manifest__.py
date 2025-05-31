@@ -1,6 +1,6 @@
 {
     'name': 'Custom Home Dashboard',
-    'version': '17.0.1',
+    'version': '16.0.1',
     'category': 'Tools',
     'summary': 'Custom Home Dashboard with App Cards',
     'description': """

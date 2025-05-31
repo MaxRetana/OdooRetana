@@ -48,7 +48,7 @@ class HomeDashboard(models.Model):
                     'website': app.website or '',
                     'icon': self._get_app_icon(app.name),
                     'menu_id': menu.id if menu else False,
-                    'web_icon': menu.web_icon if menu else False,
+                    'web_icon': False,
                 }
                 app_list.append(app_data)
             
