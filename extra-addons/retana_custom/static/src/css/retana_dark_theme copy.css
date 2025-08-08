@@ -1,0 +1,130 @@
+.o_main_navbar {
+    background-color: #333333 !important;
+}
+.dropdown-toggle {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+}
+
+.dropdown-toggle span{
+    color: #ffffff !important;
+}
+
+.dropdown-item .o_menu_sections{
+    background-color: #333333 !important;
+    color: #ffffff !important;
+}
+.dropdown-item:hover {
+    background-color: #444444 !important;
+    color: #ffffff !important;
+}
+
+.dropdown-toggle:hover {
+    background-color: #444444 !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary {
+    border-color: #555555 !important;
+    color: #ffffff !important;
+    background-color: #2c2c2c !important; /* Color diferente al dropdown */
+    border-color: #555555 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #444444 !important;
+    color: #ffffff !important;
+}
+
+/* Botón Nuevo con texto negro */
+.btn-outline-primary.o_form_button_create {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border-color: #333333 !important;
+}
+
+.btn-outline-primary.o_form_button_create:hover {
+    color: #000000 !important;
+    background-color: #f0f0f0 !important;
+    border-color: #555555 !important;
+}
+
+.btn.dropdown-toggle {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border-color: #555555 !important;
+}
+
+.btn.dropdown-toggle:hover {
+    background-color: #404040 !important;
+    color: #ffffff !important;
+}
+
+.btn-primary {
+    background-color: #1a1a1a !important;
+}
+
+.btn-primary span {
+    color: #ffffff !important;
+}
+
+.fw-bold{
+    color: #333333 !important;
+}
+
+.fw-bold:hover{
+    color: #000000 !important;
+    text-shadow: 0 0 1px #000000; 
+}
+
+.nav-link{
+    color: #333333 !important;
+}
+
+a {
+    color: #333333 !important;
+}
+
+span {
+    color: #333333 !important;
+}
+
+.d-flex .o_control_panel_breadcrumbs_actions .o_cp_action_menus .dropdown .dropdown-toggle{
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+
+.o-dropdown--menu .dropdown-item {
+    color: #333333 !important;
+}
+
+.o-autocomplete--dropdown-menu .o-autocomplete--dropdown-item a {
+    color: #333333 !important;
+}
+
+.form-check-input {
+    background-color: #ffffff !important;
+    border-color: #333333 !important;
+    
+}
+
+.form-check-input:checked {
+    background-color: #333333 !important;
+    border-color: #333333 !important;
+}
+
+/* Iconos específicos en dropdowns */
+.dropdown-item i {
+    color: #000000 !important;
+}
+
+/* Iconos con clases específicas de Bootstrap/FontAwesome */
+.fas, .far, .fal, .fab .fa-filter {
+    color: #000000 !important;
+}
+
+/* Iconos en elementos de agrupación */
+.o_group_by_menu i,
+.o_group_by_menu .fa {
+    color: #000000 !important;
+}

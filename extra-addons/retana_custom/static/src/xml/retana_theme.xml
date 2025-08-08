@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Template para cargar el CSS del tema oscuro -->
+        <template id="retana_dark_theme_assets" name="Retana Dark Theme Assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css" href="/retana_custom/static/src/css/retana_dark_theme.css"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>
