@@ -1,0 +1,18 @@
+.o_main_navbar {
+    background: linear-gradient(135deg, #111 0%, #333 100%) !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.o_main_navbar .o_menu_sections .dropdown-item{
+    background: none !important;
+}
+
+.o_main_navbar .o_menu_sections .dropdown-toggle{
+    background: none !important;
+}
+
+.o_main_navbar .o_menu_sections .dropdown-toggle {
+    background: none !important;
+}
