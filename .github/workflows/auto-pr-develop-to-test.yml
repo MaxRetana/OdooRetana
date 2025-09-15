@@ -9,16 +9,37 @@ jobs:
   pr-develop-to-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout develop
+      - name: Checkout código
         uses: actions/checkout@v4
-        with:
-          ref: develop
 
-      - name: Crear Pull Request a test
-        uses: peter-evans/create-pull-request@v5
+      - name: Crear Pull Request de develop a test
+        id: crear_pr
+        uses: repo-sync/pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: test
-          head: develop
-          title: 'Auto PR: develop → test'
-          body: 'Este PR fue generado automáticamente por GitHub Actions.'
+          github_token: ${{ secrets.GH_PAT }} # Usa tu token personal aquí
+          source_branch: develop
+          destination_branch: test
+          pr_title: 'Auto PR: develop → test'
+          pr_body: 'Este PR fue generado automáticamente por GitHub Actions.'
+          pr_label: 'auto-pr'
+
+      - name: Mergear el Pull Request creado
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_PAT }} # Usa tu token personal aquí
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `${context.repo.owner}:develop`,
+              base: 'test'
+            });
+            if (prs.data.length > 0) {
+              const pr = prs.data[0];
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number
+              });
+            }
