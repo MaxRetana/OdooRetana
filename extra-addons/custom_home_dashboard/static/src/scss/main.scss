@@ -1,0 +1,127 @@
+.btn-primary {
+    background-color: #111 !important;
+    border-color: #111 !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #222 !important;
+    border-color: #222 !important;
+    color: #fff !important;
+}
+
+.btn-outline-primary {
+    color: #111 !important;
+    border-color: #111 !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: #111 !important;
+    border-color: #222 !important;
+    color: #fff !important;
+}
+
+a {
+    color: #111 !important;
+    text-decoration: none;
+}
+
+.app_name {
+    color: #111 !important;
+}
+
+.o_setting_container .settings_tab .selected {
+    background-color: rgba(34, 34, 34, 0.12) !important;
+    box-shadow: 0 2px 8px
+}
+
+.form-check-input:checked {
+    background-color: #111 !important;
+    border-color: #111 !important;
+}
+
+.form-check-input:not(:disabled):hover {
+    border-color: #222 !important;
+}
+
+.btn-link:hover {
+    color: #111 !important;
+    text-decoration: none;
+}
+
+button.btn-link,
+.btn-link {
+    color: #353535 !important;
+}
+
+.text-action.oi-group::before,
+.text-primary.fa-filter::before {
+    color: #111 !important;
+}
+
+.o_searchview:focus-within {
+    border-color: #111
+}
+
+.btn-check:checked + .btn-outline-secondary.dropdown-toggle,
+.btn-outline-secondary.active,
+.btn-outline-secondary:active,
+.show > .btn-outline-secondary.dropdown-toggle {
+    background-color: #111 !important;
+    border-color: #111 !important;
+    color: #fff !important;
+}
+.btn-check:checked + .btn-outline-secondary.dropdown-toggle *,
+.btn-outline-secondary.active *,
+.btn-outline-secondary:active *,
+.show > .btn-outline-secondary.dropdown-toggle * {
+    color: #fff !important;
+    fill: #fff !important;
+}
+
+.btn-secondary.o_switch_view.o_kanban.active {
+    background-color: transparent !important;
+    border-color: #111
+}
+
+.btn-secondary.o_switch_view.o_list.active {
+    background-color: transparent !important;
+    border-color: #111
+}
+
+.fa-folder.o_search_panel_section_icon.text-primary.me-2::before {
+    color: #111 !important;
+}
+
+.fa-users.o_search_panel_section_icon.text-primary.me-2::before {
+    color: #111 !important;
+}
+
+.o_loading_indicator.o-fade.o-fade-enter-active {
+    background-color: #111 !important;
+    color: #fff
+}
+
+.o_tour_pointer_tip {
+    background-color: #111 !important;
+    background-image: none
+}
+
+/* Botones de vista activos */
+.btn-secondary.o_switch_view.active {
+    background-color: transparent !important;
+    border-color: #111 !important;
+    color: #111 !important;
+}
+
+/* Ícono de calendario */
+.fa.fa-calendar::before {
+    color: #111 !important;
+}
+
+.fa-envelope.text-primary.me-2::before {
+    color: #111
+}

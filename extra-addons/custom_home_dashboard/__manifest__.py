@@ -27,8 +27,11 @@
     'assets': {
         'web.assets_backend': [
             'custom_home_dashboard/static/src/css/home_dashboard.css',
+            'custom_home_dashboard/static/src/scss/navbar.scss',
+            'custom_home_dashboard/static/src/scss/main.scss',
             'custom_home_dashboard/static/src/js/home_dashboard.js',
             'custom_home_dashboard/static/src/xml/home_dashboard.xml',
+            
         ],
     },
     'installable': True,
