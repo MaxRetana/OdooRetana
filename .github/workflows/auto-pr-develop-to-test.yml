@@ -1,4 +1,4 @@
-name: Crear Pull Request de develop a test
+name: Crear y mergear Pull Request de develop a test
 
 on:
   push:
@@ -15,6 +15,7 @@ jobs:
           ref: develop
 
       - name: Crear Pull Request a test
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -22,3 +23,40 @@ jobs:
           head: develop
           title: 'Auto PR: develop → test'
           body: 'Este PR fue generado automáticamente por GitHub Actions.'
+
+      - name: Mergear el Pull Request
+        if: steps.cpr.outputs.pull-request-url != ''
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ steps.cpr.outputs.pull-request-number }}
+            });
+            if (pr.data.mergeable) {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: ${{ steps.cpr.outputs.pull-request-number }}
+              });
+            }
+
+  pr-test-to-main:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/test'
+    steps:
+      - name: Checkout test
+        uses: actions/checkout@v4
+        with:
+          ref: test
+
+      - name: Crear Pull Request a main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          head: test
+          title: 'Auto PR: test → main'
+          body: 'Este PR fue generado automáticamente por GitHub Actions. El merge debe hacerse manualmente.'
