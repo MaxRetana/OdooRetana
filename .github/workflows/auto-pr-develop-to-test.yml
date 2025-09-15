@@ -9,6 +9,9 @@ jobs:
   pr-develop-to-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
       - name: Crear Pull Request de develop a test
         id: crear_pr
         uses: repo-sync/pull-request@v2
