@@ -1,0 +1,24 @@
+name: Crear Pull Request de develop a test
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  pr-develop-to-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Crear Pull Request a test
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: test
+          head: develop
+          title: 'Auto PR: develop → test'
+          body: 'Este PR fue generado automáticamente por GitHub Actions.'
