@@ -174,3 +174,5 @@ odoo-web-data/
 volumes
 addons
 addons/
+
+.vscode/
