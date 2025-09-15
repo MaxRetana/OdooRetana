@@ -43,7 +43,7 @@
                         <i t-att-class="getAppIcon(app)"></i>
                     </div>
                     
-                    <h3 class="app_name" t-esc="app.name"></h3>
+                    <h3 class="app_name_card" t-esc="app.name"></h3>
                     <p class="app_summary" t-esc="app.summary"></p>
                 </div>
             </div>
