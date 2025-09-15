@@ -1,0 +1,18 @@
+.o_main_navbar {
+    --NavBar-entry-backgroundColor: #111 !important;
+    background: #111 !important;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+}
+
+.o_main_navbar a {
+    color: #fff !important;
+}
+
+.o_main_navbar .dropdown-menu a {
+    color: #111 !important;
+}
+
+.o_nav_entry {
+    color: #fff;
+}
