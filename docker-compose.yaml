@@ -16,11 +16,12 @@ services:
     depends_on:
       - db_retana
     ports:
-      - "8080:8069"    # Cambiado de 8069 a 8080 externamente
+      - "8080:8069"
     volumes:
       - odoo_data_retana:/var/lib/odoo
       - ./extra-addons:/mnt/extra-addons
       - ./config/local.conf:/etc/odoo/odoo.conf
+      - ./odoo-filestore:/var/lib/odoo/.local/share/Odoo/filestore   # 🔥 Nuevo volumen persistente
     environment:
       - HOST=db_retana
       - USER=odoo
