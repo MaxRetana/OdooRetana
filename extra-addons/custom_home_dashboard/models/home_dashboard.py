@@ -15,6 +15,7 @@ class HomeDashboard(models.Model):
         """Get all installed applications, including Settings and Apps"""
         try:
             # Get all installed modules that are applications
+            # COmentario de prueba
             apps = self.env['ir.module.module'].search([
                 ('state', '=', 'installed'),
                 ('application', '=', True)
