@@ -9,6 +9,9 @@ jobs:
   pr-test-to-main:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
       - name: Crear Pull Request de test a main
         uses: repo-sync/pull-request@v2
         with:
@@ -17,4 +20,4 @@ jobs:
           destination_branch: main
           pr_title: 'Auto PR: test → main'
           pr_body: 'Este PR fue generado automáticamente por GitHub Actions.'
-          pr_label: 'auto-pr'
+          pr_label:
