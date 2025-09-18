@@ -1,0 +1,65 @@
+<!-- Email DeadLine Task -->
+<odoo>
+    <data>
+        <record id="email_template_deadline_reminder_grouped" model="mail.template">
+            <field name="name">Recordatorio de Tareas Personales</field>
+            <field name="model_id" ref="model_personal_task"/>
+            <field name="subject">Recordatorio: Tareas personales próximas a vencer</field>
+            <field name="body_html"><![CDATA[
+                <style>
+                    body {
+                        background: #f7f7f9;
+                        font-family: 'Segoe UI', Arial, sans-serif;
+                        color: #333;
+                        padding: 24px;
+                    }
+                    .email-container {
+                        background: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                        padding: 32px;
+                        max-width: 600px;
+                        margin: auto;
+                    }
+                    h2 {
+                        color: #1976d2;
+                        margin-bottom: 16px;
+                    }
+                    .task-list {
+                        margin: 16px 0;
+                        padding: 0;
+                        list-style: none;
+                    }
+                    .task-list li {
+                        background: #e3f2fd;
+                        border: 1px solid #90caf9;
+                        border-radius: 4px;
+                        padding: 10px 16px;
+                        margin-bottom: 8px;
+                    }
+                    .btn {
+                        display: inline-block;
+                        background: #1976d2;
+                        color: #fff;
+                        padding: 10px 20px;
+                        border-radius: 4px;
+                        text-decoration: none;
+                        font-weight: bold;
+                        margin-top: 16px;
+                    }
+                </style>
+                <div class="email-container">
+                    <h2>Recordatorio de Tareas Personales</h2>
+                    <p>Hola <strong>${user_name or 'Usuario'}</strong>,</p>
+                    <p>Estas son tus tareas personales que vencen hoy:</p>
+                    <ul class="task-list">
+                        ${task_list_html}
+                    </ul>
+                    <p>Por favor, asegúrate de completar estas tareas a tiempo.</p>
+                    <p>Gracias,</p>
+                    <p>El equipo de gestión de tareas personales.</p>
+                </div>
+            ]]></field>
+        </record>
+    </data>
+</odoo>

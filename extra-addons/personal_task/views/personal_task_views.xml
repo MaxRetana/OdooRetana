@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_personal_task_kanban" model="ir.ui.view">
+        <field name="name">view.personal.task.kanban</field>
+        <field name="model">personal.task</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" group_create="false">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <field name="important" invisible="1"/>
+                            <t t-if="record.important.raw_value">
+                                <span title="Importante" style="color:gold; font-size:18px;">&#11088;</span>
+                            </t>
+                            <field name="name"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- View personal.task View Tree -->
+    <record id="view_personal_task_tree" model="ir.ui.view">
+        <field name="name">view_personal_task_tree</field>
+        <field name="model">personal.task</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="important" widget="boolean_button" options="{'icon': 'fa-star', 'color': 'gold'}"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="deadline"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View personal.task form -->
+    <record id="view_personal_task_form" model="ir.ui.view">
+        <field name="name">view_personal_task_form</field>
+        <field name="model">personal.task</field>
+        <field name="arch" type="xml">
+            <form string="Personal Task">
+                <sheet>
+                    <header>
+                        <button name="todo_action"
+                                string="Empezar Tarea"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state in ['todo','done','cancel']"/>
+                        <button name="done_action"
+                                string="Terea Finalizada"
+                                type="object"
+                                class="btn-success"
+                                invisible="state in ['draft','done','cancel']"/>
+                        <button name="cancel_action"
+                                string="Cancelar"
+                                type="object"
+                                class="btn-danger"
+                                invisible="state in ['draft','todo','cancel']"/>
+                        <button name="reset_to_draft"
+                                string="Mandar a Borrador"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state in ['draft','todo','done']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,todo,done,cancel"/>
+                    </header>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="important" widget="boolean_button" options="{'icon': 'fa-star', 'color': 'gold'}"/>
+                            <field name="name" placeholder="Nombre..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="description"/>
+                            <field name="priority"/>
+                            <field name="deadline"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- View personal.task search -->
+    <record id="view_personal_task_search" model="ir.ui.view">
+        <field name="name">view.personal.task.search</field>
+        <field name="model">personal.task</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="1" string="Group By">
+                    <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action personal.task -->
+    <record id="action_personal_task" model="ir.actions.act_window">
+        <field name="name">Personal Task</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">personal.task</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Tu no tienes tareas personales.
+            </p>
+            <p>
+                Haz click en "Crear" para crear una nueva tarea personal.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Menu personal.task -->
+    <menuitem id="menu_personal_task_root" name="Tareas Personales"/>
+    <menuitem id="menu_personal_task" name="Mis Tareas" parent="menu_personal_task_root" action="action_personal_task"/>
+
+</odoo>

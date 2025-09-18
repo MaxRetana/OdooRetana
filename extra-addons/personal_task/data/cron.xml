@@ -1,0 +1,16 @@
+<!-- CRON -->
+<odoo>
+    <data>
+        <record id="ir_cron_personal_task_deadline" model="ir.cron">
+            <field name="name">Recordatorio de Fecha Límite</field>
+            <field name="model_id" ref="model_personal_task"/>
+            <field name="state">code</field>
+            <field name="code">model.send_deadline_reminders()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

@@ -143,6 +143,7 @@ class HomeDashboard(models.Model):
             'helpdesk': 'fa-life-ring',
             'barcode': 'fa-barcode',
             'payment': 'fa-credit-card-alt',
+            'personal_task': 'fa-tasks',
         }
         
         # Try to find icon by module name

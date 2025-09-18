@@ -1,0 +1,29 @@
+<!-- Record Rules -->
+<odoo>
+    <data>
+        <!-- Only the owner of the task can see it -->
+        <record id="personal_task_rule_user" model="ir.rule">
+            <field name="name">Mis Tareas Personales</field>
+            <field name="model_id" ref="model_personal_task"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <!-- CRUD -->
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+        <!-- Managers can see all tasks -->
+        <record id="personal_task_rule_manager" model="ir.rule">
+            <field name="name">Todas las Tareas</field>
+            <field name="model_id" ref="model_personal_task"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <!-- CRUD -->
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>
