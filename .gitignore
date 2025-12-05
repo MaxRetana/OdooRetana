@@ -176,3 +176,6 @@ addons
 addons/
 
 .vscode/
+
+odoo-filestore/
+odoo-filestore/db_retana/

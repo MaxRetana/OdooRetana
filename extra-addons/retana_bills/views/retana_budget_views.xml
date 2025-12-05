@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree de Presupuestos -->
+    <record id="view_retana_budget_tree" model="ir.ui.view">
+        <field name="name">retana.budget.tree</field>
+        <field name="model">retana.budget</field>
+        <field name="arch" type="xml">
+            <tree string="Presupuestos">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="date"/>
+                <field name="total_amount" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form de Presupuestos -->
+    <record id="view_retana_budget_form" model="ir.ui.view">
+        <field name="name">retana.budget.form</field>
+        <field name="model">retana.budget</field>
+        <field name="arch" type="xml">
+            <form string="Presupuesto">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="budget_type_id" required="1"/>
+                            <field name="client_id" required="1"/>
+                            <field name="building_id" required="1"/>
+                            <field name="date" required="1"/>
+                            <field name="currency_id" required="1"/>
+                            <field name="discount" widget="percentage"/>
+                            
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Líneas de Presupuesto">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id" required="1"/>
+                                    <field name="description" optional="1"/>
+                                    <field name="quantity" required="1"/>
+                                    <field name="unit_price" widget="monetary" required="1"/>
+                                    <field name="taxes_ids" widget="many2many_tags"/>
+                                    <field name="subtotal" widget="monetary" readonly="1" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="subtotal_amount" widget="monetary" readonly="1"/>
+                        <field name="tax_amount" widget="monetary" readonly="1" invisible="tax_amount == 0"/>
+                        <field name="discount_amount" widget="monetary" readonly="1" invisible="discount_amount == 0"/>
+                        <field name="total_amount" widget="monetary" class="oe_subtotal_footer_separator" readonly="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana -->
+    <record id="action_retana_budget" model="ir.actions.act_window">
+        <field name="name">Presupuestos</field>
+        <field name="res_model">retana.budget</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un nuevo presupuesto
+            </p>
+            <p>
+                Administra los presupuestos de tus clientes.
+            </p>
+        </field>
+    </record>
+</odoo>

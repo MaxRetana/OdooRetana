@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_retana_budget,access.retana.budget,model_retana_budget,base.group_user,1,1,1,1
+access_retana_budget_type,access.retana.budget.type,model_retana_budget_type,base.group_user,1,1,1,1
+access_retana_budget_line,access.retana.budget.line,model_retana_budget_line,base.group_user,1,1,1,1
+access_retana_buildings,access.retana.buildings,model_retana_buildings,base.group_user,1,1,1,1
