@@ -5,3 +5,5 @@ from . import retana_buildings
 from . import res_partner
 from . import retana_type_res_partner
 from . import retana_company_info
+from . import retana_downpaymet
+from . import retana_downpaymet_type_concept

@@ -11,11 +11,13 @@
                 <page string="Presupuestos" invisible="is_retana_customer == False">
                     <group>
                         <field name="is_retana_customer" invisible="id == False"/>
-                        <field name="retana_type_res_partner_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="retana_type_res_partner_id" options="{'no_create': True, 'no_edit': True}"/>
                     </group>
                 </page>
             </xpath>
         </field>
     </record>
+
+    
 
 </odoo>

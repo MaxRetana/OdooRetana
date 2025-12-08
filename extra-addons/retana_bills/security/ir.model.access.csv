@@ -5,3 +5,6 @@ access_retana_budget_line,access.retana.budget.line,model_retana_budget_line,bas
 access_retana_buildings,access.retana.buildings,model_retana_buildings,base.group_user,1,1,1,1
 access_retana_type_res_partner,access.retana.type.res.partner,model_retana_type_res_partner,base.group_user,1,1,1,1
 access_retana_company_info,access.retana.company.info,model_retana_company_info,base.group_user,1,1,1,1
+access_retana_downpayment,access.retana.downpayment,model_retana_downpayment,base.group_user,1,1,1,1
+access_retana_downpayment_wizard,access.retana.downpayment.wizard,model_retana_downpayment_wizard,base.group_user,1,1,1,1
+access_retana_downpayment_type_concept,access.retana.downpayment.type.concept,model_retana_downpayment_type_concept,base.group_user,1,1,1,1

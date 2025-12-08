@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plantilla del reporte de listado de anticipos -->
+    <template id="report_retana_downpayment_list_document">
+        <t t-call="web.html_container" data-report-header="0">
+            <t t-set="company_info" t-value="docs[0].env['retana.company.info'].get_company_info()"/>
+            <!-- Agrupar anticipos por obra -->
+            <t t-set="buildings_dict" t-value="{}"/>
+            <t t-foreach="docs" t-as="downpayment">
+                <t t-set="building_key" t-value="downpayment.building_id.id if downpayment.building_id else 0"/>
+                <t t-if="building_key not in buildings_dict">
+                    <t t-set="dummy" t-value="buildings_dict.update({building_key: []})"/>
+                </t>
+                <t t-set="dummy" t-value="buildings_dict[building_key].append(downpayment)"/>
+            </t>
+            
+            <!-- Iterar por cada obra -->
+            <t t-foreach="buildings_dict.keys()" t-as="building_key">
+                <t t-set="downpayments_list" t-value="buildings_dict[building_key]"/>
+                <t t-set="first_downpayment" t-value="downpayments_list[0]"/>
+                
+                <div class="article o_report_layout_standard" t-att-data-oe-model="first_downpayment and first_downpayment._name" t-att-data-oe-id="first_downpayment and first_downpayment.id" t-att-data-oe-lang="first_downpayment and first_downpayment.env.context.get('lang')">
+                        <div class="page" style="font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding: 0px 50px !important; border: none !important;">
+                            
+                            <!-- Encabezado centrado -->
+                            <div style="text-align: center; margin-bottom: 5px;">
+                                <div style="font-size: 13pt; font-weight: bold; margin-bottom: 3px;">
+                                    <t t-esc="company_info.company_name"/>
+                                </div>
+                                <div style="font-size: 12pt; font-weight: bold; margin-bottom: 8px;">
+                                    <t t-esc="company_info.business_line"/>
+                                </div>
+                            </div>
+
+                            <!-- Información de contacto en dos columnas -->
+                            <table style="width: 100%; font-size: 8pt; margin-bottom: 8px; border-collapse: collapse;">
+                                <tr>
+                                    <td style="text-align: left; width: 50%; font-weight: bold; line-height: 1.3;">
+                                        R.F.C. <t t-esc="company_info.rfc"/><br/>
+                                        <t t-esc="company_info.address"/><br/>
+                                        TEL <t t-esc="company_info.phone"/> CEL. <t t-esc="company_info.mobile"/>
+                                    </td>
+                                    <td style="text-align: right; width: 50%; font-weight: bold; line-height: 1.3;">
+                                        C.U.R.P. <t t-esc="company_info.curp"/><br/>
+                                        <t t-esc="company_info.zone"/><br/>
+                                        C.P. <t t-esc="company_info.postal_code"/> <t t-esc="company_info.city"/>, <t t-esc="company_info.state"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Línea separadora -->
+                            <hr style="border: none; border-top: 2px solid black; margin: 10px 0;"/>
+
+                            <!-- Fecha -->
+                            <div style="text-align: right; font-weight: bold; font-size: 10pt; margin: 15px 0;">
+                                <t t-set="months" t-value="{'01': 'ENERO', '02': 'FEBRERO', '03': 'MARZO', '04': 'ABRIL', '05': 'MAYO', '06': 'JUNIO', '07': 'JULIO', '08': 'AGOSTO', '09': 'SEPTIEMBRE', '10': 'OCTUBRE', '11': 'NOVIEMBRE', '12': 'DICIEMBRE'}"/>
+                                <t t-set="report_date" t-value="context_timestamp(datetime.datetime.now()).date()"/>
+                                COLIMA, COL; <t t-esc="report_date.strftime('%d').lstrip('0')"/> DE <t t-esc="months.get(report_date.strftime('%m'), 'DICIEMBRE')"/> DEL AÑO <t t-esc="report_date.strftime('%Y')"/>
+                            </div>
+
+                            <!-- Título del reporte -->
+                            <div style="text-align: center; font-weight: bold; font-size: 11pt; margin: 20px 0;">
+                                RELACION DE PAGOS OBRA <t t-if="first_downpayment.building_id"><t t-esc="first_downpayment.building_id.name.upper()"/></t>
+                            </div>
+
+                            <!-- Tabla de anticipos -->
+                            <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid black;">
+                                        <th style="text-align: center; padding: 8px 4px; font-weight: bold;">DIA</th>
+                                        <th style="text-align: center; padding: 8px 4px; font-weight: bold;">MES</th>
+                                        <th style="text-align: center; padding: 8px 4px; font-weight: bold;">AÑO</th>
+                                        <th style="text-align: center; padding: 8px 4px; font-weight: bold;">CANTIDAD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="total_amount" t-value="0"/>
+                                    
+                                    <t t-foreach="downpayments_list" t-as="downpayment">
+                                        <t t-set="total_amount" t-value="total_amount + downpayment.amount"/>
+                                        <tr>
+                                            <td style="text-align: center; padding: 8px 4px;">
+                                                <t t-esc="downpayment.date.strftime('%d').lstrip('0')"/>
+                                            </td>
+                                            <td style="text-align: center; padding: 8px 4px;">
+                                                <t t-esc="months.get(downpayment.date.strftime('%m'), '').upper()"/>
+                                            </td>
+                                            <td style="text-align: center; padding: 8px 4px;">
+                                                <t t-esc="downpayment.date.strftime('%Y')"/>
+                                            </td>
+                                            <td style="text-align: right; padding: 8px 4px;">
+                                                $<t t-esc="'{:,.2f}'.format(downpayment.amount)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    
+                                    <!-- Fila del total -->
+                                    <tr style="border-top: 2px solid black; font-weight: bold;">
+                                        <td colspan="3" style="text-align: right; padding: 12px 4px; font-weight: bold;">
+                                            TOTAL
+                                        </td>
+                                        <td style="text-align: right; padding: 12px 4px; font-weight: bold;">
+                                            $<t t-esc="'{:,.2f}'.format(total_amount)"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Acción del reporte -->
+    <record id="action_report_retana_downpayment_list" model="ir.actions.report">
+        <field name="name">Relación de Pagos por Obra</field>
+        <field name="model">retana.downpayment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">retana_bills.report_retana_downpayment_list_document</field>
+        <field name="report_file">retana_bills.report_retana_downpayment_list_document</field>
+        <field name="binding_model_id" ref="model_retana_downpayment"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">
+            'RELACION PAGOS %s' % (
+                object.building_id.name.upper() if object.building_id else 'SIN OBRA'
+            )
+        </field>
+    </record>
+</odoo>

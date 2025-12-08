@@ -73,4 +73,18 @@
               parent="menu_retana_bills_config"
               action="action_retana_type_res_partner"
               sequence="50"/>
+
+    <!-- Menu de anticipos -->
+    <menuitem id="menu_retana_downpayments"
+              name="Anticipos"
+              parent="menu_retana_bills_root"
+              action="action_retana_downpayment"
+              sequence="20"/>
+    
+    <!-- Menu tipo de concepto anticipos -->
+    <menuitem id="menu_retana_downpayment_type_concept"
+              name="Tipos de Concepto de Anticipo"
+              parent="menu_retana_bills_config"
+              action="action_retana_downpayment_type_concept"
+              sequence="60"/>
 </odoo>
