@@ -2,18 +2,19 @@
 <odoo>
     <!-- Plantilla del reporte de presupuesto -->
     <template id="report_retana_budget_document">
-        <t t-call="web.html_container">
+        <t t-call="web.html_container" data-report-header="0">
             <t t-foreach="docs" t-as="o">
+                <t t-set="company_info" t-value="o.env['retana.company.info'].get_company_info()"/>
                 <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-                    <div class="page" style="font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding: 40px 50px; border: none !important;">
+                    <div class="page" style="font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding: 0px 50px !important; border: none !important;">
                         
                         <!-- Encabezado centrado -->
                         <div style="text-align: center; margin-bottom: 5px;">
                             <div style="font-size: 13pt; font-weight: bold; margin-bottom: 3px;">
-                                JOSE NATIVIDAD RETANA RODRIGUEZ
+                                <t t-esc="company_info.company_name"/>
                             </div>
                             <div style="font-size: 12pt; font-weight: bold; margin-bottom: 8px;">
-                                SERVICIOS ELECTRICOS Y MANTENIMIENTO
+                                <t t-esc="company_info.business_line"/>
                             </div>
                         </div>
 
@@ -21,14 +22,14 @@
                         <table style="width: 100%; font-size: 8pt; margin-bottom: 8px; border-collapse: collapse;">
                             <tr>
                                 <td style="text-align: left; width: 50%; font-weight: bold; line-height: 1.3;">
-                                    R.F.C. RENR-720328-FE5<br/>
-                                    PRIV. MARGARITA MAZA DE JUAREZ #476<br/>
-                                    TEL 31 4 05 23 CEL. 044 312 31 9 31 05
+                                    R.F.C. <t t-esc="company_info.rfc"/><br/>
+                                    <t t-esc="company_info.address"/><br/>
+                                    TEL <t t-esc="company_info.phone"/> CEL. <t t-esc="company_info.mobile"/>
                                 </td>
                                 <td style="text-align: right; width: 50%; font-weight: bold; line-height: 1.3;">
-                                    C.U.R.P. RERN720328HCMTDT02<br/>
-                                    ZONA CENTRO<br/>
-                                    C.P. 28000 COLIMA, COL.
+                                    C.U.R.P. <t t-esc="company_info.curp"/><br/>
+                                    <t t-esc="company_info.zone"/><br/>
+                                    C.P. <t t-esc="company_info.postal_code"/> <t t-esc="company_info.city"/>, <t t-esc="company_info.state"/>
                                 </td>
                             </tr>
                         </table>
@@ -38,19 +39,20 @@
 
                         <!-- Fecha -->
                         <div style="text-align: right; font-weight: bold; font-size: 10pt; margin: 15px 0;">
-                            COLIMA, COL; <t t-esc="o.date.strftime('%d DE %B DEL AÑO %Y').upper() if o.date else '03 DE DICIEMBRE DEL AÑO 2025'"/>
+                            <t t-set="months" t-value="{'01': 'ENERO', '02': 'FEBRERO', '03': 'MARZO', '04': 'ABRIL', '05': 'MAYO', '06': 'JUNIO', '07': 'JULIO', '08': 'AGOSTO', '09': 'SEPTIEMBRE', '10': 'OCTUBRE', '11': 'NOVIEMBRE', '12': 'DICIEMBRE'}"/>
+                            COLIMA, COL; <t t-esc="o.date.strftime('%d').lstrip('0')"/> DE <t t-esc="months.get(o.date.strftime('%m'), 'DICIEMBRE')"/> DEL AÑO <t t-esc="o.date.strftime('%Y')"/>
                         </div>
 
                         <!-- Descripción del presupuesto -->
                         <div style="font-weight: bold; font-size: 10pt; margin: 15px 0; text-align: left;">
-                            PRESUPUESTO <t t-if="o.budget_type_id"><t t-esc="o.budget_type_id.name.upper()"/></t><t t-if="o.building_id"> PARA LA OBRA <t t-esc="o.building_id.name.upper()"/></t>
+                            <t t-if="o.budget_type_id"><t t-esc="o.budget_type_id.name.upper()"/></t> <t t-if="o.client_id"><t t-if="o.client_id.retana_type_res_partner_id">PARA EL <t t-esc="o.client_id.retana_type_res_partner_id.code.upper()"/> </t><t t-esc="o.client_id.name.upper()"/> </t><t t-if="o.building_id">EN LA OBRA <t t-esc="o.building_id.name.upper()"/></t>
                         </div>
 
                         <!-- Tabla de conceptos -->
                         <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt;">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;">CONCEPTO</th>
+                                    <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;"></th>
                                     <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 10%;">PZA.</th>
                                     <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">PRECIO</th>
                                     <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">TOTAL</th>
@@ -73,6 +75,42 @@
                                         </td>
                                     </tr>
                                 </t>
+                                <!-- Fila del subtotal (solo si hay IVA, descuento o anticipo) -->
+                                <tr t-if="o.tax_amount > 0 or o.discount_amount > 0 or o.downpayment_amount > 0">
+                                    <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                        SUBTOTAL
+                                    </td>
+                                    <td style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                        $<t t-esc="'{:,.2f}'.format(o.subtotal_amount)"/>
+                                    </td>
+                                </tr>
+                                <!-- Fila del IVA (solo si hay IVA) -->
+                                <tr t-if="o.tax_amount > 0">
+                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                        IVA
+                                    </td>
+                                    <td style="text-align: right; padding: 8px 4px;">
+                                        $<t t-esc="'{:,.2f}'.format(o.tax_amount)"/>
+                                    </td>
+                                </tr>
+                                <!-- Fila del descuento (solo si hay descuento) -->
+                                <tr t-if="o.discount_amount > 0">
+                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                        DESCUENTO (<t t-esc="'{:.0f}'.format(o.discount * 100)"/>%)
+                                    </td>
+                                    <td style="text-align: right; padding: 8px 4px;">
+                                        -$<t t-esc="'{:,.2f}'.format(o.discount_amount)"/>
+                                    </td>
+                                </tr>
+                                <!-- Fila del anticipo (solo si hay anticipo) -->
+                                <tr t-if="o.downpayment_amount > 0">
+                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                        ANTICIPO
+                                    </td>
+                                    <td style="text-align: right; padding: 8px 4px;">
+                                        -$<t t-esc="'{:,.2f}'.format(o.downpayment_amount)"/>
+                                    </td>
+                                </tr>
                                 <!-- Fila del total -->
                                 <tr>
                                     <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
@@ -99,7 +137,7 @@
 
                             <div style="margin: 0 auto; width: 350px;">
                                 <div style="border-top: 1.5px solid black; padding-top: 8px; font-weight: bold; font-size: 10pt;">
-                                    JOSE NATIVIDAD RETANA RODRIGUEZ
+                                    <t t-esc="company_info.company_name"/>
                                 </div>
                             </div>
                         </div>
@@ -119,6 +157,13 @@
         <field name="report_file">retana_bills.report_retana_budget_document</field>
         <field name="binding_model_id" ref="model_retana_budget"/>
         <field name="binding_type">report</field>
-        <field name="print_report_name">'Presupuesto - %s' % (object.name)</field>
+        <field name="print_report_name">
+            '%s %s %s %s' % (
+                object.budget_type_id.name.upper() if object.budget_type_id else '',
+                ('PARA EL ' + object.client_id.retana_type_res_partner_id.code.upper() if object.client_id.retana_type_res_partner_id else '') if object.client_id else '',
+                object.client_id.name.upper() if object.client_id else '',
+                ('EN LA OBRA ' + object.building_id.name.upper()) if object.building_id else ''
+            )
+        </field>
     </record>
 </odoo>

@@ -27,14 +27,17 @@
                         </h1>
                     </div>
                     <group>
-                        <group>
+                        <group name="general_info" string="Información General">
                             <field name="budget_type_id" required="1"/>
                             <field name="client_id" required="1"/>
                             <field name="building_id" required="1"/>
+                        </group>
+                        <group name="aditional_info" string="Información Adicional">
                             <field name="date" required="1"/>
-                            <field name="currency_id" required="1"/>
+                            <field name="downpayment_amount" widget="monetary"/>
                             <field name="discount" widget="percentage"/>
-                            
+                            <field name="taxes_ids" widget="many2many_tags"/>   
+                            <field name="currency_id" required="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -55,6 +58,7 @@
                         <field name="subtotal_amount" widget="monetary" readonly="1"/>
                         <field name="tax_amount" widget="monetary" readonly="1" invisible="tax_amount == 0"/>
                         <field name="discount_amount" widget="monetary" readonly="1" invisible="discount_amount == 0"/>
+                        <field name="downpayment_amount" widget="monetary" readonly="1" invisible="downpayment_amount == 0"/>
                         <field name="total_amount" widget="monetary" class="oe_subtotal_footer_separator" readonly="1"/>
                     </group>
                 </sheet>

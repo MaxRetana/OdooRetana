@@ -4,12 +4,12 @@ class RetanaBudgetLine(models.Model):
     _name = 'retana.budget.line'
     _description = 'Líneas de Presupuesto Retana'
     
-    budget_id   =fields.Many2one('retana.budget', string='Presupuesto')
-    product_id  =fields.Many2one('product.product', string='Concepto')
-    description =fields.Char(string='Descripción')
-    quantity    =fields.Float(string='Cantidad', default=1.0)
-    unit_price  =fields.Float(string='Precio Unitario')
-    taxes_ids   =fields.Many2many('account.tax', string='Impuestos')
+    budget_id   =fields.Many2one('retana.budget', string='Presupuesto', tracking=True)
+    product_id  =fields.Many2one('product.product', string='Concepto', tracking=True)
+    description =fields.Char(string='Descripción', tracking=True)
+    quantity    =fields.Float(string='Cantidad', default=1.0, tracking=True)
+    unit_price  =fields.Float(string='Precio Unitario', tracking=True)
+    taxes_ids   =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     subtotal    =fields.Float(string='Subtotal', compute='_compute_subtotal')
     
     @api.depends('quantity', 'unit_price')

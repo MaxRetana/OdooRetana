@@ -65,4 +65,12 @@
               parent="menu_retana_bills_config"
               action="action_retana_customers"
               sequence="40"/>
+
+    <!-- Tipos de Clientes Retana Menu -->
+
+    <menuitem id="menu_retana_type_res_partner"
+              name="Tipos de Clientes Retana"
+              parent="menu_retana_bills_config"
+              action="action_retana_type_res_partner"
+              sequence="50"/>
 </odoo>

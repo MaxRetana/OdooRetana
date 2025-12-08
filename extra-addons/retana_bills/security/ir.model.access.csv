@@ -3,3 +3,5 @@ access_retana_budget,access.retana.budget,model_retana_budget,base.group_user,1,
 access_retana_budget_type,access.retana.budget.type,model_retana_budget_type,base.group_user,1,1,1,1
 access_retana_budget_line,access.retana.budget.line,model_retana_budget_line,base.group_user,1,1,1,1
 access_retana_buildings,access.retana.buildings,model_retana_buildings,base.group_user,1,1,1,1
+access_retana_type_res_partner,access.retana.type.res.partner,model_retana_type_res_partner,base.group_user,1,1,1,1
+access_retana_company_info,access.retana.company.info,model_retana_company_info,base.group_user,1,1,1,1
