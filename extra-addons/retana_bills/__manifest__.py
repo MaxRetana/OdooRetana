@@ -30,4 +30,11 @@
         "report/retana_downpayment_list_report.xml",
         "views/retana_bills_menus.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "retana_bills/static/src/js/retana_bills.js",
+            "retana_bills/static/src/xml/retana_bills.xml",
+            "retana_bills/static/src/css/retana_bills.css",
+        ],
+    },
 }

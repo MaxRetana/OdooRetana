@@ -24,3 +24,27 @@ class RetanaBuildings(models.Model):
                 'default_client_id': self.client_id.id,
             },
         }
+    
+    def action_print_downpayments_list(self):
+        """Acción para imprimir la relación de pagos de la obra"""
+        self.ensure_one()
+        # Buscar todos los anticipos de esta obra
+        downpayments = self.env['retana.downpayment'].search([
+            ('building_id', '=', self.id)
+        ], order='date asc')
+        
+        if not downpayments:
+            # Si no hay anticipos, mostrar mensaje
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Sin anticipos',
+                    'message': 'Esta obra no tiene anticipos registrados.',
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+        
+        # Generar el reporte con los anticipos encontrados
+        return self.env.ref('retana_bills.action_report_retana_building_downpayments').report_action(downpayments)

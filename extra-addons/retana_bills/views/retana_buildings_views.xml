@@ -9,8 +9,9 @@
                 <field name="name"/>
                 <field name="client_id"/>
                 <field name="active"/>
-                <!-- Boton para crear anticipo -->
-                <button name="action_create_downpayment" type="object" string="Crear Anticipo" class="oe_highlight"/>
+                <!-- Botones de acciones -->
+                <button name="action_create_downpayment" type="object" string="Crear Anticipo" class="oe_highlight" icon="fa-plus"/>
+                <button name="action_print_downpayments_list" type="object" string="Imprimir Relación de Pagos" icon="fa-print"/>
             </tree>
         </field>
     </record>
@@ -21,6 +22,10 @@
         <field name="model">retana.buildings</field>
         <field name="arch" type="xml">
             <form string="Obra">
+                <header>
+                    <button name="action_create_downpayment" type="object" string="Crear Anticipo" class="oe_highlight"/>
+                    <button name="action_print_downpayments_list" type="object" string="Imprimir Relación de Pagos" class="btn-primary"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
