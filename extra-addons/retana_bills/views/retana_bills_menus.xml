@@ -87,4 +87,6 @@
               parent="menu_retana_bills_config"
               action="action_retana_downpayment_type_concept"
               sequence="60"/>
+
+
 </odoo>
