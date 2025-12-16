@@ -75,9 +75,13 @@
               sequence="50"/>
 
     <!-- Menu de anticipos -->
-    <menuitem id="menu_retana_downpayments"
+    <menuitem id="menu_retana_downpayments_root"
               name="Anticipos"
               parent="menu_retana_bills_root"
+              sequence="20"/>
+    <menuitem id="menu_retana_downpayments"
+              name="Anticipos"
+              parent="menu_retana_downpayments_root"
               action="action_retana_downpayment"
               sequence="20"/>
     

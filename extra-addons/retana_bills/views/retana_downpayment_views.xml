@@ -55,6 +55,7 @@
         <field name="model">retana.downpayment</field>
         <field name="arch" type="xml">
             <search>
+                <filter string="Semana Actual" name="current_week" domain="[('date', '&gt;=', (context_today() + relativedelta(weeks=-1, weekday=0)).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d'))]"/>
                 <group expand="1" string="Group By">
                     <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
                     <filter string="Cliente" name="client_group" domain="[]" context="{'group_by':'client_id'}"/>
@@ -72,7 +73,7 @@
         <field name="res_model">retana.downpayment</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[]</field>
-        <field name="context">{}</field>
+        <field name="context">{'search_default_current_week': 1}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Crear un nuevo anticipo de Retana

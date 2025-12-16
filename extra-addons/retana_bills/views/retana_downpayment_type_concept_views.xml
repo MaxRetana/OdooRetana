@@ -26,6 +26,7 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="default_concept"/>
                         <field name="active"/>
                     </group>
                 </sheet>

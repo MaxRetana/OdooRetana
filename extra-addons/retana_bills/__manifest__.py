@@ -25,6 +25,7 @@
         "views/retana_downpayment_type_concept_views.xml",
         "views/retana_downpayment_views.xml",
         "views/retana_downpayment_wizard_views.xml",
+        "views/retana_bulk_downpayment_wizard_views.xml",
         "views/retana_send_whatsapp_wizard_views.xml",
         "views/retana_sent_wh_views.xml",
         "views/retana_type_res_partner_views.xml",
