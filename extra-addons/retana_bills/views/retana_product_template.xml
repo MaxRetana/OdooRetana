@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de árbol personalizada para productos Retana -->
+    <record id="view_retana_product_template_tree" model="ir.ui.view">
+        <field name="name">view.retana.product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Productos Retana">
+                <field name="default_code" string="Referencia"/>
+                <field name="name" string="Nombre"/>
+                <field name="display_name" optional="hide"/>
+                <field name="standard_price" string="Costo"/>
+                <field name="list_price" string="Precio de Venta"/>
+                <field name="taxes_id" widget="many2many_tags" string="IVA"/>
+                <field name="uom_id" string="Unidad de Medida"/>
+                <field name="categ_id" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario simplificada para productos Retana -->
+    <record id="view_retana_product_template_form" model="ir.ui.view">
+        <field name="name">view.retana.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form string="Producto Retana">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Nombre del Producto"/>
+                            <field name="default_code" placeholder="Referencia Interna"/>
+                            <field name="categ_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="list_price" string="Precio de Venta"/>
+                            <field name="standard_price" string="Costo"/>
+                            <field name="taxes_id" widget="many2many_tags" string="IVA"/>
+                            <field name="uom_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Descripción del producto..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para los productos Retana -->
+    <record id="action_retana_product_template" model="ir.actions.act_window">
+        <field name="name">Productos Retana</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_retana_product_template_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_retana_product_template_form')})]"/>
+    </record>
+
+    <!-- Menú para acceder a los productos Retana -->
+    <menuitem id="menu_retana_product_template"
+              name="Productos"
+              parent="retana_bills.menu_retana_bills_root"
+              action="action_retana_product_template"
+              sequence="20"/>
+
+</odoo>

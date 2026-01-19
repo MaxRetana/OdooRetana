@@ -17,6 +17,8 @@
         "security/ir.model.access.csv",
         "views/res_partner_views.xml",
         "views/retana_bills_menus.xml",
+        "views/retana_res_partner.xml",
+        "views/retana_product_template.xml",
         "views/retana_budget_line_views.xml",
         "views/retana_budget_type_views.xml",
         "views/retana_budget_views.xml",
