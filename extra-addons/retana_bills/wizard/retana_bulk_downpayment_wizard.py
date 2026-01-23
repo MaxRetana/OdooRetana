@@ -9,12 +9,12 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
     _description = 'Wizard para crear múltiples anticipos desde mensaje de texto'
 
     def _get_default_saturday(self):
-        """Retorna el sábado de la semana en curso"""
+        """Retorna el jueves de la semana en curso"""
         today = datetime.today()
-        # weekday() retorna 0=Lunes, 5=Sábado
-        days_until_saturday = (5 - today.weekday()) % 7
-        saturday = today + timedelta(days=days_until_saturday)
-        return saturday.date()
+        # weekday() retorna 0=Lunes, 3=Jueves
+        days_until_thursday = (3 - today.weekday()) % 7
+        thursday = today + timedelta(days=days_until_thursday)
+        return thursday.date()
 
     message_text = fields.Text(
         string='Mensaje',

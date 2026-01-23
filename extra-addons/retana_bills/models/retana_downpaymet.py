@@ -8,12 +8,12 @@ class RetanaDownpayment(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'field.tracking.mixin']
     
     def _get_default_saturday(self):
-        """Retorna el sábado de la semana en curso"""
+        """Retorna el jueves de la semana en curso"""
         today = datetime.today()
-        # weekday() retorna 0=Lunes, 5=Sábado
-        days_until_saturday = (5 - today.weekday()) % 7
-        saturday = today + timedelta(days=days_until_saturday)
-        return saturday.date()
+        # weekday() retorna 0=Lunes, 3=Jueves
+        days_until_thursday = (3 - today.weekday()) % 7
+        thursday = today + timedelta(days=days_until_thursday)
+        return thursday.date()
     
     name            =fields.Char(string='Nombre del Anticipo', default='Nuevo', tracking=True)
     concept_id     =fields.Many2one('retana.downpayment.type.concept', string='Concepto de Anticipo', tracking=True)
