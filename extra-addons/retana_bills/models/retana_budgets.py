@@ -14,12 +14,13 @@ class RetanaBudget(models.Model):
         'linea_ids': {
             'type': 'one2many',
             'display_name': 'Líneas de Presupuesto',
-            'fields_to_track': ['producto_id', 'quantity', 'unit_price', 'taxes_ids', 'subtotal'],
+            'fields_to_track': ['producto_id', 'quantity', 'unit_price', 'taxes_ids', 'subtotal', 'display_type'],
             'display_fields': {
                 'producto_id': lambda val: val.name if val else 'Sin producto',
                 'quantity': lambda val: str(val),
                 'unit_price': lambda val: f"${val:,.2f}",
                 'subtotal': lambda val: f"${val:,.2f}",
+                'display_type': lambda val: 'Sección' if val == 'line_section' else ('Nota' if val == 'line_note' else 'Línea normal'),
             }
         }
     }

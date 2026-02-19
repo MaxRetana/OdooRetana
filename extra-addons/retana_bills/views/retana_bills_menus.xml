@@ -40,7 +40,7 @@
 
     <!-- Submenú de Productos -->
     <menuitem id="menu_retana_products"
-              name="Productos"
+              name="Conceptos"
               parent="menu_retana_bills_config"
               action="action_retana_products"
               sequence="30"/>

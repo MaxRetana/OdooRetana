@@ -51,75 +51,138 @@
                         <!-- Tabla de conceptos -->
                         <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt;">
                             <thead>
-                                <tr>
-                                    <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;"></th>
-                                    <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 10%;">PZA.</th>
-                                    <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">PRECIO</th>
-                                    <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">TOTAL</th>
-                                </tr>
+                                <t t-if="o.budget_type_id.is_material_list">
+                                    <!-- Encabezados para lista de materiales (sin precios) -->
+                                    <tr>
+                                        <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 75%;">CONCEPTO</th>
+                                        <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 25%;">PZA.</th>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <!-- Encabezados normales (con precios) -->
+                                    <tr>
+                                        <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;"></th>
+                                        <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 10%;">PZA.</th>
+                                        <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">PRECIO</th>
+                                        <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">TOTAL</th>
+                                    </tr>
+                                </t>
                             </thead>
                             <tbody>
                                 <t t-foreach="o.line_ids" t-as="line">
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <!-- Línea de sección -->
+                                        <tr>
+                                            <td colspan="4" style="padding: 15px 4px 8px 4px; text-align: center; font-weight: bold; font-size: 11pt;">
+                                                <t t-esc="(line.description or '').upper()"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-elif="line.display_type == 'line_note'">
+                                        <!-- Línea de nota -->
+                                        <tr>
+                                            <td colspan="4" style="padding: 8px 4px; text-align: left; font-style: italic;">
+                                                <t t-esc="line.description or ''"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Línea normal de producto -->
+                                        <t t-if="o.budget_type_id.is_material_list">
+                                            <!-- Formato para lista de materiales (sin precios) -->
+                                            <tr>
+                                                <td style="padding: 4px; vertical-align: top; text-align: left;">
+                                                    <t t-if="line.description and line.product_id and line.description != line.product_id.name">
+                                                        <t t-esc="line.description.upper()"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="(line.product_id.name or '').upper()"/>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; padding: 4px; vertical-align: top;">
+                                                    <t t-esc="int(line.quantity)"/> <t t-if="line.uom_id"><t t-esc="line.uom_id.name"/></t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <!-- Formato normal (con precios) -->
+                                            <tr>
+                                                <td style="padding: 4px; vertical-align: top; text-align: left;">
+                                                    <t t-if="line.description and line.product_id and line.description != line.product_id.name">
+                                                        <t t-esc="line.description.upper()"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="(line.product_id.name or '').upper()"/>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: center; padding: 4px; vertical-align: top;">
+                                                    <t t-esc="int(line.quantity)"/> <t t-if="line.uom_id"><t t-esc="line.uom_id.name"/></t>
+                                                </td>
+                                                <td style="text-align: right; padding: 4px; vertical-align: top;">
+                                                    $<t t-esc="'{:,.2f}'.format(line.unit_price)"/>
+                                                </td>
+                                                <td style="text-align: right; padding: 4px; vertical-align: top;">
+                                                    <t t-if="line_last">
+                                                        <div style="display: inline-block; border-bottom: 2px solid black; padding-bottom: 2px;">
+                                                            $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
+                                                        </div>
+                                                    </t>
+                                                    <t t-else="">
+                                                        $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                                <!-- No mostrar totales si es lista de materiales -->
+                                <t t-if="not o.budget_type_id.is_material_list">
+                                    <!-- Fila del subtotal (solo si hay IVA, descuento o anticipo) -->
+                                    <tr t-if="o.tax_amount > 0 or o.discount_amount > 0 or o.downpayment_amount > 0">
+                                        <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                            SUBTOTAL
+                                        </td>
+                                        <td style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                            $<t t-esc="'{:,.2f}'.format(o.subtotal_amount)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Fila del IVA (solo si hay IVA) -->
+                                    <tr t-if="o.tax_amount > 0">
+                                        <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                            IVA
+                                        </td>
+                                        <td style="text-align: right; padding: 8px 4px;">
+                                            $<t t-esc="'{:,.2f}'.format(o.tax_amount)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Fila del descuento (solo si hay descuento) -->
+                                    <tr t-if="o.discount_amount > 0">
+                                        <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                            DESCUENTO (<t t-esc="'{:.0f}'.format(o.discount * 100)"/>%)
+                                        </td>
+                                        <td style="text-align: right; padding: 8px 4px;">
+                                            -$<t t-esc="'{:,.2f}'.format(o.discount_amount)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Fila del anticipo (solo si hay anticipo) -->
+                                    <tr t-if="o.downpayment_amount > 0">
+                                        <td colspan="3" style="text-align: right; padding: 8px 4px;">
+                                            ANTICIPO
+                                        </td>
+                                        <td style="text-align: right; padding: 8px 4px;">
+                                            -$<t t-esc="'{:,.2f}'.format(o.downpayment_amount)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Fila del total -->
                                     <tr>
-                                        <td style="padding: 10px 4px; vertical-align: top; text-align: left;">
-                                            <t t-esc="(line.description or line.product_id.name or '').upper()"/>
+                                        <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                            TOTAL
                                         </td>
-                                        <td style="text-align: center; padding: 10px 4px; vertical-align: top;">
-                                            <t t-esc="int(line.quantity)"/>
-                                        </td>
-                                        <td style="text-align: right; padding: 10px 4px; vertical-align: top;">
-                                            $<t t-esc="'{:,.2f}'.format(line.unit_price)"/>
-                                        </td>
-                                        <td style="text-align: right; padding: 10px 4px; vertical-align: top;">
-                                            $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
+                                        <td style="text-align: right; padding: 8px 4px; font-weight: bold;">
+                                            $<t t-esc="'{:,.2f}'.format(o.total_amount)"/>
                                         </td>
                                     </tr>
                                 </t>
-                                <!-- Fila del subtotal (solo si hay IVA, descuento o anticipo) -->
-                                <tr t-if="o.tax_amount > 0 or o.discount_amount > 0 or o.downpayment_amount > 0">
-                                    <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
-                                        SUBTOTAL
-                                    </td>
-                                    <td style="text-align: right; padding: 8px 4px; font-weight: bold;">
-                                        $<t t-esc="'{:,.2f}'.format(o.subtotal_amount)"/>
-                                    </td>
-                                </tr>
-                                <!-- Fila del IVA (solo si hay IVA) -->
-                                <tr t-if="o.tax_amount > 0">
-                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
-                                        IVA
-                                    </td>
-                                    <td style="text-align: right; padding: 8px 4px;">
-                                        $<t t-esc="'{:,.2f}'.format(o.tax_amount)"/>
-                                    </td>
-                                </tr>
-                                <!-- Fila del descuento (solo si hay descuento) -->
-                                <tr t-if="o.discount_amount > 0">
-                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
-                                        DESCUENTO (<t t-esc="'{:.0f}'.format(o.discount * 100)"/>%)
-                                    </td>
-                                    <td style="text-align: right; padding: 8px 4px;">
-                                        -$<t t-esc="'{:,.2f}'.format(o.discount_amount)"/>
-                                    </td>
-                                </tr>
-                                <!-- Fila del anticipo (solo si hay anticipo) -->
-                                <tr t-if="o.downpayment_amount > 0">
-                                    <td colspan="3" style="text-align: right; padding: 8px 4px;">
-                                        ANTICIPO
-                                    </td>
-                                    <td style="text-align: right; padding: 8px 4px;">
-                                        -$<t t-esc="'{:,.2f}'.format(o.downpayment_amount)"/>
-                                    </td>
-                                </tr>
-                                <!-- Fila del total -->
-                                <tr>
-                                    <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
-                                        TOTAL
-                                    </td>
-                                    <td style="text-align: right; padding: 8px 4px; font-weight: bold;">
-                                        $<t t-esc="'{:,.2f}'.format(o.total_amount)"/>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
 
@@ -130,7 +193,7 @@
                             </div>
                             
                             <div style="font-weight: bold; font-size: 10pt; margin-bottom: 60px;">
-                                <t t-if="o.total_amount">
+                                <t t-if="o.total_amount and not o.budget_type_id.is_material_list">
                                     <t t-esc="o.currency_id.amount_to_text(o.total_amount).upper()"/> M.N
                                 </t>
                             </div>

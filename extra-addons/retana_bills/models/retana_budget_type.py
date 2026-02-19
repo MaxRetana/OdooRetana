@@ -6,4 +6,5 @@ class RetanaBudgetType(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
     name    =fields.Char(string='Tipo de Presupuesto' , tracking=True)
+    is_material_list =fields.Boolean(string='Es lista de materiales', default=False, tracking=True)
     active  =fields.Boolean(string='Activo', default=True, tracking=True)

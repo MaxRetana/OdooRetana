@@ -59,10 +59,10 @@
     </record>
 
     <!-- Menú para acceder a los productos Retana -->
-    <menuitem id="menu_retana_product_template"
+    <!-- <menuitem id="menu_retana_product_template"
               name="Productos"
               parent="retana_bills.menu_retana_bills_root"
               action="action_retana_product_template"
-              sequence="20"/>
+              sequence="20"/> -->
 
 </odoo>

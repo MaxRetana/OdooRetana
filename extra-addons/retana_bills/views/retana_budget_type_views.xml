@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <tree string="Tipos de Presupuesto">
                 <field name="name"/>
+                <field name="is_material_list"/>
                 <field name="active"/>
             </tree>
         </field>
@@ -21,6 +22,7 @@
                 <sheet>
                     <group>
                         <field name="name" placeholder="Ej: Residencial, Comercial, Industrial..."/>
+                        <field name="is_material_list" widget="boolean_button" options='{"terminology": "checkbox"}'/>
                         <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
                     </group>
                 </sheet>

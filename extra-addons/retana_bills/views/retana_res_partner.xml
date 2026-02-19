@@ -49,10 +49,10 @@
     </record>
 
     <!-- Menú para acceder a los proveedores Retana -->
-    <menuitem id="menu_retana_res_partner"
+    <!-- <menuitem id="menu_retana_res_partner"
               name="Proveedores"
               parent="retana_bills.menu_retana_bills_root"
               action="action_retana_res_partner"
-              sequence="10"/>
+              sequence="10"/> -->
 
 </odoo>

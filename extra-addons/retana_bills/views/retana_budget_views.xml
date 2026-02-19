@@ -41,15 +41,23 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Líneas de Presupuesto">
+                        <page string="Conceptos">
                             <field name="line_ids">
-                                <tree editable="bottom">
-                                    <field name="product_id" required="1"/>
-                                    <field name="description" optional="1"/>
-                                    <field name="quantity" required="1"/>
-                                    <field name="unit_price" widget="monetary" required="1"/>
-                                    <field name="taxes_ids" widget="many2many_tags"/>
-                                    <field name="subtotal" widget="monetary" readonly="1" required="1"/>
+                                <tree editable="bottom" decoration-bf="display_type == 'line_section'" decoration-it="display_type == 'line_note'">
+                                    <control>
+                                        <create name="add_product_control" string="Agregar concepto"/>
+                                        <create name="add_section_control" string="Agregar sección" context="{'default_display_type': 'line_section'}"/>
+                                        <create name="add_note_control" string="Agregar nota" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="display_type" optional="1"/>
+                                    <field name="product_id" attrs="{'required': [('display_type', 'in', (False, None))], 'column_invisible': [('parent.id', '=', False)]}" force_save="1"/>
+                                    <field name="description" widget="section_and_note_text"/>
+                                    <field name="quantity" attrs="{'required': [('display_type', 'in', (False, None))], 'column_invisible': [('parent.id', '=', False)]}" force_save="1"/>
+                                    <field name="uom_id"/>
+                                    <field name="unit_price" widget="monetary" attrs="{'required': [('display_type', 'in', (False, None))], 'column_invisible': [('parent.id', '=', False)]}" force_save="1"/>
+                                    <field name="taxes_ids" widget="many2many_tags" attrs="{'column_invisible': [('parent.id', '=', False)]}" force_save="1"/>
+                                    <field name="subtotal" widget="monetary" attrs="{'column_invisible': [('parent.id', '=', False)]}" force_save="1"/>
                                 </tree>
                             </field>
                         </page>
