@@ -31,4 +31,5 @@ class RetanaBudgetLine(models.Model):
     def _onchange_product_id(self):
         if self.product_id:
             self.description = self.product_id.name
-            self.unit_price = self.product_id.standard_priceuom_id
+            self.unit_price = self.product_id.standard_price
+            self.uom_id = self.product_id.uom_id
