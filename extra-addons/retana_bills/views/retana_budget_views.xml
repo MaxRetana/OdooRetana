@@ -26,6 +26,10 @@
                             <field name="name" readonly="1" force_save="1"/>
                         </h1>
                     </div>
+                    <group name="header_info" string="Información del Presupuesto">
+                        <field name="title"/>
+                        <field name="description"/>
+                    </group>
                     <group>
                         <group name="general_info" string="Información General">
                             <field name="budget_type_id" required="1"/>

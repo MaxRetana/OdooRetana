@@ -25,6 +25,8 @@ class RetanaBudget(models.Model):
         }
     }
     name                =fields.Char(string='Referencia', copy=False, default='Nuevo', tracking=True)
+    title               =fields.Char(string='Título', tracking=True)
+    description         =fields.Text(string='Descripción', tracking=True)
     client_id           =fields.Many2one('res.partner', string='Cliente', domain="[('is_retana_customer', '=', True)]", tracking=True)
     building_id         =fields.Many2one('retana.buildings', string='Obra', domain="[('client_id', '=', client_id)]", tracking=True)
     date                =fields.Date(string='Fecha', default=fields.Date.context_today, tracking=True)
@@ -39,6 +41,29 @@ class RetanaBudget(models.Model):
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     
+    @api.onchange('budget_type_id', 'client_id', 'building_id')
+    def _onchange_budget_type_id(self):
+        for budget in self:
+            # Construir el título completo desde cero cada vez
+            title_parts = []
+            
+            # Parte 1: Tipo de presupuesto (siempre primero)
+            if budget.budget_type_id:
+                title_parts.append(budget.budget_type_id.name)
+            
+            # Parte 2: Cliente (siempre segundo)
+            if budget.client_id:
+                client_part = f"PARA EL {budget.client_id.retana_type_res_partner_id.code} {budget.client_id.name}"
+                title_parts.append(client_part)
+            
+            # Parte 3: Edificio (siempre tercero)
+            if budget.building_id:
+                building_part = f"EN LA OBRA {budget.building_id.name}"
+                title_parts.append(building_part)
+            
+            # Unir todas las partes con espacio
+            budget.title = " ".join(title_parts).upper()
+
     @api.depends('line_ids.subtotal', 'line_ids.taxes_ids', 'discount', 'downpayment_amount')
     def _compute_amounts(self):
         for budget in self:

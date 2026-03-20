@@ -43,10 +43,24 @@
                             COLIMA, COL; <t t-esc="o.date.strftime('%d').lstrip('0')"/> DE <t t-esc="months.get(o.date.strftime('%m'), 'DICIEMBRE')"/> DEL AÑO <t t-esc="o.date.strftime('%Y')"/>
                         </div>
 
+
+                        <!-- Titulo del presuspuesto -->
+                        <t t-if="o.title">
+                            <div style="font-weight: bold; font-size: 10pt; margin: 15px 0; text-align: left;">
+                                
+                                <t t-esc="o.title.upper()"/>
+                                
+                            </div>
+                        </t>
+
                         <!-- Descripción del presupuesto -->
-                        <div style="font-weight: bold; font-size: 10pt; margin: 15px 0; text-align: left;">
-                            <t t-if="o.budget_type_id"><t t-esc="o.budget_type_id.name.upper()"/></t> <t t-if="o.client_id"><t t-if="o.client_id.retana_type_res_partner_id">PARA EL <t t-esc="o.client_id.retana_type_res_partner_id.code.upper()"/> </t><t t-esc="o.client_id.name.upper()"/> </t><t t-if="o.building_id">EN LA OBRA <t t-esc="o.building_id.name.upper()"/></t>
-                        </div>
+                        <t t-if="o.description">
+                            <div style="font-weight: bold; font-size: 10pt; margin: 15px 0; text-align: left;">
+                                
+                                <t t-esc="o.description.upper()"/>
+                                
+                            </div>
+                        </t>
 
                         <!-- Tabla de conceptos -->
                         <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt;">
