@@ -1,4 +1,3 @@
-version: '3'
 services:
   db_retana:
     image: postgres:15
@@ -21,7 +20,7 @@ services:
       - odoo_data_retana:/var/lib/odoo
       - ./extra-addons:/mnt/extra-addons
       - ./config/local.conf:/etc/odoo/odoo.conf
-      - ./odoo-filestore:/var/lib/odoo/.local/share/Odoo/filestore   # 🔥 Nuevo volumen persistente
+      - ./odoo-filestore:/root/.local/share/Odoo/filestore
     environment:
       - HOST=db_retana
       - USER=odoo

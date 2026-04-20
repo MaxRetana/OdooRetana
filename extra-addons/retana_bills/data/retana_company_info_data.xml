@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Datos iniciales de Información de Empresa Retana -->
+        <record id="retana_company_info_default" model="retana.company.info">
+            <field name="company_name">JOSE NATIVIDAD RETANA RODRIGUEZ</field>
+            <field name="business_line">SERVICIOS ELECTRICOS Y MANTENIMIENTO</field>
+            <field name="rfc">RENR-720328-FE5</field>
+            <field name="curp">RERN720328HCMTDT02</field>
+            <field name="address">PRIV. MARGARITA MAZA DE JUAREZ #476</field>
+            <field name="phone">31 4 05 23</field>
+            <field name="mobile">044 312 31 9 31 05</field>
+            <field name="zone">ZONA CENTRO</field>
+            <field name="postal_code">28000</field>
+            <field name="city">COLIMA</field>
+            <field name="state">COL.</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

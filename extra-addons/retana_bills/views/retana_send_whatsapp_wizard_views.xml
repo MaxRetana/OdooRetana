@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario del wizard de envío por WhatsApp -->
+        <record id="view_retana_send_whatsapp_wizard_form" model="ir.ui.view">
+            <field name="name">retana.send.whatsapp.wizard.form</field>
+            <field name="model">retana.send.whatsapp.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Enviar Reporte por WhatsApp">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="phone" placeholder="+52 123 456 7890"/>
+                                <field name="report_type"/>
+                                <field name="budget_id" 
+                                       invisible="report_type != 'budget'"
+                                       required="report_type == 'budget'"
+                                       options="{'no_create': True}"/>
+                                <field name="downpayment_id" 
+                                       invisible="report_type != 'downpayment'"
+                                       required="report_type == 'downpayment'"
+                                       options="{'no_create': True}"/>
+                                <field name="building_id" 
+                                       invisible="report_type != 'downpayment_list'"
+                                       required="report_type == 'downpayment_list'"
+                                       options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="message" widget="text" placeholder="Escribe un mensaje personalizado..."/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Enviar por WhatsApp" name="action_send_whatsapp" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción del wizard -->
+        <record id="action_retana_send_whatsapp_wizard" model="ir.actions.act_window">
+            <field name="name">Enviar por WhatsApp</field>
+            <field name="res_model">retana.send.whatsapp.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">form,list</field>
+        </record>
+
+        <!-- Acción de servidor alternativa (más flexible) -->
+        <record id="action_server_send_whatsapp" model="ir.actions.server">
+            <field name="name">Enviar Reporte por WhatsApp</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'res_model': 'retana.send.whatsapp.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {
+        'default_partner_id': records[0].id if len(records) == 1 else False,
+        'default_phone': records[0].mobile or records[0].phone if len(records) == 1 else '',
+    }
+}
+            </field>
+        </record>
+    </data>
+</odoo>

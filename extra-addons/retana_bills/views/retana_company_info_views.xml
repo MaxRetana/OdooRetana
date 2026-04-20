@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario para Información de Empresa -->
+    <record id="view_retana_company_info_form" model="ir.ui.view">
+        <field name="name">retana.company.info.form</field>
+        <field name="model">retana.company.info</field>
+        <field name="arch" type="xml">
+            <form string="Información de Empresa">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" invisible="1"/>
+                    </div>
+                    <div class="ribbon ribbon-top-right" invisible="not active">
+                        <span class="bg-success">Activo</span>
+                    </div>
+                    <group>
+                        <group string="Información General">
+                            <field name="company_name" placeholder="Ej: JOSE NATIVIDAD RETANA RODRIGUEZ"/>
+                            <field name="business_line" placeholder="Ej: SERVICIOS ELECTRICOS Y MANTENIMIENTO"/>
+                            <field name="rfc" placeholder="Ej: RENR-720328-FE5"/>
+                            <field name="curp" placeholder="Ej: RERN720328HCMTDT02"/>
+                        </group>
+                        <group string="Información de Contacto">
+                            <field name="address" placeholder="Ej: PRIV. MARGARITA MAZA DE JUAREZ #476"/>
+                            <field name="phone" placeholder="Ej: 31 4 05 23"/>
+                            <field name="mobile" placeholder="Ej: 044 312 31 9 31 05"/>
+                            <field name="zone" placeholder="Ej: ZONA CENTRO"/>
+                            <field name="postal_code" placeholder="Ej: 28000"/>
+                            <field name="city" placeholder="Ej: COLIMA"/>
+                            <field name="state" placeholder="Ej: COL."/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista lista para Información de Empresa -->
+    <record id="view_retana_company_info_tree" model="ir.ui.view">
+        <field name="name">retana.company.info.tree</field>
+        <field name="model">retana.company.info</field>
+        <field name="arch" type="xml">
+            <tree string="Información de Empresa">
+                <field name="company_name"/>
+                <field name="business_line"/>
+                <field name="rfc"/>
+                <field name="city"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción para Información de Empresa -->
+    <record id="action_retana_company_info" model="ir.actions.act_window">
+        <field name="name">Información de Empresa</field>
+        <field name="res_model">retana.company.info</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configura la información de tu empresa
+            </p>
+            <p>
+                Esta información aparecerá en los reportes de presupuestos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú para Información de Empresa -->
+    <menuitem
+        id="menu_retana_company_info"
+        name="Información de Empresa"
+        parent="menu_retana_bills_config"
+        action="action_retana_company_info"
+        sequence="10"/>
+</odoo>

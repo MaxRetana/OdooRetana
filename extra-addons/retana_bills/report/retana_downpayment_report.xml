@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plantilla del reporte de anticipo -->
+    <template id="report_retana_downpayment_document">
+        <t t-call="web.html_container" data-report-header="0">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company_info" t-value="o.env['retana.company.info'].get_company_info()"/>
+                <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                    <div class="page" style="font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding: 0px 50px !important; border: none !important;">
+                        
+                        <!-- Encabezado centrado -->
+                        <div style="text-align: center; margin-bottom: 5px;">
+                            <div style="font-size: 13pt; font-weight: bold; margin-bottom: 3px;">
+                                <t t-esc="company_info.company_name"/>
+                            </div>
+                            <div style="font-size: 12pt; font-weight: bold; margin-bottom: 8px;">
+                                <t t-esc="company_info.business_line"/>
+                            </div>
+                        </div>
+
+                        <!-- Información de contacto en dos columnas -->
+                        <table style="width: 100%; font-size: 8pt; margin-bottom: 8px; border-collapse: collapse;">
+                            <tr>
+                                <td style="text-align: left; width: 50%; font-weight: bold; line-height: 1.3;">
+                                    R.F.C. <t t-esc="company_info.rfc"/><br/>
+                                    <t t-esc="company_info.address"/><br/>
+                                    TEL <t t-esc="company_info.phone"/> CEL. <t t-esc="company_info.mobile"/>
+                                </td>
+                                <td style="text-align: right; width: 50%; font-weight: bold; line-height: 1.3;">
+                                    C.U.R.P. <t t-esc="company_info.curp"/><br/>
+                                    <t t-esc="company_info.zone"/><br/>
+                                    C.P. <t t-esc="company_info.postal_code"/> <t t-esc="company_info.city"/>, <t t-esc="company_info.state"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Línea separadora -->
+                        <hr style="border: none; border-top: 2px solid black; margin: 10px 0;"/>
+
+                        <!-- Fecha -->
+                        <div style="text-align: right; font-weight: bold; font-size: 10pt; margin: 15px 0;">
+                            <t t-set="months" t-value="{'01': 'ENERO', '02': 'FEBRERO', '03': 'MARZO', '04': 'ABRIL', '05': 'MAYO', '06': 'JUNIO', '07': 'JULIO', '08': 'AGOSTO', '09': 'SEPTIEMBRE', '10': 'OCTUBRE', '11': 'NOVIEMBRE', '12': 'DICIEMBRE'}"/>
+                            COLIMA, COL; <t t-esc="o.date.strftime('%d').lstrip('0')"/> DE <t t-esc="months.get(o.date.strftime('%m'), 'DICIEMBRE')"/> DEL <t t-esc="o.date.strftime('%Y')"/>
+                        </div>
+
+                        <!-- Espacio para separación -->
+                        <div style="margin: 30px 0;"></div>
+
+                        <!-- Seccion Bueno por: -->
+                        <div style="text-align: left; font-size: 10pt; margin: 20px 0;">
+                            BUENO POR: $ <span style="font-weight: bold;"><t t-esc="'{:,.2f}'.format(o.amount)"/></span>
+                        </div>
+
+                        <!-- Seccion Recibi de: -->
+                        <div style="text-align: right; font-size: 10pt; margin: 20px 0;">
+                            RECIBÍ DE: <span style="font-weight: bold;"><t t-esc="o.client_id.retana_type_res_partner_id.code.upper() if o.client_id else '---'"/> <t t-esc="o.client_id.name.upper() if o.client_id else '---'"/></span>
+                        </div>
+
+                        <!-- Sección LA CANTIDAD DE -->
+                        <div style="margin: 50px 0;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 30%; text-align: left; font-weight: bold; font-size: 10pt; vertical-align: top;">
+                                        LA CANTIDAD DE:
+                                    </td>
+                                    <td style="text-align: center; vertical-align: top;">
+                                        <div style="display: inline-block; text-align: center; min-width: 200px;">
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt;">
+                                                -
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width: 30%; text-align: right; vertical-align: top;">
+                                        <div style="display: inline-block; text-align: center; min-width: 100px;">
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 3px;">
+                                                -
+                                            </div>
+                                            <div style="font-weight: bold; font-size: 11pt;">
+                                                -
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Espacio -->
+                        <div style="margin: 30px 0;"></div>
+
+                        <!-- Monto en texto -->
+                        <div style="text-align: left; margin: 20px 0;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 15%; font-weight: bold; font-size: 10pt; vertical-align: top;">
+                                        $<t t-esc="'{:,.2f}'.format(o.amount)"/>
+                                    </td>
+                                    <td style="width: 5%; font-weight: bold; font-size: 10pt; vertical-align: top; text-align: center;">
+                                        -
+                                    </td>
+                                    <td style="font-weight: bold; font-size: 10pt; vertical-align: top;">
+                                        (<t t-if="o.amount"><t t-esc="o.currency_id.amount_to_text(o.amount).upper()"/> M.N.---</t>)
+                                    </td>
+                                    <td style="width: 5%; font-weight: bold; font-size: 10pt; vertical-align: top; text-align: center;">
+                                        -
+                                    </td>
+                                    <td style="width: 10%; font-weight: bold; font-size: 10pt; vertical-align: top;">
+                                        -
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Espacio -->
+                        <div style="margin: 30px 0;"></div>
+
+                        <!-- Líneas adicionales de guiones -->
+                        <div style="margin: 20px 0;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 10pt; padding: 5px 0;">
+                                        -<span style="margin-left: 100px;">-</span><span style="margin-left: 200px;">-</span><span style="margin-left: 100px;">-</span><span style="margin-left: 100px;">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 10pt; padding: 5px 0;">
+                                        -<span style="margin-left: 100px;">-</span><span style="margin-left: 200px;">-</span><span style="margin-left: 100px;">-</span><span style="margin-left: 100px;">-</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Espacio -->
+                        <div style="margin: 40px 0;"></div>
+
+                        <!-- Descripción del anticipo -->
+                        <div style="font-weight: bold; font-size: 10pt; margin: 20px 0; text-align: left;">
+                            POR EL CONCEPTO <t t-if="o.concept_id"><t t-esc="o.concept_id.name.upper()"/></t> DE LOS TRABAJOS ELECTRICOS REALIZADOS <t t-if="o.building_id">DE LA OBRA <t t-esc="o.building_id.name.upper()"/></t><t t-if="not o.building_id"></t>.
+                        </div>
+
+                        <!-- Espacio grande antes de la firma -->
+                        <div style="margin: 120px 0;"></div>
+
+                        <!-- Sección de atentamente -->
+                        <div style="margin-top: 80px; text-align: center;">
+                            <div style="font-weight: bold; font-size: 11pt; letter-spacing: 8px; margin-bottom: 50px;">
+                                R E C I B I
+                            </div>
+                            
+                            <div style="font-weight: bold; font-size: 10pt; margin-bottom: 60px;">
+                                <t t-if="o.amount">
+                                    <t t-esc="o.currency_id.amount_to_text(o.amount).upper()"/> M.N
+                                </t>
+                            </div>
+
+                            <div style="margin: 0 auto; width: 350px;">
+                                <div style="border-top: 1.5px solid black; padding-top: 8px; font-weight: bold; font-size: 10pt;">
+                                    <t t-esc="company_info.company_name"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Acción del reporte -->
+    <record id="action_report_retana_downpayment" model="ir.actions.report">
+        <field name="name">Recibo de Anticipo</field>
+        <field name="model">retana.downpayment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">retana_bills.report_retana_downpayment_document</field>
+        <field name="report_file">retana_bills.report_retana_downpayment_document</field>
+        <field name="binding_model_id" ref="model_retana_downpayment"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">
+            'ANTICIPO %s %s' % (
+                object.client_id.name.upper() if object.client_id else '',
+                ('OBRA ' + object.building_id.name.upper()) if object.building_id else ''
+            )
+        </field>
+    </record>
+</odoo>
