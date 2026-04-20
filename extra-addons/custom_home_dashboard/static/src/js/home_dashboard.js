@@ -30,6 +30,7 @@ class HomeDashboard extends Component {
                 []
             );
             
+            console.log('Loaded apps:', apps);
             this.state.apps = apps;
             this.state.loading = false;
             
@@ -41,23 +42,41 @@ class HomeDashboard extends Component {
     }
 
     async openApp(app) {
+        console.log('=== Opening app ===');
+        console.log('App data:', app);
+        console.log('Menu ID:', app.menu_id);
+        console.log('Action type:', app.action_type);
+        
         try {
+            // Special handling for Apps menu
+            if (app.action_type === 'apps_store') {
+                console.log('Opening apps store...');
+                await this.actionService.doAction('base.open_module_tree');
+                return;
+            }
+            
             if (app.menu_id) {
-                // Method 1: Try using the menu service
-                const menuService = this.env.services.menu;
-                if (menuService) {
-                    await menuService.selectMenu(app.menu_id);
-                    return;
-                }
+                console.log('Attempting to open menu with ID:', app.menu_id);
                 
-                // Method 2: Use action service with menu action
-                await this.actionService.doAction({
-                    type: 'ir.actions.client',
-                    tag: 'menu',
-                    params: {
-                        menu_id: app.menu_id
-                    }
-                });
+                // Get the action associated with this menu
+                const menuAction = await this.orm.call(
+                    'ir.ui.menu',
+                    'read',
+                    [[app.menu_id], ['action']]
+                );
+                
+                console.log('Menu action:', menuAction);
+                
+                if (menuAction && menuAction[0] && menuAction[0].action) {
+                    const actionString = menuAction[0].action;
+                    const actionId = parseInt(actionString.split(',')[1]);
+                    console.log('Executing action ID:', actionId);
+                    await this.actionService.doAction(actionId);
+                } else {
+                    // Try direct URL navigation
+                    console.log('No action found, using URL navigation');
+                    window.location.href = `/web#menu_id=${app.menu_id}`;
+                }
             } else {
                 // Fallback: Search for the app's main action
                 console.warn('No menu found for app:', app.name);
@@ -65,6 +84,7 @@ class HomeDashboard extends Component {
             }
         } catch (error) {
             console.error('Error opening app:', error);
+            console.error('Error details:', error.message, error.stack);
             // Last resort: try to navigate using window location
             this.openAppByUrl(app);
         }

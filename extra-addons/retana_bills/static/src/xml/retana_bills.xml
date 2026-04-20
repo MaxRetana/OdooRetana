@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="retana_bills.AmountSelectorField">
+        <div class="retana_amount_selector">
+            <!-- Mostrar el valor actual -->
+            <div class="current_amount mb-3">
+                <label class="o_form_label">Monto Seleccionado:</label>
+                <div class="current_value">
+                    <strong t-esc="this.formatAmount(this.currentValue)"/>
+                </div>
+            </div>
+
+            <!-- Grid 3x3 de botones con montos predefinidos -->
+            <div t-if="!this.state.showCustomInput" class="amount_grid">
+                <div class="amount_row" t-foreach="[0, 1, 2]" t-as="row" t-key="row">
+                    <button 
+                        t-foreach="this.amounts.slice(row * 3, row * 3 + 3)" 
+                        t-as="amount" 
+                        t-key="amount"
+                        type="button"
+                        class="btn btn-outline-primary amount_btn"
+                        t-att-class="{ 'active': this.currentValue === amount }"
+                        t-on-click="() => this.setAmount(amount)">
+                        <span t-esc="this.formatAmount(amount)"/>
+                    </button>
+                </div>
+                
+                <!-- Botón para cantidad personalizada -->
+                <div class="custom_amount_row mt-3">
+                    <button 
+                        type="button"
+                        class="btn btn-secondary btn-block custom_amount_btn"
+                        t-on-click="() => this.showCustomAmount()">
+                        <i class="fa fa-edit me-2"/>
+                        Otra Cantidad
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input para cantidad personalizada -->
+            <div t-if="this.state.showCustomInput" class="custom_input_container">
+                <div class="mb-3">
+                    <label class="o_form_label">Ingrese el monto:</label>
+                    <input 
+                        type="number" 
+                        class="form-control" 
+                        t-model="this.state.customValue"
+                        placeholder="Ingrese el monto..."
+                        t-on-keydown="(ev) => ev.key === 'Enter' ? this.confirmCustomAmount() : null"
+                        step="0.01"
+                        min="0"/>
+                </div>
+                <div class="custom_buttons">
+                    <button 
+                        type="button"
+                        class="btn btn-primary me-2"
+                        t-on-click="() => this.confirmCustomAmount()">
+                        <i class="fa fa-check me-1"/>
+                        Confirmar
+                    </button>
+                    <button 
+                        type="button"
+                        class="btn btn-secondary"
+                        t-on-click="() => this.cancelCustom()">
+                        <i class="fa fa-times me-1"/>
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
