@@ -169,7 +169,9 @@ certbot/
 docker-compose.yml
 etc/
 #extra-addons/
-nginx/
+nginx/logs/
+nginx/ssl/
+nginx/*.log
 odoo-web-data/
 volumes
 addons
