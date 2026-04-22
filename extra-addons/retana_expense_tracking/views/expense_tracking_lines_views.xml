@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View expense.tracking.lines View Tree -->
+    <record id="view_expense_tracking_lines_tree" model="ir.ui.view">
+        <field name="name">view.expense.tracking.lines.tree</field>
+        <field name="model">expense.tracking.lines</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="expense_tracking_id"/>
+                <field name="name"/>
+                <field name="amount" />
+                <field name="date" />
+                <field name="category_id" />
+                <field name="type_id" />
+                <field name="description" />
+                <field name="is_recurring" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- View expense.tracking.lines form -->
+    <record id="view_expense_tracking_lines_form" model="ir.ui.view">
+        <field name="name">view.expense.tracking.lines.form</field>
+        <field name="model">expense.tracking.lines</field>
+        <field name="arch" type="xml">
+            <form string="Expense Tracking Lines">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group name="group_expense_tracking_lines_details" string="Detalles">
+                        <field name="expense_tracking_id"/>
+                        <field name="amount"/>
+                        <field name="date"/>
+                        <field name="category_id"/>
+                        <field name="type_id"/>
+                        <field name="description"/>
+                        <field name="is_recurring"/>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- View expense.tracking.lines search -->
+    <record id="view_expense_tracking_lines_search" model="ir.ui.view">
+        <field name="name">view.expense.tracking.lines.search</field>
+        <field name="model">expense.tracking.lines</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="expense_tracking_id"/>
+                <field name="date"/>
+                <field name="category_id" />
+                <field name="type_id" />
+                <group expand="1" string="Group By">
+                    <filter name="group_by_expense_tracking" string="Expense Tracking" domain="[]" context="{'group_by':'expense_tracking_id'}"/>
+                    <filter name="group_by_category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                    <filter name="group_by_type" string="Type" domain="[]" context="{'group_by':'type_id'}"/>
+                    <!-- Creado el -->
+                    <filter name="group_by_date" string="Date" domain="[]" context="{'group_by':'date'}"/>
+                    <!-- Creado por -->
+                    <filter name="group_by_user" string="User" domain="[]" context="{'group_by':'create_uid'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action expense.tracking.lines -->
+    <record id="action_expense_tracking_lines" model="ir.actions.act_window">
+        <field name="name">Lineas de Gastos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">expense.tracking.lines</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Crea tu primera línea de gasto para empezar a rastrear tus gastos.
+            </p>
+        </field>
+    </record>
+
+</odoo>

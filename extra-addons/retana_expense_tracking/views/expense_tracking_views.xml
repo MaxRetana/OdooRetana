@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View expense.tracking View Tree -->
+    <record id="view_expense_tracking_tree" model="ir.ui.view">
+        <field name="name">view.expense.tracking.tree</field>
+        <field name="model">expense.tracking</field>
+        <field name="arch" type="xml">
+            <tree string="Gastos">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="month"/>
+                <field name="year"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View expense.tracking form -->
+    <record id="view_expense_tracking_form" model="ir.ui.view">
+        <field name="name">view.expense.tracking.form</field>
+        <field name="model">expense.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Gasto">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Name..." readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="user_id" required="1"/>
+                        <field name="month" required="1"/>
+                        <field name="year" required="1"/>
+                    </group>
+                    <notebook>
+                        <page name="expense_lines" string="Gastos">
+                            <field name="line_ids" context="{'default_expense_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="name" optional="hide"/>
+                                    <field name="description" required="1"/>
+                                    <field name="amount" required="1"/>
+                                    <field name="date" required="1"/>
+                                    <field name="card_id" />
+                                    <field name="category_id"/>
+                                    <field name="type_id"/>
+                                    <field name="is_recurring"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- View expense.tracking search -->
+    <record id="view_expense_tracking_search" model="ir.ui.view">
+        <field name="name">view.expense.tracking.search</field>
+        <field name="model">expense.tracking</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Nombre"/>
+                <field name="user_id" string="Usuario"/>
+                <field name="month" string="Mes"/>
+                <field name="year" string="Año"/>
+                <group expand="1" string="Group By">
+                    <!-- Filtro creado el -->
+                    <filter name="created_date" string="Creado el" domain="[]" context="{'group_by':'create_date'}"/>
+                    <!-- Filtro creado por -->
+                    <filter name="created_by" string="Creado por" domain="[]" context="{'group_by':'create_uid'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action expense.tracking -->
+    <record id="action_expense_tracking" model="ir.actions.act_window">
+        <field name="name">Gastos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">expense.tracking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No hay ejemplos, haz clic aquí para agregar un nuevo Gasto.
+            </p>
+        </field>
+    </record>
+
+</odoo>

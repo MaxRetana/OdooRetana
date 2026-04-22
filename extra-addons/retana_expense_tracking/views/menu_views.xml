@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Menu Principal -->
+    <menuitem id="menu_expense_tracking_root" name="Seguimiento de Gastos"/>
+
+    <!-- Submenu Gastos -->
+    <menuitem id="menu_expense_tracking" name="Gastos" sequence="1" parent="menu_expense_tracking_root" action="action_expense_tracking"/>
+
+    <!-- Submenu Configuracion -->
+    <menuitem id="menu_expense_tracking_config" sequence="999" name="Configuración" parent="menu_expense_tracking_root"/>
+
+    <!-- Subsubmeno de Configuracion -->
+    <menuitem id="menu_expense_tracking_config_sub" sequence="10" name="Configuración" parent="menu_expense_tracking_config"/>
+
+    <!-- Submenu Categorias -->
+    <menuitem id="menu_expense_tracking_category" name="Categorias" sequence="10" parent="menu_expense_tracking_config_sub" action="action_expense_tracking_category"/>
+
+    <!-- Submenu Tipos -->
+    <menuitem id="menu_expense_tracking_type" name="Tipos" sequence="15" parent="menu_expense_tracking_config_sub" action="action_expense_tracking_type"/>
+
+    <!-- Lineas de Gastos -->
+    <menuitem id="menu_expense_lines" name="Lineas de Gastos" sequence="20" parent="menu_expense_tracking_config"  action="action_expense_tracking_lines"/>
+
+    <!-- Submenu de Tarjetas -->
+    <menuitem id="menu_card_bank_title" name="Tarjetas Bancarias" sequence="30" parent="menu_expense_tracking_config"/>
+
+    <!-- Submenu Tarjetas Bancarias -->
+    <menuitem id="menu_card_bank" name="Tarjetas Bancarias" sequence="10" parent="menu_card_bank_title" action="action_card_bank"/>
+
+    <!-- Submenu Movimientos de Tarjetas Bancarias -->
+    <menuitem id="menu_card_bank_line" name="Movimientos de Tarjetas Bancarias" sequence="20" parent="menu_card_bank_title" action="action_card_bank_line"/>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Categoria -->
+    <record id="expense_category" model="ir.module.category">
+        <field name="name">Gastos</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="group_admin_expense" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="category_id" ref="expense_category"/>
+    </record>
+</odoo>

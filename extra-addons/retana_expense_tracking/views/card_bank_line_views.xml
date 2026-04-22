@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View card.bank.line View Tree -->
+    <record id="view_card_bank_line_tree" model="ir.ui.view">
+        <field name="name">view.card.bank.line.tree</field>
+        <field name="model">card.bank.line</field>
+        <field name="arch" type="xml">
+            <tree string="Movimientos de Tarjetas Bancarias" decoration-success="amount &gt; 0" decoration-danger="amount &lt; 0">
+                <field name="name" readonly="1"/>
+                <field name="date"/>
+                <field name="card_bank_id"/>
+                <field name="place"/>
+                <field name="description"/>
+                <field name="amount" sum="Total" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View card.bank.line form -->
+    <record id="view_card_bank_line_form" model="ir.ui.view">
+        <field name="name">view.card.bank.line.form</field>
+        <field name="model">card.bank.line</field>
+        <field name="arch" type="xml">
+            <form string="Movimiento de Tarjeta Bancaria">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Name..." readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="card_bank_id" required="1"/>
+                            <field name="date" required="1"/>
+                            <field name="amount" widget="monetary" required="1"/>
+                        </group>
+                        <group>
+                            <field name="place"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Detalles del movimiento..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View card.bank.line search -->
+    <record id="view_card_bank_line_search" model="ir.ui.view">
+        <field name="name">view.card.bank.line.search</field>
+        <field name="model">card.bank.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Referencia"/>
+                <field name="description" string="Descripción"/>
+                <field name="place" string="Establecimiento"/>
+                <field name="card_bank_id" string="Tarjeta"/>
+                
+                <!-- Filtros por fecha -->
+                <filter string="Hoy" name="today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Esta Semana" name="this_week" domain="[('date', '&gt;=', (context_today()-datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                                                                       ('date', '&lt;=', (context_today()+datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Este Mes" name="this_month" domain="[('date', '&gt;=', time.strftime('%Y-%m-01')),('date','&lt;=',time.strftime('%Y-%m-31'))]"/>
+                <filter string="Este Año" name="this_year" domain="[('date', '&gt;=', time.strftime('%Y-01-01')),('date','&lt;=',time.strftime('%Y-12-31'))]"/>
+                
+                <separator/>
+                
+                <!-- Filtros por tipo de movimiento -->
+                <filter string="Cargos (Negativos)" name="negative_amount" domain="[('amount', '&lt;', 0)]"/>
+                <filter string="Abonos (Positivos)" name="positive_amount" domain="[('amount', '&gt;', 0)]"/>
+                
+                <separator/>
+                
+                <!-- Agrupaciones -->
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Tarjeta" name="group_by_card" context="{'group_by':'card_bank_id'}"/>
+                    <filter string="Fecha" name="group_by_date" context="{'group_by':'date'}"/>
+                    <filter string="Establecimiento" name="group_by_place" context="{'group_by':'place'}"/>
+                    <filter string="Mes" name="group_by_month" context="{'group_by':'date:month'}"/>
+                    <filter string="Año" name="group_by_year" context="{'group_by':'date:year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action card.bank.line -->
+    <record id="action_card_bank_line" model="ir.actions.act_window">
+        <field name="name">Movimiento de Tarjeta Bancaria</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">card.bank.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No hay movimientos registrados. Haz clic en el botón de abajo para crear tu primer movimiento de tarjeta bancaria.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View expense.tracking.type View Tree -->
+    <record id="view_expense_tracking_type_tree" model="ir.ui.view">
+        <field name="name">view.expense.tracking.type.tree</field>
+        <field name="model">expense.tracking.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View expense.tracking.type form -->
+    <record id="view_expense_tracking_type_form" model="ir.ui.view">
+        <field name="name">view.expense.tracking.type.form</field>
+        <field name="model">expense.tracking.type</field>
+        <field name="arch" type="xml">
+            <form string="Expense Tracking Type">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group name="group_type_details" string="Detalles">
+                        <field name="description"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- View expense.tracking.type search -->
+    <record id="view_expense_tracking_type_search" model="ir.ui.view">
+        <field name="name">view.expense.tracking.type.search</field>
+        <field name="model">expense.tracking.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <group expand="1" string="Agrupar por">
+                    <!-- Filtro creado el -->
+                    <filter name="created_date" string="Creado el" domain="[]" context="{'group_by':'create_date'}"/>
+                    <!-- Filtro creado por -->
+                    <filter name="created_by" string="Creado por" domain="[]" context="{'group_by':'create_uid'}"/>
+                </group>
+                <!-- Filtro Activos -->
+                <filter name="active" string="Activos" domain="[('active', '=', True)]"/>
+                <!-- Filtro Inactivos -->
+                <filter name="inactive" string="Archivados" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action expense.tracking.type -->
+    <record id="action_expense_tracking_type" model="ir.actions.act_window">
+        <field name="name">Tipo de Rastreo de Gastos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">expense.tracking.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No hay ejemplos, haz clic aquí para agregar un nuevo Tipo de Rastreo de Gastos.
+            </p>
+        </field>
+    </record>
+
+</odoo>

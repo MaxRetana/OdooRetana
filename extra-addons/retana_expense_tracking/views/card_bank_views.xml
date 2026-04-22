@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View card.bank View Tree -->
+    <record id="view_card_bank_tree" model="ir.ui.view">
+        <field name="name">view.card.bank.tree</field>
+        <field name="model">card.bank</field>
+        <field name="arch" type="xml">
+            <tree string="Tarjetas Bancarias" decoration-danger="expiration_date and expiration_date &lt; context_today().strftime('%Y-%m-%d')" decoration-warning="expiration_date and expiration_date &lt;= (context_today() + relativedelta(months=1)).strftime('%Y-%m-%d') and expiration_date &gt;= context_today().strftime('%Y-%m-%d')">
+                <field name="name"/>
+                <field name="card_name"/>
+                <field name="bank_name"/>
+                <field name="card_number"/>
+                <field name="expiration_date"/>
+                <field name="limit_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View card.bank form -->
+    <record id="view_card_bank_form" model="ir.ui.view">
+        <field name="name">view.card.bank.form</field>
+        <field name="model">card.bank</field>
+        <field name="arch" type="xml">
+            <form string="Tarjeta Bancaria">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Nombre..." readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información de la Tarjeta">
+                            <field name="card_name" required="1"/>
+                            <field name="card_number" required="1"/>
+                            <field name="expiration_date" required="1"/>
+                        </group>
+                        <group string="Información Bancaria">
+                            <field name="bank_name" required="1"/>
+                            <field name="limit_amount" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="move_line_page" string="Movimientos de Tarjeta">
+                            <field name="card_line_ids">
+                                <tree string="Movimientos de Tarjeta" editable="bottom">
+                                    <field name="name" optional="hide"/>
+                                    <field name="date" required="1"/>
+                                    <field name="description" required="1"/>
+                                    <field name="amount" required="1" sum="Total"/>
+                                    <field name="place"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View card.bank search -->
+    <record id="view_card_bank_search" model="ir.ui.view">
+        <field name="name">view.card.bank.search</field>
+        <field name="model">card.bank</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Referencia" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="card_name" string="Tarjeta" filter_domain="[('card_name', 'ilike', self)]"/>
+                <field name="bank_name" string="Banco" filter_domain="[('bank_name', 'ilike', self)]"/>
+                <field name="card_number" string="Número" filter_domain="[('card_number', 'ilike', self)]"/>
+                
+                <separator/>
+                
+                <filter string="Tarjetas Activas" name="active_cards" 
+                        domain="[('expiration_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Tarjetas Vencidas" name="expired_cards" 
+                        domain="[('expiration_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Por Vencer (30 días)" name="expiring_soon" 
+                        domain="[('expiration_date', '&gt;=', context_today().strftime('%Y-%m-%d')), 
+                                ('expiration_date', '&lt;=', (context_today() + relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                
+                <separator/>
+                
+                <filter string="Con Límite Alto (>$10,000)" name="high_limit" 
+                        domain="[('limit_amount', '&gt;', 10000)]"/>
+                <filter string="Con Límite Medio ($5,000-$10,000)" name="medium_limit" 
+                        domain="[('limit_amount', '&gt;=', 5000), ('limit_amount', '&lt;=', 10000)]"/>
+                <filter string="Con Límite Bajo (&lt;$5,000)" name="low_limit" 
+                        domain="[('limit_amount', '&lt;', 5000)]"/>
+                
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Banco" name="group_by_bank" context="{'group_by': 'bank_name'}"/>
+                    <filter string="Mes de Expiración" name="group_by_expiration" context="{'group_by': 'expiration_date:month'}"/>
+                    <filter string="Año de Expiración" name="group_by_expiration_year" context="{'group_by': 'expiration_date:year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action card.bank -->
+    <record id="action_card_bank" model="ir.actions.act_window">
+        <field name="name">Tarjetas Bancarias</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">card.bank</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no examples click here to add new Card Bank.
+            </p>
+        </field>
+    </record>
+
+</odoo>
