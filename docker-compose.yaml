@@ -1,35 +1,48 @@
 services:
-  db_retana:
-    image: postgres:15
-    volumes:
-      - odoo_pg_data_retana:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
-    restart: always
-    container_name: db_retana
+    db_retana:
+        image: postgres:15
+        volumes:
+            - odoo_pg_data_retana:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_PASSWORD=odoo
+            - POSTGRES_USER=odoo
+        restart: always
+        container_name: db_retana
 
-  odoo_17_retana:
-    image: odoo:17
-    depends_on:
-      - db_retana
-    ports:
-      - "8080:8069"
-    volumes:
-      - odoo_data_retana:/var/lib/odoo
-      - ./extra-addons:/mnt/extra-addons
-      - ./config/local.conf:/etc/odoo/odoo.conf
-      - ./odoo-filestore:/root/.local/share/Odoo/filestore
-    environment:
-      - HOST=db_retana
-      - USER=odoo
-      - PASSWORD=odoo
-    restart: always
-    container_name: odoo_17_retana
-    user: "root"
-    command: bash -c "pip install --no-cache-dir -r /mnt/extra-addons/requirements.txt && apt-get update && apt-get install -y tesseract-ocr tesseract-ocr-spa && /usr/bin/odoo -c /etc/odoo/odoo.conf --dev all"
+    odoo_17_retana:
+        image: odoo:17
+        depends_on:
+            - db_retana
+        expose:
+            - "8069"
+            - "8072"
+        volumes:
+            - odoo_data_retana:/var/lib/odoo
+            - ./extra-addons:/mnt/extra-addons
+            - ./config/local.conf:/etc/odoo/odoo.conf
+            - ./odoo-filestore:/root/.local/share/Odoo/filestore
+        environment:
+            - HOST=db_retana
+            - USER=odoo
+            - PASSWORD=odoo
+        restart: always
+        container_name: odoo_17_retana
+        user: "root"
+        command: bash -c "pip install --no-cache-dir -r /mnt/extra-addons/requirements.txt && apt-get update && apt-get install -y tesseract-ocr tesseract-ocr-spa && /usr/bin/odoo -c /etc/odoo/odoo.conf --dev all"
+
+    nginx:
+        image: nginx:alpine
+        depends_on:
+            - odoo_17_retana
+        ports:
+            - "4444:80"
+            - "8443:443"
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        restart: always
+        container_name: nginx_retana
 
 volumes:
-  odoo_pg_data_retana:
-  odoo_data_retana:
+    odoo_pg_data_retana:
+    odoo_data_retana:
