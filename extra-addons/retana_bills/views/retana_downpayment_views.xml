@@ -9,7 +9,7 @@
             <tree string="Anticipos Retana">
                 <field name="name"/>
                 <field name="concept_id"/>
-                <field name="amount" widget="monetary"/>
+                <field name="amount" widget="monetary" sum="Total"/>
                 <field name="currency_id"/>
                 <field name="date"/>
                 <field name="building_id"/>

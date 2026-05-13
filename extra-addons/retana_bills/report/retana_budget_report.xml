@@ -114,7 +114,10 @@
                                                     </t>
                                                 </td>
                                                 <td style="text-align: center; padding: 4px; vertical-align: top;">
-                                                    <t t-esc="int(line.quantity)"/> <t t-if="line.uom_id"><t t-esc="line.uom_id.name"/></t>
+                                                    <t t-esc="int(line.quantity)"/>
+                                                    <t t-if="line.uom_id and (line.uom_id.name or '').strip().upper() != 'UNIDADES'">
+                                                        <t t-esc="line.uom_id.name"/>
+                                                    </t>
                                                 </td>
                                             </tr>
                                         </t>
@@ -130,7 +133,10 @@
                                                     </t>
                                                 </td>
                                                 <td style="text-align: center; padding: 4px; vertical-align: top;">
-                                                    <t t-esc="int(line.quantity)"/> <t t-if="line.uom_id"><t t-esc="line.uom_id.name"/></t>
+                                                    <t t-esc="int(line.quantity)"/>
+                                                    <t t-if="line.uom_id and (line.uom_id.name or '').strip().upper() != 'UNIDADES'">
+                                                        <t t-esc="line.uom_id.name"/>
+                                                    </t>
                                                 </td>
                                                 <td style="text-align: right; padding: 4px; vertical-align: top;">
                                                     $<t t-esc="'{:,.2f}'.format(line.unit_price)"/>
