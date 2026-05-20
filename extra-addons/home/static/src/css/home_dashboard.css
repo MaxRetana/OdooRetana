@@ -1,0 +1,21 @@
+.o_home_dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Mantenemos la barra superior pero ajustamos su color si deseas que combine */
+.o_main_navbar {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Estilo para las tarjetas del Dashboard */
+.app-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid #eee !important;
+}
+
+.app-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
