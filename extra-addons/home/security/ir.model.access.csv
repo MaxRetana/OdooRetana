@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_home_home_manager,home_home_manager,model_home_home,home.group_home_home_admin,1,1,1,1
+access_home_home_user,home_home_user,model_home_home,home.group_home_home_user,1,0,0,0
