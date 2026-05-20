@@ -6,7 +6,7 @@
         <field name="model">retana.buildings</field>
         <field name="arch" type="xml">
             <tree string="Obras">
-                <field name="name"/>
+                <field name="name" widget="CopyClipboardChar"/>
                 <field name="client_id"/>
                 <field name="active"/>
                 <!-- Botones de acciones -->
