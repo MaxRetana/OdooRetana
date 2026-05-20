@@ -37,7 +37,8 @@ services:
             - odoo_17_retana
         ports:
             - "80:80"
-            - "8443:443"
+            - "443:443"
+            - "443:443"
         volumes:
             - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
             - ./nginx/ssl:/etc/nginx/ssl:ro
