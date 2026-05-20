@@ -20,7 +20,7 @@ services:
         volumes:
             - odoo_data_retana:/var/lib/odoo
             - ./extra-addons:/mnt/extra-addons
-            - ./config/local.conf:/etc/odoo/odoo.conf
+            - ./config/prod.conf:/etc/odoo/odoo.conf
             - ./odoo-filestore:/root/.local/share/Odoo/filestore
         environment:
             - HOST=db_retana
