@@ -16,7 +16,7 @@
         "data/retana_company_info_data.xml",
         "security/ir.model.access.csv",
         "views/res_partner_views.xml",
-        "views/retana_bills_menus.xml",
+        
         "views/retana_res_partner.xml",
         "views/retana_product_template.xml",
         "views/retana_budget_line_views.xml",
@@ -33,7 +33,8 @@
         "views/retana_type_res_partner_views.xml",
         "report/retana_budget_report.xml",
         "report/retana_downpayment_list_report.xml",
-        "report/retana_downpayment_report.xml"
+        "report/retana_downpayment_report.xml",
+        "views/retana_bills_menus.xml",
     ],
     "assets": {
         "web.assets_backend": [
