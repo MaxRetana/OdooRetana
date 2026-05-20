@@ -67,11 +67,17 @@
         </field>
     </record>
 
+    <!-- Menú de configuración -->
+    <menuitem id="menu_retana_bills_config"
+              name="Configuración"
+              parent="retana_bills.menu_retana_bills_root"
+              sequence="100"/>
+
     <!-- Ítem de Menú -->
     <menuitem
         id="menu_retana_budget_type"
         name="Tipos de Presupuesto"
-        parent="menu_retana_bills_config"
+        parent="retana_bills.menu_retana_bills_config"
         action="action_retana_budget_type"
         sequence="10"/>
 </odoo>
