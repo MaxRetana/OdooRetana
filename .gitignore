@@ -181,3 +181,5 @@ addons/
 
 odoo-filestore/
 odoo-filestore/db_retana/
+
+nginx/ssl/
