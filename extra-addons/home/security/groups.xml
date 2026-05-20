@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Categoría en el formulario de Usuario -->
+    <record id="module_category_home_home" model="ir.module.category">
+        <field name="name">Home</field>
+        <field name="description">Nivel de acceso para el tablero de inicio</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Grupo: Lector -->
+    <record id="group_home_home_user" model="res.groups">
+        <field name="name">Usuario: Solo Lectura</field>
+        <field name="category_id" ref="module_category_home_home"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Grupo: Administrador -->
+    <record id="group_home_home_admin" model="res.groups">
+        <field name="name">Administrador: Configuración</field>
+        <field name="category_id" ref="module_category_home_home"/>
+        <field name="implied_ids" eval="[(4, ref('group_home_home_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>
