@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Tree de Líneas de Presupuesto -->
+    <record id="view_retana_budget_line_tree" model="ir.ui.view">
+        <field name="name">retana.budget.line.tree</field>
+        <field name="model">retana.budget.line</field>
+        <field name="arch" type="xml">
+            <tree string="Líneas de Presupuesto">
+                <field name="budget_id"/>
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="quantity"/>
+                <field name="unit_price" widget="monetary"/>
+                <field name="taxes_ids" widget="many2many_tags"/>
+                <field name="subtotal" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form de Líneas de Presupuesto -->
+    <record id="view_retana_budget_line_form" model="ir.ui.view">
+        <field name="name">retana.budget.line.form</field>
+        <field name="model">retana.budget.line</field>
+        <field name="arch" type="xml">
+            <form string="Línea de Presupuesto">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="budget_id"/>
+                            <field name="product_id"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="unit_price" widget="monetary"/>
+                            <field name="taxes_ids" widget="many2many_tags"/>
+                            <field name="subtotal" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Search de Líneas de Presupuesto -->
+    <record id="view_retana_budget_line_search" model="ir.ui.view">
+        <field name="name">retana.budget.line.search</field>
+        <field name="model">retana.budget.line</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Líneas de Presupuesto">
+                <field name="budget_id"/>
+                <field name="product_id"/>
+                <field name="description"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Presupuesto" name="group_by_budget" context="{'group_by': 'budget_id'}"/>
+                    <filter string="Producto" name="group_by_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Líneas de Presupuesto -->
+    <record id="action_retana_budget_line" model="ir.actions.act_window">
+        <field name="name">Líneas de Presupuesto</field>
+        <field name="res_model">retana.budget.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay líneas de presupuesto
+            </p>
+            <p>
+                Las líneas de presupuesto se crean desde los presupuestos.
+            </p>
+        </field>
+    </record>
+</odoo>

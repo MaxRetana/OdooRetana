@@ -15,6 +15,7 @@ class HomeDashboard(models.Model):
         """Get all installed applications, including Settings and Apps"""
         try:
             # Get all installed modules that are applications
+            # COmentario de prueba
             apps = self.env['ir.module.module'].search([
                 ('state', '=', 'installed'),
                 ('application', '=', True)
@@ -25,18 +26,46 @@ class HomeDashboard(models.Model):
                 if app.name == 'custom_home_dashboard':
                     # Skip the custom home dashboard module itself
                     continue
+                
                 # Get the menu associated with this app
+                # First try by exact name match
                 menu = self.env['ir.ui.menu'].search([
                     ('name', '=', app.shortdesc or app.name),
                     ('parent_id', '=', False)
                 ], limit=1)
                 
                 if not menu:
-                    # Try to find menu by technical name
+                    # Try to find menu by similar name
                     menu = self.env['ir.ui.menu'].search([
-                        ('name', 'ilike', app.name),
+                        ('name', 'ilike', app.shortdesc or app.name),
                         ('parent_id', '=', False)
                     ], limit=1)
+                
+                if not menu:
+                    # Try to find by technical name patterns
+                    menu = self.env['ir.ui.menu'].search([
+                        ('name', 'ilike', app.name.replace('_', ' ')),
+                        ('parent_id', '=', False)
+                    ], limit=1)
+                
+                # If still no menu found, try to find any menu from this module
+                if not menu:
+                    # Search for menus defined in this module's XML files
+                    menu_data = self.env['ir.model.data'].search([
+                        ('module', '=', app.name),
+                        ('model', '=', 'ir.ui.menu'),
+                    ], limit=1)
+                    if menu_data:
+                        try:
+                            potential_menu = self.env['ir.ui.menu'].browse(menu_data.res_id)
+                            # Get the root menu (parent_id = False)
+                            while potential_menu.parent_id:
+                                potential_menu = potential_menu.parent_id
+                            menu = potential_menu
+                        except:
+                            pass
+                
+                _logger.info(f"App: {app.shortdesc or app.name}, Menu found: {menu.id if menu else 'None'}")
                 
                 app_data = {
                     'id': app.id,

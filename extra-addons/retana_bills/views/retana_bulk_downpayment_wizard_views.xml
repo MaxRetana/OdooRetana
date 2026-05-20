@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View retana.bulk.downpayment.wizard form -->
+    <record id="view_retana_bulk_downpayment_wizard_form" model="ir.ui.view">
+        <field name="name">view_retana_bulk_downpayment_wizard_form</field>
+        <field name="model">retana.bulk.downpayment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Crear Anticipos Masivos">
+                <group>
+                    <field name="date"/>
+                    <field name="client_id" options="{'no_create': True, 'no_edit': True}" required="1"/>
+                </group>
+                <group colspan="2" style="width: 100%;">
+                    <field name="message_text" widget="text" placeholder="Ejemplo:&#10;$3000 zanya&#10;$5000 KAHLAL&#10;$3000 Naaga, materiales&#10;$5000 clínica, mano de obra" nolabel="1" style="min-width: 600px; min-height: 120px; width: 98%;"/>
+                </group>
+                <separator string="Validacion de Obras" invisible="message_text == ''"/>
+                <group colspan="2" style="width: 100%;" invisible="message_text == ''">
+                    <field name="found_lines_text" widget="text" readonly="1" nolabel="0" placeholder="Las lineas con obra encontrada apareceran aqui" style="min-width: 600px; min-height: 90px; width: 98%;"/>
+                    <field name="not_found_lines_text" widget="text" readonly="1" nolabel="0" placeholder="Las lineas sin obra encontrada apareceran aqui" style="min-width: 600px; min-height: 90px; width: 98%;"/>
+                </group>
+                <footer>
+                    <button name="action_create_downpayments" string="Crear Anticipos" type="object" class="oe_highlight"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+                <div class="oe_help" style="margin-top: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+                    <p><strong>Formato del mensaje:</strong></p>
+                    <ul>
+                        <li>Una línea por anticipo</li>
+                        <li><strong>$monto nombre_obra</strong> - Para anticipo sin concepto específico (usa el predeterminado)</li>
+                        <li><strong>$monto nombre_obra, concepto</strong> - Para anticipo con concepto específico</li>
+                    </ul>
+                    <p><strong>Ejemplos:</strong></p>
+                    <ul>
+                        <li>$3000 zanya</li>
+                        <li>$5000 KAHLAL, materiales</li>
+                        <li>$2000 torre120, mano de obra</li>
+                    </ul>
+                    <p style="color: #d32f2f;"><strong>⚠️ IMPORTANTE:</strong> El nombre de la obra debe coincidir <strong>exactamente</strong> (ignorando mayúsculas/minúsculas) con una obra existente. Si la obra no existe, esa línea se omitirá.</p>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action retana.bulk.downpayment.wizard -->
+    <record id="action_retana_bulk_downpayment_wizard" model="ir.actions.act_window">
+        <field name="name">Crear Anticipos Masivos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">retana.bulk.downpayment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem 
+        id="menu_retana_bulk_downpayment_wizard"
+        name="Crear Anticipos Masivos"
+        parent="retana_bills.menu_retana_downpayments_root"
+        action="action_retana_bulk_downpayment_wizard"
+        sequence="25"/>
+
+</odoo>

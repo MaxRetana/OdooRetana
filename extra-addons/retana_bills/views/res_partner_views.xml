@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- View res.partner form -->
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="name">view.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Presupuestos" invisible="is_retana_customer == False">
+                    <group>
+                        <field name="is_retana_customer" invisible="id == False"/>
+                        <field name="retana_type_res_partner_id" options="{'no_create': True, 'no_edit': True}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    
+
+</odoo>

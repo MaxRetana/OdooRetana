@@ -169,10 +169,15 @@ certbot/
 docker-compose.yml
 etc/
 #extra-addons/
-nginx/
+nginx/logs/
+nginx/ssl/
+nginx/*.log
 odoo-web-data/
 volumes
 addons
 addons/
 
 .vscode/
+
+odoo-filestore/
+odoo-filestore/db_retana/
