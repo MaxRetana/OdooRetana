@@ -90,7 +90,7 @@
         <!-- Menu Agenda de Whatsapp -->
     <menuitem id="menu_retana_sent_wh"
               name="Agenda de WhatsApp"
-              parent="menu_retana_bills_config"
+              parent="retana_bills.menu_retana_bills_config"
               action="action_retana_sent_wh"
               sequence="70"/>
 </odoo>
