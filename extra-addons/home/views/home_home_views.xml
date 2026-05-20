@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- 1. VISTA KANBAN: Gestión visual de los accesos -->
+    <record id="view_home_home_kanban" model="ir.ui.view">
+        <field name="name">home.home.kanban</field>
+        <field name="model">home.home</field>
+        <field name="arch" type="xml">
+            <kanban default_order="sequence">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="fa_icon"/>
+                <field name="sequence"/>
+                <templates>
+                    <t t-name="card"> <!-- Odoo 18 usa t-name="card" en Kanban -->
+                        <div class="oe_kanban_global_click d-flex align-items-center p-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary-light rounded" style="width: 50px; height: 50px;">
+                                <i t-attf-class="fa #{record.fa_icon.raw_value} fs-2 text-primary"/>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0"><field name="name"/></h5>
+                                <span class="text-muted">Orden: <field name="sequence"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- 2. VISTA FORMULARIO: Corregida para Odoo 18[cite: 7] -->
+    <record id="view_home_home_form" model="ir.ui.view">
+        <field name="name">home.home.form</field>
+        <field name="model">home.home</field>
+        <field name="arch" type="xml">
+            <form string="Configuración de Acceso Rápido">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Ej. Mis Ventas"/></h1>
+                    </div>
+                    <group>
+                        <group string="Configuración de Acceso">
+                            <!-- Seleccionas el ícono que ves en el tablero principal -->
+                            <field name="menu_id" options="{'no_create': True, 'no_open': True}"/>
+                            <!-- La acción se calcula sola en el modelo[cite: 3] -->
+                            <field name="action_id" readonly="1" force_save="1"/>
+                        </group>
+                        <group string="Personalización Visual">
+                            <field name="icon_type"/>
+                            <field name="fa_icon" placeholder="fa-rocket" invisible="icon_type != 'fontawesome'"/>
+                            <field name="custom_icon" invisible="icon_type != 'custom'"/>
+                            <field name="sequence"/>
+                            <field name="groups_ids" widget="many2many_tags" placeholder="Dejar vacío para todos"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 3. ACCIÓN DE CONFIGURACIÓN[cite: 7] -->
+    <record id="action_home_home_config" model="ir.actions.act_window">
+        <field name="name">Configurar Accesos Rápidos</field>
+        <field name="res_model">home.home</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer acceso rápido aquí seleccionando una aplicación instalada.
+            </p>
+        </field>
+    </record>
+
+    <!-- 4. ACCIÓN DE CLIENTE: Carga el Dashboard OWL[cite: 7] -->
+    <record id="action_home_home_dashboard" model="ir.actions.client">
+        <field name="name">Inicio</field>
+        <field name="tag">home_home_dashboard</field>
+    </record>
+
+    <!-- 5. MENÚS: Protegidos por los grupos de seguridad[cite: 7] -->
+    
+    <!-- Menú Principal: Visible para todos los usuarios con permiso de lectura[cite: 7] -->
+    <menuitem id="menu_home_home_root" 
+            name="Home" 
+            action="action_home_home_dashboard" 
+            groups="home.group_home_home_user"
+            web_icon="fa-home,#FFFFFF,#714B67"
+            sequence="1"/>
+    
+    <menuitem
+        id="menu_home_home_root_settings"
+        parent="menu_home_home_root"
+        groups="home.group_home_home_admin"
+        name="Configuración"
+        sequence="10"/>
+
+    <!-- Menú de Configuración: Solo para Administradores del Home[cite: 7] -->
+    <menuitem id="menu_home_home_settings"
+            name="Configuración de Home"
+            parent="menu_home_home_root_settings"
+            action="action_home_home_config"
+            sequence="100"/>
+
+</odoo>
