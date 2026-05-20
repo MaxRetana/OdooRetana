@@ -12,7 +12,7 @@
                 <field name="fa_icon"/>
                 <field name="sequence"/>
                 <templates>
-                    <t t-name="card"> <!-- Odoo 18 usa t-name="card" en Kanban -->
+                    <t t-name="kanban-box"> <!-- Compatibilidad con parser Kanban del entorno actual -->
                         <div class="oe_kanban_global_click d-flex align-items-center p-3">
                             <div class="d-flex align-items-center justify-content-center bg-primary-light rounded" style="width: 50px; height: 50px;">
                                 <i t-attf-class="fa #{record.fa_icon.raw_value} fs-2 text-primary"/>
