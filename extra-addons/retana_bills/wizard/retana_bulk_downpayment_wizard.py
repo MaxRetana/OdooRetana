@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 import re
+import unicodedata
 
 
 class RetanaBulkDownpaymentWizard(models.TransientModel):
@@ -20,6 +21,16 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
         string='Mensaje',
         required=True,
         help='Pega el mensaje con los anticipos. Formato: $monto nombre_obra o $monto nombre_obra, concepto'
+    )
+    found_lines_text = fields.Text(
+        string='Lineas Con Obra Encontrada',
+        readonly=True,
+        help='Muestra las lineas del mensaje cuya obra fue encontrada en el sistema.'
+    )
+    not_found_lines_text = fields.Text(
+        string='Lineas Sin Obra Encontrada',
+        readonly=True,
+        help='Muestra las lineas del mensaje cuya obra no fue encontrada en el sistema.'
     )
     date = fields.Date(
         string='Fecha del Anticipo',
@@ -73,17 +84,96 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
 
     def _find_or_create_building(self, building_name, default_client_id=None):
         """
-        Busca una obra por nombre exacto (solo case insensitive).
+        Busca una obra por nombre, primero exacta y luego con coincidencia flexible.
         Si no existe, retorna False y NO la crea automáticamente.
         """
+        building, _match_type = self._find_building_with_match_info(building_name)
+        return building
+
+    def _find_building_with_match_info(self, building_name):
+        """Retorna (obra, tipo_match): exact, fuzzy o none."""
         Building = self.env['retana.buildings']
+
+        if not building_name:
+            return False, 'none'
         
         # Buscar la obra con nombre exacto (solo ignorando mayúsculas/minúsculas)
         building = Building.search([
             ('name', '=ilike', building_name)
         ], limit=1)
-        
-        return building if building else False
+
+        if building:
+            return building, 'exact'
+
+        # Si no hubo coincidencia exacta, aplicar coincidencia flexible.
+        normalized_input = self._normalize_text(building_name)
+        compact_input = normalized_input.replace(' ', '')
+        if not normalized_input:
+            return False, 'none'
+
+        best_building = False
+        best_score = 0.0
+        input_tokens = set(normalized_input.split())
+
+        for candidate in Building.search([]):
+            normalized_candidate = self._normalize_text(candidate.name)
+            if not normalized_candidate:
+                continue
+
+            compact_candidate = normalized_candidate.replace(' ', '')
+            score = 0.0
+
+            if normalized_candidate == normalized_input:
+                score = 100.0
+            elif compact_candidate == compact_input:
+                score = 95.0
+            elif compact_candidate and compact_candidate in compact_input:
+                score = 85.0 + min(len(compact_candidate), 100) / 100.0
+            elif compact_input and compact_input in compact_candidate:
+                score = 78.0 + min(len(compact_input), 100) / 100.0
+            else:
+                candidate_tokens = set(normalized_candidate.split())
+                common_tokens = input_tokens.intersection(candidate_tokens)
+                if common_tokens:
+                    precision = len(common_tokens) / max(len(candidate_tokens), 1)
+                    recall = len(common_tokens) / max(len(input_tokens), 1)
+                    score = (precision * 55.0) + (recall * 35.0)
+
+            if score > best_score:
+                best_score = score
+                best_building = candidate
+
+        if best_building and best_score >= 80.0:
+            return best_building, 'fuzzy'
+        return False, 'none'
+
+    def _normalize_text(self, text):
+        """Normaliza texto: minusculas, sin tildes y sin simbolos especiales."""
+        if not text:
+            return ''
+
+        normalized = unicodedata.normalize('NFKD', text)
+        normalized = ''.join(ch for ch in normalized if not unicodedata.combining(ch))
+        normalized = normalized.lower()
+        normalized = re.sub(r'[^a-z0-9\s]', ' ', normalized)
+        normalized = re.sub(r'\s+', ' ', normalized).strip()
+        return normalized
+
+    def _strip_line_marker(self, line):
+        """Quita marcadores de revision (*, ?) al final de la linea."""
+        if not line:
+            return line
+        return re.sub(r'\s*[\*\?]+\s*$', '', line)
+
+    def _mark_line_for_review(self, line):
+        """Agrega marcador de revision (*) al final de la linea, sin duplicarlo."""
+        clean_line = self._strip_line_marker(line).rstrip()
+        return f'{clean_line} *' if clean_line else clean_line
+
+    def _mark_line_as_similar(self, line):
+        """Agrega marcador de coincidencia aproximada (?) al final de la linea."""
+        clean_line = self._strip_line_marker(line).rstrip()
+        return f'{clean_line} ?' if clean_line else clean_line
 
     def _get_default_concept(self):
         """Obtiene el concepto marcado como predeterminado."""
@@ -111,6 +201,71 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
             ('name', '=ilike', concept_name),
             ('active', '=', True)
         ], limit=1)
+
+    @api.onchange('message_text')
+    def _onchange_message_text_split_buildings(self):
+        """Separa lineas por obra encontrada y marca con * las que requieren correccion."""
+        for wizard in self:
+            if not wizard.message_text:
+                wizard.found_lines_text = False
+                wizard.not_found_lines_text = False
+                continue
+
+            found_lines = []
+            not_found_lines = []
+            found_client_ids = set()
+            updated_lines = []
+
+            for raw_line in wizard.message_text.split('\n'):
+                original_line = raw_line.rstrip()
+                line = wizard._strip_line_marker(raw_line).strip()
+                if not line:
+                    updated_lines.append('')
+                    continue
+
+                parsed = wizard._parse_line(line)
+                if not parsed or not parsed.get('building_name'):
+                    marked_line = wizard._mark_line_for_review(original_line)
+                    not_found_lines.append(marked_line)
+                    updated_lines.append(marked_line)
+                    continue
+
+                building, match_type = wizard._find_building_with_match_info(parsed['building_name'])
+                if building:
+                    if match_type == 'fuzzy':
+                        marked_line = wizard._mark_line_as_similar(original_line)
+                        found_lines.append(marked_line)
+                        updated_lines.append(marked_line)
+                    else:
+                        found_lines.append(line)
+                        updated_lines.append(line)
+                    if building.client_id:
+                        found_client_ids.add(building.client_id.id)
+                else:
+                    marked_line = wizard._mark_line_for_review(original_line)
+                    not_found_lines.append(marked_line)
+                    updated_lines.append(marked_line)
+
+            updated_message = '\n'.join(updated_lines)
+            if wizard.message_text != updated_message:
+                wizard.message_text = updated_message
+
+            wizard.found_lines_text = '\n'.join(found_lines) if found_lines else False
+            wizard.not_found_lines_text = '\n'.join(not_found_lines) if not_found_lines else False
+
+            if len(found_client_ids) == 1:
+                wizard.client_id = next(iter(found_client_ids))
+            elif len(found_client_ids) > 1 and wizard.client_id and wizard.client_id.id not in found_client_ids:
+                return {
+                    'warning': {
+                        'title': 'Clientes Distintos Detectados',
+                        'message': (
+                            'Las obras encontradas pertenecen a diferentes clientes. '
+                            'Selecciona manualmente el cliente por defecto que deseas usar '
+                            'para las obras sin cliente.'
+                        ),
+                    }
+                }
 
     def action_create_downpayments(self):
         """Procesa el mensaje y crea múltiples anticipos."""
