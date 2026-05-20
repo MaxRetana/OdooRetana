@@ -77,7 +77,7 @@
     <menuitem
         id="menu_retana_company_info"
         name="Información de Empresa"
-        parent="menu_retana_bills_config"
+        parent="retana_bills.menu_retana_bills_config"
         action="action_retana_company_info"
         sequence="10"/>
 </odoo>

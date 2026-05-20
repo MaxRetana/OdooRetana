@@ -58,11 +58,11 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_retana_product_template_form')})]"/>
     </record>
 
-    <!-- Menú para acceder a los productos Retana -->
-    <!-- <menuitem id="menu_retana_product_template"
-              name="Productos"
-              parent="retana_bills.menu_retana_bills_root"
+    <!-- Menú para acceder a los conceptos/productos -->
+    <menuitem id="menu_retana_products"
+              name="Conceptos"
+              parent="retana_bills.menu_retana_bills_config"
               action="action_retana_product_template"
-              sequence="20"/> -->
+              sequence="30"/>
 
 </odoo>
