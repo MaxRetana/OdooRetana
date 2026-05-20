@@ -48,11 +48,11 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_retana_res_partner_form')})]"/>
     </record>
 
-    <!-- Menú para acceder a los proveedores Retana -->
-    <!-- <menuitem id="menu_retana_res_partner"
-              name="Proveedores"
-              parent="retana_bills.menu_retana_bills_root"
+    <!-- Menú para acceder a los clientes Retana -->
+    <menuitem id="menu_retana_customers"
+              name="Clientes"
+              parent="retana_bills.menu_retana_bills_config"
               action="action_retana_res_partner"
-              sequence="10"/> -->
+              sequence="40"/>
 
 </odoo>

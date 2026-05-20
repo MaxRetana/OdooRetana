@@ -71,4 +71,11 @@
         </field>
     </record>
 
+    <!-- Menú de tipos de clientes Retana -->
+    <menuitem id="menu_retana_type_res_partner"
+              name="Tipos de Clientes Retana"
+              parent="retana_bills.menu_retana_bills_config"
+              action="action_retana_type_res_partner"
+              sequence="50"/>
+
 </odoo>

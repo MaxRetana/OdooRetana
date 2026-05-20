@@ -97,4 +97,17 @@
             </p>
         </field>
     </record>
+
+    <!-- Menú principal del módulo -->
+    <menuitem id="menu_retana_bills_root"
+              name="Electricos Retana"
+              web_icon="retana_bills,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Menú de presupuestos -->
+    <menuitem id="menu_retana_budgets"
+              name="Presupuestos"
+              parent="retana_bills.menu_retana_bills_root"
+              action="action_retana_budget"
+              sequence="10"/>
 </odoo>
