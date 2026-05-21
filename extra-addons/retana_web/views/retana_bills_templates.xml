@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="retana_web_quick_nav" name="Retana Web Quick Nav">
+        <style>
+            .retana-quick-nav-wrap {
+                position: sticky;
+                top: 0;
+                z-index: 1020;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+            }
+            .retana-quick-nav {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            .retana-quick-nav a {
+                white-space: nowrap;
+            }
+        </style>
+        <div class="retana-quick-nav-wrap mb-4">
+            <div class="container">
+                <div class="retana-quick-nav">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="retana_web_home" name="Retana Web Inicio">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'home'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-home-hero {
+                    border-radius: 16px;
+                    background: linear-gradient(120deg, #0f172a 0%, #1d4ed8 55%, #0ea5e9 100%);
+                    color: #ffffff;
+                    box-shadow: 0 20px 35px rgba(15, 23, 42, 0.25);
+                }
+                .retana-home-hero p {
+                    color: rgba(255, 255, 255, 0.88);
+                }
+                .retana-kpi-card {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 14px;
+                    background: #ffffff;
+                    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+                }
+                .retana-kpi-label {
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #64748b;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
+                .retana-kpi-value {
+                    font-size: 1.9rem;
+                    font-weight: 800;
+                    color: #0f172a;
+                    line-height: 1;
+                }
+                .retana-home-panel {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 14px;
+                    background: #ffffff;
+                    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+                }
+                .retana-home-list {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+                .retana-home-list li {
+                    border-top: 1px solid #edf1f5;
+                    padding: 10px 0;
+                }
+                .retana-home-list li:first-child {
+                    border-top: 0;
+                    padding-top: 0;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="retana-home-hero p-4 p-lg-5 mb-4">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-8">
+                            <p class="mb-2 fw-semibold">Panel Principal</p>
+                            <h1 class="display-5 fw-bold mb-3">Portal Retana</h1>
+                            <p class="mb-4">
+                                Gestiona documentos y movimientos de forma centralizada. Desde aqui puedes ir directo a presupuestos, anticipos y obras.
+                            </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a class="btn btn-light" href="/retana/budgets">Presupuestos</a>
+                                <a class="btn btn-outline-light" href="/retana/downpayments">Anticipos</a>
+                                <a class="btn btn-outline-light" href="/retana/buildings">Obras</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="bg-white bg-opacity-10 rounded-3 p-3 p-lg-4">
+                                <div class="small text-uppercase fw-semibold mb-2">Acceso Rapido</div>
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-sm btn-light" href="/retana/budgets">Ver ultimos presupuestos</a>
+                                    <a class="btn btn-sm btn-light" href="/retana/downpayments">Ver ultimos anticipos</a>
+                                    <a class="btn btn-sm btn-light" href="/retana/buildings">Ver obras activas</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="retana-kpi-card p-3 p-lg-4 h-100">
+                            <div class="retana-kpi-label mb-2">Presupuestos</div>
+                            <div class="retana-kpi-value"><t t-esc="home_budget_count or 0"/></div>
+                            <a class="btn btn-link px-0 mt-2" href="/retana/budgets">Ir a Presupuestos</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="retana-kpi-card p-3 p-lg-4 h-100">
+                            <div class="retana-kpi-label mb-2">Anticipos</div>
+                            <div class="retana-kpi-value"><t t-esc="home_downpayment_count or 0"/></div>
+                            <a class="btn btn-link px-0 mt-2" href="/retana/downpayments">Ir a Anticipos</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="retana-kpi-card p-3 p-lg-4 h-100">
+                            <div class="retana-kpi-label mb-2">Obras</div>
+                            <div class="retana-kpi-value"><t t-esc="home_building_count or 0"/></div>
+                            <a class="btn btn-link px-0 mt-2" href="/retana/buildings">Ir a Obras</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-4">
+                        <div class="retana-home-panel p-3 p-lg-4 h-100">
+                            <h3 class="h6 mb-3">Ultimos Presupuestos</h3>
+                            <ul class="retana-home-list">
+                                <t t-if="home_recent_budgets">
+                                    <t t-foreach="home_recent_budgets" t-as="budget">
+                                        <li>
+                                            <a class="fw-semibold text-decoration-none" t-attf-href="/retana/budgets/#{budget.id}"><t t-esc="budget.name or '-'"/></a>
+                                            <div class="small text-muted"><t t-esc="budget.client_id.name or '-'"/> • <t t-esc="budget.date or '-'"/></div>
+                                        </li>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <li class="text-muted">Sin registros recientes.</li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="retana-home-panel p-3 p-lg-4 h-100">
+                            <h3 class="h6 mb-3">Ultimos Anticipos</h3>
+                            <ul class="retana-home-list">
+                                <t t-if="home_recent_downpayments">
+                                    <t t-foreach="home_recent_downpayments" t-as="downpayment">
+                                        <li>
+                                            <a class="fw-semibold text-decoration-none" t-attf-href="/retana/downpayments/#{downpayment.id}"><t t-esc="downpayment.name or '-'"/></a>
+                                            <div class="small text-muted"><t t-esc="downpayment.client_id.name or '-'"/> • <t t-esc="downpayment.date or '-'"/></div>
+                                        </li>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <li class="text-muted">Sin registros recientes.</li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="retana-home-panel p-3 p-lg-4 h-100">
+                            <h3 class="h6 mb-3">Ultimas Obras</h3>
+                            <ul class="retana-home-list">
+                                <t t-if="home_recent_buildings">
+                                    <t t-foreach="home_recent_buildings" t-as="building">
+                                        <li>
+                                            <a class="fw-semibold text-decoration-none" t-attf-href="/retana/buildings/#{building.id}"><t t-esc="building.name or '-'"/></a>
+                                            <div class="small text-muted">
+                                                <t t-esc="building.client_id.name or '-'"/>
+                                                <span class="mx-1">•</span>
+                                                <span t-if="building.active">Activa</span>
+                                                <span t-else="">Archivada</span>
+                                            </div>
+                                        </li>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <li class="text-muted">Sin registros recientes.</li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_budgets" name="Retana Web Presupuestos">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'budgets'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-list-head {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 14px;
+                    background: linear-gradient(130deg, #ffffff 0%, #f8fbff 100%);
+                    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+                }
+                .retana-list-filter,
+                .retana-list-table {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 14px;
+                    background: #ffffff;
+                    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+                }
+                .retana-list-table .table {
+                    margin-bottom: 0;
+                }
+                .retana-total-pill {
+                    background: #e8f0ff;
+                    color: #1e3a8a;
+                    border: 1px solid #cfe0ff;
+                    border-radius: 999px;
+                    padding: 6px 12px;
+                    font-size: 12px;
+                    font-weight: 700;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="retana-list-head p-3 p-lg-4 mb-3">
+                    <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                        <div>
+                            <h2 class="h3 mb-1">Presupuestos</h2>
+                            <p class="text-muted mb-0">Consulta, filtra y descarga presupuestos desde el portal.</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="retana-total-pill">Total: <t t-esc="budget_total or 0"/></span>
+                            <a class="btn btn-light border" href="/">Volver al inicio</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="retana-list-filter p-3 p-lg-4 mb-3">
+                    <form action="/retana/budgets" method="get" class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label mb-1">Buscar</label>
+                            <input type="text" name="search" class="form-control" placeholder="Referencia, titulo, cliente u obra" t-att-value="budget_search or ''"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Filtro</label>
+                            <select name="filter_by" class="form-select">
+                                <t t-foreach="budget_filter_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if budget_filter_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Agrupar por</label>
+                            <select name="group_by" class="form-select">
+                                <t t-foreach="budget_group_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if budget_group_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">Aplicar</button>
+                            <a href="/retana/budgets" class="btn btn-outline-secondary">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="retana-list-table p-2 p-lg-3">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Titulo</th>
+                                <th>Cliente</th>
+                                <th>Obra</th>
+                                <th>Fecha</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-end">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="budgets">
+                                <t t-foreach="budget_groups" t-as="group">
+                                    <tr t-if="budget_group_by != 'none'" class="table-secondary">
+                                        <td colspan="7" class="fw-semibold">Grupo: <t t-esc="group['label']"/></td>
+                                    </tr>
+                                    <t t-foreach="group['records']" t-as="budget">
+                                        <tr>
+                                            <td>
+                                                <a t-attf-href="/retana/budgets/#{budget.id}">
+                                                    <t t-esc="budget.name or '-'"/>
+                                                </a>
+                                            </td>
+                                            <td><t t-esc="budget.title or '-'"/></td>
+                                            <td><t t-esc="budget.client_id.name or '-'"/></td>
+                                            <td><t t-esc="budget.building_id.name or '-'"/></td>
+                                            <td><t t-esc="budget.date or '-'"/></td>
+                                            <td class="text-end">
+                                                <t t-esc="'{:,.2f}'.format(budget.total_amount or 0.0)"/>
+                                                <span class="text-muted ms-1"><t t-esc="budget.currency_id.name or ''"/></span>
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="d-inline-flex gap-1">
+                                                    <a class="btn btn-sm btn-outline-primary" t-attf-href="/retana/budgets/#{budget.id}">Ver</a>
+                                                    <a class="btn btn-sm btn-primary" t-attf-href="/retana/budgets/#{budget.id}/report">PDF</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">No hay presupuestos para mostrar.</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <t t-if="budget_pager and budget_pager.get('page_count', 0) &gt; 1">
+                    <div class="d-flex justify-content-center mt-4">
+                        <t t-call="website.pager">
+                            <t t-set="pager" t-value="budget_pager"/>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_downpayments" name="Retana Web Anticipos">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'downpayments'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <div class="container py-4 py-lg-5">
+                <div class="retana-list-head p-3 p-lg-4 mb-3">
+                    <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                        <div>
+                            <h2 class="h3 mb-1">Anticipos</h2>
+                            <p class="text-muted mb-0">Gestiona y descarga recibos de anticipos por cliente y obra.</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="retana-total-pill">Total: <t t-esc="downpayment_total or 0"/></span>
+                            <a class="btn btn-light border" href="/">Volver al inicio</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="retana-list-filter p-3 p-lg-4 mb-3">
+                    <form action="/retana/downpayments" method="get" class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label mb-1">Buscar</label>
+                            <input type="text" name="search" class="form-control" placeholder="Nombre, cliente, concepto u obra" t-att-value="downpayment_search or ''"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Filtro</label>
+                            <select name="filter_by" class="form-select">
+                                <t t-foreach="downpayment_filter_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if downpayment_filter_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Agrupar por</label>
+                            <select name="group_by" class="form-select">
+                                <t t-foreach="downpayment_group_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if downpayment_group_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">Aplicar</button>
+                            <a href="/retana/downpayments" class="btn btn-outline-secondary">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="retana-list-table p-2 p-lg-3">
+                    <form action="/retana/downpayments/report/batch" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+                            <small class="text-muted">Selecciona uno o varios anticipos para generar un solo PDF.</small>
+                            <button type="submit" class="btn btn-sm btn-primary">Descargar PDF seleccionados</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 36px;" class="text-center">
+                                        <input type="checkbox" disabled="disabled" title="Seleccion manual"/>
+                                    </th>
+                                    <th>Nombre</th>
+                                    <th>Concepto</th>
+                                    <th>Cliente</th>
+                                    <th>Obra</th>
+                                    <th>Fecha</th>
+                                    <th class="text-end">Importe</th>
+                                    <th class="text-end">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="downpayments">
+                                    <t t-foreach="downpayment_groups" t-as="group">
+                                        <tr t-if="downpayment_group_by != 'none'" class="table-secondary">
+                                            <td colspan="8" class="fw-semibold">Grupo: <t t-esc="group['label']"/></td>
+                                        </tr>
+                                        <t t-foreach="group['records']" t-as="downpayment">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input type="checkbox" name="downpayment_ids" t-att-value="downpayment.id"/>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/retana/downpayments/#{downpayment.id}">
+                                                        <t t-esc="downpayment.name or '-'"/>
+                                                    </a>
+                                                </td>
+                                                <td><t t-esc="downpayment.concept_id.name or '-'"/></td>
+                                                <td><t t-esc="downpayment.client_id.name or '-'"/></td>
+                                                <td><t t-esc="downpayment.building_id.name or '-'"/></td>
+                                                <td><t t-esc="downpayment.date or '-'"/></td>
+                                                <td class="text-end">
+                                                    <t t-esc="'{:,.2f}'.format(downpayment.amount or 0.0)"/>
+                                                    <span class="text-muted ms-1"><t t-esc="downpayment.currency_id.name or ''"/></span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="d-inline-flex gap-1">
+                                                        <a class="btn btn-sm btn-outline-primary" t-attf-href="/retana/downpayments/#{downpayment.id}">Ver</a>
+                                                        <a class="btn btn-sm btn-primary" t-attf-href="/retana/downpayments/#{downpayment.id}/report">PDF</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted py-4">No hay anticipos para mostrar.</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+                <t t-if="downpayment_pager and downpayment_pager.get('page_count', 0) &gt; 1">
+                    <div class="d-flex justify-content-center mt-4">
+                        <t t-call="website.pager">
+                            <t t-set="pager" t-value="downpayment_pager"/>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_buildings" name="Retana Web Obras">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'buildings'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <div class="container py-4 py-lg-5">
+                <div class="retana-list-head p-3 p-lg-4 mb-3">
+                    <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                        <div>
+                            <h2 class="h3 mb-1">Obras</h2>
+                            <p class="text-muted mb-0">Visualiza el estado de las obras y descarga su relación de pagos.</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="retana-total-pill">Total: <t t-esc="building_total or 0"/></span>
+                            <a class="btn btn-light border" href="/">Volver al inicio</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="retana-list-filter p-3 p-lg-4 mb-3">
+                    <form action="/retana/buildings" method="get" class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label mb-1">Buscar</label>
+                            <input type="text" name="search" class="form-control" placeholder="Nombre de obra o cliente" t-att-value="building_search or ''"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Filtro</label>
+                            <select name="filter_by" class="form-select">
+                                <t t-foreach="building_filter_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if building_filter_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label mb-1">Agrupar por</label>
+                            <select name="group_by" class="form-select">
+                                <t t-foreach="building_group_options" t-as="opt">
+                                    <option t-att-value="opt[0]" t-att-selected="'selected' if building_group_by == opt[0] else None"><t t-esc="opt[1]"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">Aplicar</button>
+                            <a href="/retana/buildings" class="btn btn-outline-secondary">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="retana-list-table p-2 p-lg-3">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cliente</th>
+                                <th>Activo</th>
+                                <th class="text-end">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="buildings">
+                                <t t-foreach="building_groups" t-as="group">
+                                    <tr t-if="building_group_by != 'none'" class="table-secondary">
+                                        <td colspan="4" class="fw-semibold">Grupo: <t t-esc="group['label']"/></td>
+                                    </tr>
+                                    <t t-foreach="group['records']" t-as="building">
+                                        <tr>
+                                            <td>
+                                                <a t-attf-href="/retana/buildings/#{building.id}">
+                                                    <t t-esc="building.name or '-'"/>
+                                                </a>
+                                            </td>
+                                            <td><t t-esc="building.client_id.name or '-'"/></td>
+                                            <td>
+                                                <span t-if="building.active" class="badge bg-success">Si</span>
+                                                <span t-else="" class="badge bg-secondary">No</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="d-inline-flex gap-1">
+                                                    <a class="btn btn-sm btn-outline-primary" t-attf-href="/retana/buildings/#{building.id}">Ver</a>
+                                                    <a class="btn btn-sm btn-primary" t-attf-href="/retana/buildings/#{building.id}/report">PDF</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No hay obras para mostrar.</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <t t-if="building_pager and building_pager.get('page_count', 0) &gt; 1">
+                    <div class="d-flex justify-content-center mt-4">
+                        <t t-call="website.pager">
+                            <t t-set="pager" t-value="building_pager"/>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_budget_detail" name="Retana Web Presupuesto Detalle">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'budgets'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-budget-sheet {
+                    background: #fff;
+                    border: 1px solid #d9dce0;
+                    border-radius: 6px;
+                }
+                .retana-budget-sheet .sheet-title {
+                    font-weight: 700;
+                    color: #2d3748;
+                    margin: 0;
+                }
+                .retana-section-label {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #56616d;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                    padding-bottom: 6px;
+                    border-bottom: 1px solid #e6e9ee;
+                }
+                .retana-field-grid {
+                    display: grid;
+                    grid-template-columns: 150px 1fr;
+                    gap: 6px 10px;
+                    font-size: 13px;
+                }
+                .retana-field-grid .label {
+                    color: #4b5563;
+                    font-weight: 600;
+                }
+                .retana-field-grid .value {
+                    color: #111827;
+                }
+                .retana-tab-title {
+                    display: inline-block;
+                    border: 1px solid #d9dce0;
+                    border-bottom: 0;
+                    border-radius: 6px 6px 0 0;
+                    background: #f7f8fa;
+                    color: #4b5563;
+                    font-size: 13px;
+                    font-weight: 600;
+                    padding: 8px 14px;
+                    margin-bottom: -1px;
+                }
+                .retana-lines-wrap {
+                    border: 1px solid #d9dce0;
+                    border-radius: 0 6px 6px 6px;
+                    overflow: hidden;
+                }
+                .retana-lines-table {
+                    margin-bottom: 0;
+                    font-size: 12px;
+                }
+                .retana-lines-table thead th {
+                    background: #f4f6f8;
+                    color: #374151;
+                    font-weight: 700;
+                    border-bottom: 1px solid #d9dce0;
+                }
+                .retana-lines-table .is-section td {
+                    background: #f8fafc;
+                    font-weight: 700;
+                    color: #1f2937;
+                }
+                .retana-lines-table .is-note td {
+                    color: #6b7280;
+                    font-style: italic;
+                    background: #fcfcfd;
+                }
+                .retana-totals {
+                    max-width: 380px;
+                    margin-left: auto;
+                }
+                .retana-totals .row-line {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 12px;
+                    padding: 6px 0;
+                    border-bottom: 1px solid #eef1f5;
+                    font-size: 13px;
+                }
+                .retana-totals .row-line.total {
+                    border-top: 2px solid #d9dce0;
+                    border-bottom: 0;
+                    margin-top: 6px;
+                    padding-top: 10px;
+                    font-weight: 700;
+                    font-size: 14px;
+                    color: #111827;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h4 mb-0">Presupuesto</h2>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" t-attf-href="/retana/budgets/#{budget.id}/report">Descargar PDF</a>
+                        <a class="btn btn-light border" href="/retana/budgets">Volver a presupuestos</a>
+                    </div>
+                </div>
+
+                <div class="retana-budget-sheet p-3 p-lg-4">
+                    <h1 class="sheet-title h3 mb-4"><t t-esc="budget.name or '-'"/></h1>
+
+                    <div class="retana-section-label">Informacion del Presupuesto</div>
+                    <div class="retana-field-grid mb-4">
+                        <div class="label">Titulo</div>
+                        <div class="value"><t t-esc="budget.title or '-'"/></div>
+                        <div class="label">Descripcion</div>
+                        <div class="value"><t t-esc="budget.description or '-'"/></div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-lg-6">
+                            <div class="retana-section-label">Informacion General</div>
+                            <div class="retana-field-grid">
+                                <div class="label">Tipo de Presupuesto</div>
+                                <div class="value"><t t-esc="budget.budget_type_id.name or '-'"/></div>
+                                <div class="label">Cliente</div>
+                                <div class="value"><t t-esc="budget.client_id.name or '-'"/></div>
+                                <div class="label">Obra</div>
+                                <div class="value"><t t-esc="budget.building_id.name or '-'"/></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="retana-section-label">Informacion Adicional</div>
+                            <div class="retana-field-grid">
+                                <div class="label">Fecha</div>
+                                <div class="value"><t t-esc="budget.date or '-'"/></div>
+                                <div class="label">Anticipo</div>
+                                <div class="value">
+                                    <t t-esc="'{:,.2f}'.format(budget.downpayment_amount or 0.0)"/>
+                                    <span class="text-muted ms-1"><t t-esc="budget.currency_id.name or ''"/></span>
+                                </div>
+                                <div class="label">Descuento (%)</div>
+                                <div class="value"><t t-esc="'{:,.2f}'.format((budget.discount or 0.0) * 100)"/></div>
+                                <div class="label">Impuestos</div>
+                                <div class="value"><t t-esc="', '.join(budget.taxes_ids.mapped('name')) if budget.taxes_ids else '-'"/></div>
+                                <div class="label">Moneda</div>
+                                <div class="value"><t t-esc="budget.currency_id.name or '-'"/></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="retana-tab-title">Conceptos</div>
+                    <div class="retana-lines-wrap mb-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle retana-lines-table">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Descripcion</th>
+                                        <th class="text-end">Cantidad</th>
+                                        <th>Unidad de Medida</th>
+                                        <th class="text-end">Precio Unitario</th>
+                                        <th>Impuestos</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="budget.line_ids">
+                                        <t t-foreach="budget.line_ids.sorted(lambda l: (l.sequence, l.id))" t-as="line">
+                                            <tr t-if="line.display_type == 'line_section'" class="is-section">
+                                                <td colspan="7"><t t-esc="line.description or 'Seccion'"/></td>
+                                            </tr>
+                                            <tr t-elif="line.display_type == 'line_note'" class="is-note">
+                                                <td colspan="7"><t t-esc="line.description or 'Nota'"/></td>
+                                            </tr>
+                                            <tr t-else="">
+                                                <td><t t-esc="line.product_id.name or '-'"/></td>
+                                                <td><t t-esc="line.description or '-'"/></td>
+                                                <td class="text-end"><t t-esc="'{:,.2f}'.format(line.quantity or 0.0)"/></td>
+                                                <td><t t-esc="line.uom_id.name or '-'"/></td>
+                                                <td class="text-end"><t t-esc="'{:,.2f}'.format(line.unit_price or 0.0)"/></td>
+                                                <td><t t-esc="', '.join(line.taxes_ids.mapped('name')) if line.taxes_ids else '-'"/></td>
+                                                <td class="text-end"><t t-esc="'{:,.2f}'.format(line.subtotal or 0.0)"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">No hay conceptos para mostrar.</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="retana-totals">
+                        <div class="row-line">
+                            <span>Subtotal</span>
+                            <span>
+                                <t t-esc="'{:,.2f}'.format(budget.subtotal_amount or 0.0)"/>
+                                <t t-esc="budget.currency_id.name or ''"/>
+                            </span>
+                        </div>
+                        <div t-if="(budget.tax_amount or 0.0)" class="row-line">
+                            <span>IVA</span>
+                            <span>
+                                <t t-esc="'{:,.2f}'.format(budget.tax_amount or 0.0)"/>
+                                <t t-esc="budget.currency_id.name or ''"/>
+                            </span>
+                        </div>
+                        <div t-if="(budget.discount_amount or 0.0)" class="row-line">
+                            <span>Descuento</span>
+                            <span>
+                                - <t t-esc="'{:,.2f}'.format(budget.discount_amount or 0.0)"/>
+                                <t t-esc="budget.currency_id.name or ''"/>
+                            </span>
+                        </div>
+                        <div t-if="(budget.downpayment_amount or 0.0)" class="row-line">
+                            <span>Anticipo</span>
+                            <span>
+                                - <t t-esc="'{:,.2f}'.format(budget.downpayment_amount or 0.0)"/>
+                                <t t-esc="budget.currency_id.name or ''"/>
+                            </span>
+                        </div>
+                        <div class="row-line total">
+                            <span>Total</span>
+                            <span>
+                                <t t-esc="'{:,.2f}'.format(budget.total_amount or 0.0)"/>
+                                <t t-esc="budget.currency_id.name or ''"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_downpayment_detail" name="Retana Web Anticipo Detalle">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'downpayments'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-form-sheet {
+                    background: #fff;
+                    border: 1px solid #d9dce0;
+                    border-radius: 6px;
+                }
+                .retana-form-sheet .sheet-title {
+                    font-weight: 700;
+                    color: #2d3748;
+                    margin: 0;
+                }
+                .retana-form-section {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #56616d;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                    padding-bottom: 6px;
+                    border-bottom: 1px solid #e6e9ee;
+                }
+                .retana-form-grid {
+                    display: grid;
+                    grid-template-columns: 160px 1fr;
+                    gap: 8px 12px;
+                    font-size: 13px;
+                }
+                .retana-form-grid .label {
+                    color: #4b5563;
+                    font-weight: 600;
+                }
+                .retana-form-grid .value {
+                    color: #111827;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h4 mb-0">Anticipo</h2>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" t-attf-href="/retana/downpayments/#{downpayment.id}/report">Descargar PDF</a>
+                        <a class="btn btn-light border" href="/retana/downpayments">Volver a anticipos</a>
+                    </div>
+                </div>
+
+                <div class="retana-form-sheet p-3 p-lg-4">
+                    <h1 class="sheet-title h3 mb-4"><t t-esc="downpayment.name or '-'"/></h1>
+
+                    <div class="retana-form-section">Informacion del Anticipo</div>
+                    <div class="retana-form-grid mb-1">
+                        <div class="label">Concepto</div>
+                        <div class="value"><t t-esc="downpayment.concept_id.name or '-'"/></div>
+
+                        <div class="label">Importe</div>
+                        <div class="value">
+                            <t t-esc="'{:,.2f}'.format(downpayment.amount or 0.0)"/>
+                            <span class="text-muted ms-1"><t t-esc="downpayment.currency_id.name or ''"/></span>
+                        </div>
+
+                        <div class="label">Moneda</div>
+                        <div class="value"><t t-esc="downpayment.currency_id.name or '-'"/></div>
+
+                        <div class="label">Fecha</div>
+                        <div class="value"><t t-esc="downpayment.date or '-'"/></div>
+
+                        <div class="label">Obra</div>
+                        <div class="value"><t t-esc="downpayment.building_id.name or '-'"/></div>
+
+                        <div class="label">Cliente</div>
+                        <div class="value"><t t-esc="downpayment.client_id.name or '-'"/></div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="retana_web_building_detail" name="Retana Web Obra Detalle">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'buildings'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-form-sheet {
+                    background: #fff;
+                    border: 1px solid #d9dce0;
+                    border-radius: 6px;
+                }
+                .retana-form-sheet .sheet-title {
+                    font-weight: 700;
+                    color: #2d3748;
+                    margin: 0;
+                }
+                .retana-form-section {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #56616d;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                    padding-bottom: 6px;
+                    border-bottom: 1px solid #e6e9ee;
+                }
+                .retana-form-grid {
+                    display: grid;
+                    grid-template-columns: 160px 1fr;
+                    gap: 8px 12px;
+                    font-size: 13px;
+                }
+                .retana-form-grid .label {
+                    color: #4b5563;
+                    font-weight: 600;
+                }
+                .retana-form-grid .value {
+                    color: #111827;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h4 mb-0">Obra</h2>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" t-attf-href="/retana/buildings/#{building.id}/report">Descargar Relacion de Pagos</a>
+                        <a class="btn btn-light border" href="/retana/buildings">Volver a obras</a>
+                    </div>
+                </div>
+
+                <div class="retana-form-sheet p-3 p-lg-4">
+                    <h1 class="sheet-title h3 mb-4"><t t-esc="building.name or '-'"/></h1>
+
+                    <div class="retana-form-section">Informacion de la Obra</div>
+                    <div class="retana-form-grid mb-1">
+                        <div class="label">Cliente</div>
+                        <div class="value"><t t-esc="building.client_id.name or '-'"/></div>
+
+                        <div class="label">Activo</div>
+                        <div class="value">
+                            <span t-if="building.active" class="badge bg-success">Si</span>
+                            <span t-else="" class="badge bg-secondary">No</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
