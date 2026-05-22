@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="retana_login_customization" inherit_id="web.login" name="Retana Login Custom">
+        <xpath expr="//form[contains(@class, 'oe_login_form')]" position="attributes">
+            <attribute name="class" add="retana-login-form" separator=" "/>
+        </xpath>
+        <xpath expr="//form[contains(@class, 'oe_login_form')]//button[@name='redirect' and @value='/web/become']" position="replace"/>
+    </template>
+</odoo>
