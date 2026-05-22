@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="menu_retana_site_budgets" model="website.menu">
+        <field name="name">Presupuestos</field>
+        <field name="url">/retana/budgets</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" eval="20"/>
+    </record>
+
+    <record id="menu_retana_site_downpayments" model="website.menu">
+        <field name="name">Anticipos</field>
+        <field name="url">/retana/downpayments</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" eval="21"/>
+    </record>
+
+    <record id="menu_retana_site_buildings" model="website.menu">
+        <field name="name">Obras</field>
+        <field name="url">/retana/buildings</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" eval="22"/>
+    </record>
+</odoo>
