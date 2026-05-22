@@ -1,0 +1,47 @@
+#wrapwrap footer,
+#wrapwrap #bottom,
+#wrapwrap #footer {
+    display: none !important;
+}
+
+#wrapwrap main .sticky-top.bg-white.border-bottom.mb-4 {
+    display: none !important;
+}
+
+.retana-header-nav .nav-link {
+    font-weight: 600;
+    color: #111 !important;
+}
+
+.retana-header-nav .nav-link.active {
+    color: #000 !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+#o_main_nav .navbar-brand.logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+#o_main_nav .navbar-brand.logo img {
+    display: none !important;
+}
+
+#o_main_nav .navbar-brand.logo > span {
+    display: inline-block;
+    width: 110px;
+    height: 44px;
+    background: url('/retana_web/static/src/img/ER.png') center center / contain no-repeat;
+}
+
+/* Header limpio: ocultar teléfono, buscador y botón de contacto */
+#top a[href^="tel:"],
+#top .o_nav-link_secondary,
+#top button.oe_search_button,
+#top a.o_navlink_background,
+#top a.nav-link[href="/contactus"],
+#top a.btn_cta,
+#top .btn_cta {
+    display: none !important;
+}
