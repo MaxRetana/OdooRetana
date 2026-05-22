@@ -4,6 +4,6 @@
         <xpath expr="//form[contains(@class, 'oe_login_form')]" position="attributes">
             <attribute name="class" add="retana-login-form" separator=" "/>
         </xpath>
-        <xpath expr="//form[contains(@class, 'oe_login_form')]//button[@name='redirect' and @value='/web/become']" position="replace"/>
+        <xpath expr="//form[contains(@class, 'oe_login_form')]//button[@name='redirect']" position="replace"/>
     </template>
 </odoo>
