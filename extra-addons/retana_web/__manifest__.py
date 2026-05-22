@@ -14,7 +14,6 @@
     "depends": ["base", "website", "retana_bills"],
     "data": [
         "views/retana_bills_templates.xml",
-        "views/retana_header_templates.xml",
         "views/retana_site_menus.xml",
     ],
     "assets": {
