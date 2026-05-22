@@ -14,5 +14,12 @@
     "depends": ["base", "website", "retana_bills"],
     "data": [
         "views/retana_bills_templates.xml",
+        "views/retana_header_templates.xml",
+        "views/retana_site_menus.xml",
     ],
+    "assets": {
+        "web.assets_frontend": [
+            "retana_web/static/src/scss/footer.scss",
+        ],
+    },
 }
