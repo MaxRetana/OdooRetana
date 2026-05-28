@@ -42,6 +42,7 @@
                             <field name="discount" widget="percentage"/>
                             <field name="taxes_ids" widget="many2many_tags"/>   
                             <field name="currency_id" required="1"/>
+                            <field name="show_sign"/>
                         </group>
                     </group>
                     <notebook>
