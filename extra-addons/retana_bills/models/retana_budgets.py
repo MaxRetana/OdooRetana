@@ -40,6 +40,7 @@ class RetanaBudget(models.Model):
     line_ids            =fields.One2many('retana.budget.line', 'budget_id', string='Líneas de Presupuesto', tracking=True)
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
+    show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
     
     @api.onchange('budget_type_id', 'client_id', 'building_id')
     def _onchange_budget_type_id(self):

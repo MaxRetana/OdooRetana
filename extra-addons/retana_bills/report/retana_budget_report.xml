@@ -63,6 +63,7 @@
                         </t>
 
                         <!-- Tabla de conceptos -->
+                        <t t-set="show_amount_columns" t-value="not o.budget_type_id.is_material_list and any(l.display_type not in ('line_section', 'line_note') and not (l.quantity == 0 and l.unit_price == 0 and l.subtotal == 0) for l in o.line_ids)"/>
                         <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt;">
                             <thead>
                                 <t t-if="o.budget_type_id.is_material_list">
@@ -74,12 +75,14 @@
                                 </t>
                                 <t t-else="">
                                     <!-- Encabezados normales (con precios) -->
-                                    <tr>
-                                        <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;"></th>
-                                        <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 10%;">PZA.</th>
-                                        <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">PRECIO</th>
-                                        <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">TOTAL</th>
-                                    </tr>
+                                    <t t-if="show_amount_columns">
+                                        <tr>
+                                            <th style="text-align: left; padding: 6px 4px; font-weight: bold; width: 50%;"></th>
+                                            <th style="text-align: center; padding: 6px 4px; font-weight: bold; width: 10%;">PZA.</th>
+                                            <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">PRECIO</th>
+                                            <th style="text-align: right; padding: 6px 4px; font-weight: bold; width: 20%;">TOTAL</th>
+                                        </tr>
+                                    </t>
                                 </t>
                             </thead>
                             <tbody>
@@ -124,39 +127,51 @@
                                         <t t-else="">
                                             <!-- Formato normal (con precios) -->
                                             <tr>
-                                                <td style="padding: 4px; vertical-align: top; text-align: left;">
-                                                    <t t-if="line.description and line.product_id and line.description != line.product_id.name">
-                                                        <t t-esc="line.description.upper()"/>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <t t-esc="(line.product_id.name or '').upper()"/>
-                                                    </t>
-                                                </td>
-                                                <td style="text-align: center; padding: 4px; vertical-align: top;">
-                                                    <t t-esc="int(line.quantity)"/>
-                                                    <t t-if="line.uom_id and (line.uom_id.name or '').strip().upper() != 'UNIDADES'">
-                                                        <t t-esc="line.uom_id.name"/>
-                                                    </t>
-                                                </td>
-                                                <td style="text-align: right; padding: 4px; vertical-align: top;">
-                                                    $<t t-esc="'{:,.2f}'.format(line.unit_price)"/>
-                                                </td>
-                                                <td style="text-align: right; padding: 4px; vertical-align: top;">
-                                                    <t t-if="line_last">
-                                                        <div style="display: inline-block; border-bottom: 2px solid black; padding-bottom: 2px;">
+                                                <t t-if="line.quantity == 0 and line.unit_price == 0 and line.subtotal == 0">
+                                                    <td colspan="4" style="padding: 4px; vertical-align: top; text-align: left;">
+                                                        <t t-if="line.description and line.product_id and line.description != line.product_id.name">
+                                                            <t t-esc="line.description.upper()"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-esc="(line.product_id.name or '').upper()"/>
+                                                        </t>
+                                                    </td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td style="padding: 4px; vertical-align: top; text-align: left;">
+                                                        <t t-if="line.description and line.product_id and line.description != line.product_id.name">
+                                                            <t t-esc="line.description.upper()"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-esc="(line.product_id.name or '').upper()"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-align: center; padding: 4px; vertical-align: top;">
+                                                        <t t-esc="int(line.quantity)"/>
+                                                        <t t-if="line.uom_id and (line.uom_id.name or '').strip().upper() != 'UNIDADES'">
+                                                            <t t-esc="line.uom_id.name"/>
+                                                        </t>
+                                                    </td>
+                                                    <td style="text-align: right; padding: 4px; vertical-align: top;">
+                                                        $<t t-esc="'{:,.2f}'.format(line.unit_price)"/>
+                                                    </td>
+                                                    <td style="text-align: right; padding: 4px; vertical-align: top;">
+                                                        <t t-if="line_last">
+                                                            <div style="display: inline-block; border-bottom: 2px solid black; padding-bottom: 2px;">
+                                                                $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
+                                                            </div>
+                                                        </t>
+                                                        <t t-else="">
                                                             $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
-                                                        </div>
-                                                    </t>
-                                                    <t t-else="">
-                                                        $<t t-esc="'{:,.2f}'.format(line.subtotal)"/>
-                                                    </t>
-                                                </td>
+                                                        </t>
+                                                    </td>
+                                                </t>
                                             </tr>
                                         </t>
                                     </t>
                                 </t>
                                 <!-- No mostrar totales si es lista de materiales -->
-                                <t t-if="not o.budget_type_id.is_material_list">
+                                <t t-if="not o.budget_type_id.is_material_list and show_amount_columns">
                                     <!-- Fila del subtotal (solo si hay IVA, descuento o anticipo) -->
                                     <tr t-if="o.tax_amount > 0 or o.discount_amount > 0 or o.downpayment_amount > 0">
                                         <td colspan="3" style="text-align: right; padding: 8px 4px; font-weight: bold;">
@@ -207,23 +222,25 @@
                         </table>
 
                         <!-- Sección de atentamente -->
-                        <div style="margin-top: 80px; text-align: center;">
-                            <div style="font-weight: bold; font-size: 11pt; letter-spacing: 8px; margin-bottom: 50px;">
-                                A T E N T A M E N T E
-                            </div>
-                            
-                            <div style="font-weight: bold; font-size: 10pt; margin-bottom: 60px;">
-                                <t t-if="o.total_amount and not o.budget_type_id.is_material_list">
-                                    <t t-esc="o.currency_id.amount_to_text(o.total_amount).upper()"/> M.N
-                                </t>
-                            </div>
+                        <t t-if="o.show_sign">
+                            <div style="margin-top: 80px; text-align: center;">
+                                <div style="font-weight: bold; font-size: 11pt; letter-spacing: 8px; margin-bottom: 50px;">
+                                    A T E N T A M E N T E
+                                </div>
+                                
+                                <div style="font-weight: bold; font-size: 10pt; margin-bottom: 60px;">
+                                    <t t-if="o.total_amount and not o.budget_type_id.is_material_list">
+                                        <t t-esc="o.currency_id.amount_to_text(o.total_amount).upper()"/> M.N
+                                    </t>
+                                </div>
 
-                            <div style="margin: 0 auto; width: 350px;">
-                                <div style="border-top: 1.5px solid black; padding-top: 8px; font-weight: bold; font-size: 10pt;">
-                                    <t t-esc="company_info.company_name"/>
+                                <div style="margin: 0 auto; width: 350px;">
+                                    <div style="border-top: 1.5px solid black; padding-top: 8px; font-weight: bold; font-size: 10pt;">
+                                        <t t-esc="company_info.company_name"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </t>
 
                     </div>
                 </div>
