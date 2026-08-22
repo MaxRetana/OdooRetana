@@ -80,11 +80,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Ítem de menú para Obras -->
-    <menuitem id="menu_retana_buildings"
-              name="Obras"
-              parent="retana_bills.menu_retana_bills_root"
-              action="action_retana_buildings"
-              sequence="15"/>
 </odoo>
