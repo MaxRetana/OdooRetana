@@ -72,12 +72,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Menú para Información de Empresa -->
-    <menuitem
-        id="menu_retana_company_info"
-        name="Información de Empresa"
-        parent="retana_bills.menu_retana_bills_config"
-        action="action_retana_company_info"
-        sequence="10"/>
 </odoo>
