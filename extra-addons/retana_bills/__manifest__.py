@@ -30,6 +30,7 @@
         "views/retana_type_res_partner_views.xml",
         "views/retana_downpayment_type_concept_views.xml",
         "views/retana_sent_wh_views.xml",
+        "views/menuitems_retana_view.xml",
         "report/retana_budget_report.xml",
         "report/retana_downpayment_list_report.xml",
         "report/retana_downpayment_report.xml",

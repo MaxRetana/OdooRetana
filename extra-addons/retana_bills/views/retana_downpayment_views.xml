@@ -84,18 +84,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Menú raíz de anticipos -->
-    <menuitem id="menu_retana_downpayments_root"
-              name="Anticipos"
-              parent="retana_bills.menu_retana_bills_root"
-              sequence="20"/>
-
-    <!-- Menú de anticipos -->
-    <menuitem id="menu_retana_downpayments"
-              name="Anticipos"
-              parent="retana_bills.menu_retana_downpayments_root"
-              action="action_retana_downpayment"
-              sequence="20"/>
-
 </odoo>
