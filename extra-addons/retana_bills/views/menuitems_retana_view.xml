@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú principal del módulo -->
+    <menuitem id="menu_retana_bills_root"
+              name="Electricos Retana"
+              web_icon="retana_bills,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Menú de presupuestos -->
+    <menuitem id="menu_retana_budgets"
+              name="Presupuestos"
+              parent="retana_bills.menu_retana_bills_root"
+              action="action_retana_budget"
+              sequence="10"/>
+
+    <!-- Menú raíz de anticipos -->
+    <menuitem id="menu_retana_downpayments_root"
+              name="Anticipos"
+              parent="retana_bills.menu_retana_bills_root"
+              action="action_retana_downpayment"
+              sequence="20"/>
+
+    <!-- Menú de anticipos -->
+    <!-- <menuitem id="menu_retana_downpayments"
+              name="Anticipos"
+              parent="retana_bills.menu_retana_downpayments_root"
+              action="action_retana_downpayment"
+              sequence="20"/> -->
+
+    <!-- Menú de anticipos masivos -->
+    <menuitem id="menu_retana_bulk_downpayment_wizard"
+              name="Crear Anticipos Masivos"
+              parent="retana_bills.menu_retana_bills_root"
+              action="action_retana_bulk_downpayment_wizard"
+              sequence="25"/>
+
+    <!-- Menú de configuración -->
+    <menuitem id="menu_retana_bills_config"
+              name="Configuración"
+              parent="retana_bills.menu_retana_bills_root"
+              sequence="100"/>
+
+    <!-- Menús de configuración -->
+    <menuitem id="menu_retana_budget_root_config"
+              name="Presupuesto"
+              parent="retana_bills.menu_retana_bills_config"
+              sequence="10"/>
+    
+    <menuitem id="menu_retana_products"
+              name="Conceptos"
+              parent="retana_bills.menu_retana_budget_root_config"
+              action="action_retana_product_template"
+              sequence="10"/>
+
+    <menuitem id="menu_retana_budget_type"
+              name="Tipos de Presupuesto"
+              parent="retana_bills.menu_retana_budget_root_config"
+              action="action_retana_budget_type"
+              sequence="20"/>
+
+    <menuitem id="menu_retana_budget_lines"
+              name="Líneas de Presupuesto"
+              parent="retana_bills.menu_retana_budget_root_config"
+              action="action_retana_budget_line"
+              sequence="30"/>
+
+    <menuitem id="menu_retana_buildings_root_config"
+              name="Obras"
+              parent="retana_bills.menu_retana_bills_config"
+              sequence="15"/>
+
+    <menuitem id="menu_retana_buildings"
+              name="Obras"
+              parent="retana_bills.menu_retana_buildings_root_config"
+              action="action_retana_buildings"
+              sequence="15"/>
+
+    <menuitem id="menu_retana_customers_root_config"
+              name="Clientes"
+              parent="retana_bills.menu_retana_bills_config"
+              sequence="40"/>
+
+    <menuitem id="menu_retana_customers"
+              name="Clientes"
+              parent="retana_bills.menu_retana_customers_root_config"
+              action="action_retana_res_partner"
+              sequence="40"/>
+
+    <menuitem id="menu_retana_type_res_partner"
+              name="Tipos de Clientes Retana"
+              parent="retana_bills.menu_retana_customers_root_config"
+              action="action_retana_type_res_partner"
+              sequence="50"/>
+
+    <menuitem id="menu_retana_downpayment_root_config"
+              name="Anticipos"
+              parent="retana_bills.menu_retana_bills_config"
+              action="action_retana_downpayment_type_concept"
+              sequence="11"/>
+
+    <menuitem id="menu_retana_downpayment_type_concept"
+              name="Tipos de Concepto de Anticipo"
+              parent="retana_bills.menu_retana_downpayment_root_config"
+              action="action_retana_downpayment_type_concept"
+              sequence="10"/>
+
+    <menuitem id="menu_retana_company_info"
+              name="Información de Empresa"
+              parent="retana_bills.menu_retana_bills_config"
+              action="action_retana_company_info"
+              groups="base.group_system"
+              sequence="100"/>
+
+    <menuitem id="menu_retana_sent_wh"
+              name="Agenda de WhatsApp"
+              parent="retana_bills.menu_retana_bills_config"
+              action="action_retana_sent_wh"
+              groups="base.group_system"
+              sequence="70"/>
+</odoo>

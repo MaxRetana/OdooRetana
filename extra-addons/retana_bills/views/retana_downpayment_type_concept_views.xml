@@ -66,12 +66,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Menú de tipos de concepto de anticipo -->
-    <menuitem id="menu_retana_downpayment_type_concept"
-              name="Tipos de Concepto de Anticipo"
-              parent="retana_bills.menu_retana_bills_config"
-              action="action_retana_downpayment_type_concept"
-              sequence="60"/>
-
 </odoo>

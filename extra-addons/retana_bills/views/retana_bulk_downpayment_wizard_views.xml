@@ -50,13 +50,4 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
-    <!-- Menu Item -->
-    <menuitem 
-        id="menu_retana_bulk_downpayment_wizard"
-        name="Crear Anticipos Masivos"
-        parent="retana_bills.menu_retana_downpayments_root"
-        action="action_retana_bulk_downpayment_wizard"
-        sequence="25"/>
-
 </odoo>

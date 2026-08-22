@@ -47,12 +47,4 @@
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_retana_res_partner_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_retana_res_partner_form')})]"/>
     </record>
-
-    <!-- Menú para acceder a los clientes Retana -->
-    <menuitem id="menu_retana_customers"
-              name="Clientes"
-              parent="retana_bills.menu_retana_bills_config"
-              action="action_retana_res_partner"
-              sequence="40"/>
-
 </odoo>
