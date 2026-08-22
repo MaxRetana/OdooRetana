@@ -80,9 +80,22 @@ class RetanaBudget(models.Model):
             budget.discount_amount = subtotal * budget.discount
             budget.total_amount = subtotal + tax_total - budget.discount_amount - budget.downpayment_amount
             _logger.info(f"{RED}Descuento: {budget.discount*100}%, Importe: {budget.discount_amount}{ENDC}")
-            
-            
-            
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        default['name'] = 'Nuevo'
+        new_budget = super().copy(default=default)
+
+        if self.line_ids:
+            line_vals = []
+            for line in self.line_ids:
+                vals = line.copy_data()[0]
+                vals.pop('budget_id', None)
+                line_vals.append((0, 0, vals))
+            new_budget.write({'line_ids': line_vals})
+
+        return new_budget
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
