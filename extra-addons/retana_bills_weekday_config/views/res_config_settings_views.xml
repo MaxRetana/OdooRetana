@@ -34,9 +34,9 @@
     </record>
 
     <menuitem id="menu_retana_bills_weekday_settings"
-              name="Ajustes de Dia de Anticipo"
+              name="Ajustes"
               parent="retana_bills.menu_retana_bills_config"
               action="action_retana_bills_weekday_settings"
               groups="base.group_system"
-              sequence="80"/>
+              sequence="1000"/>
 </odoo>
