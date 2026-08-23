@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_retana_bills_weekday" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.retana.bills.weekday</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="5"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='general_settings']" position="after">
+                <app name="retana_bills_weekday_config" string="Anticipos Retana">
+                    <block title="Configuracion de fecha por defecto">
+                        <setting help="Selecciona el dia de la semana que tomara por defecto el wizard de anticipos.">
+                            <label for="downpayment_weekday"/>
+                            <field name="downpayment_weekday"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_retana_bills_weekday_settings" model="ir.actions.act_window">
+        <field name="name">Ajustes de Anticipos Retana</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">
+            {
+                'module': 'retana_bills_weekday_config',
+                'bin_size': False
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_retana_bills_weekday_settings"
+              name="Ajustes de Dia de Anticipo"
+              parent="retana_bills.menu_retana_bills_config"
+              action="action_retana_bills_weekday_settings"
+              groups="base.group_system"
+              sequence="80"/>
+</odoo>
