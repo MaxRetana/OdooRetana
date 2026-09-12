@@ -36,7 +36,6 @@ class RetanaWhatsappSendWizard(models.TransientModel):
         required=True,
         help="Incluye código de país sin '+'. Ejemplo: 521XXXXXXXXXX",
     )
-    save_number = fields.Boolean(string='Guardar número para este cliente', default=True)
     message = fields.Text(string='Mensaje', required=True)
 
     @api.model
@@ -65,6 +64,11 @@ class RetanaWhatsappSendWizard(models.TransientModel):
             'summary': f"{count} {label} seleccionado{plural_suffix}",
             'message': f"Hola, te comparto {article} {label} solicitado{plural_suffix}.",
         })
+        if len(partners) > 1:
+            raise UserError(
+                'Los registros seleccionados pertenecen a distintos clientes. '
+                'Selecciona registros de un solo cliente para enviarlos juntos por WhatsApp.'
+            )
         if len(partners) == 1:
             res['partner_id'] = partners.id
         return res
@@ -104,7 +108,7 @@ class RetanaWhatsappSendWizard(models.TransientModel):
         else:
             filename = f"{config['filename_prefix']}s.pdf"
 
-        if self.save_number and self.partner_id and self.number:
+        if self.partner_id and self.number:
             existing = self.env['retana.whatsapp'].search([
                 ('partner_id', '=', self.partner_id.id),
                 ('number', '=', self.number),

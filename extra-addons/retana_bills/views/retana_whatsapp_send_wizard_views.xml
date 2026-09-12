@@ -8,12 +8,11 @@
             <form string="Enviar por WhatsApp">
                 <field name="res_model" invisible="1"/>
                 <field name="res_ids" invisible="1"/>
+                <field name="partner_id" invisible="1"/>
                 <group>
                     <field name="summary"/>
-                    <field name="partner_id" options="{'no_create': True}"/>
                     <field name="whatsapp_id" options="{'no_create': True}"/>
                     <field name="number"/>
-                    <field name="save_number"/>
                     <field name="message"/>
                 </group>
                 <footer>
