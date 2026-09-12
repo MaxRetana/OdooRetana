@@ -43,7 +43,7 @@ class RetanaWhatsapp(models.Model):
         id_instance = get_param('retana_bills.green_api_id_instance')
         api_token = get_param('retana_bills.green_api_token')
         api_host = get_param('retana_bills.green_api_host') or 'https://api.green-api.com'
-        media_host = get_param('retana_bills.green_api_media_host') or 'https://media.green-api.com'
+        media_host = get_param('retana_bills.green_api_media_host') or api_host
         if not id_instance or not api_token:
             raise UserError(
                 'Falta configurar la cuenta de WhatsApp (Green API). '
@@ -62,6 +62,9 @@ class RetanaWhatsapp(models.Model):
         digits = ''.join(ch for ch in (number or '') if ch.isdigit())
         if not digits:
             raise UserError('El número de WhatsApp no es válido.')
+        if len(digits) == 10:
+            # Número local mexicano sin código de país: se asume Retana (México, 52).
+            digits = f'52{digits}'
         return f'{digits}@c.us'
 
     @api.model
