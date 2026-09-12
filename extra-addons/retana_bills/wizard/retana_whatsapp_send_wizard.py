@@ -67,14 +67,11 @@ class RetanaWhatsappSendWizard(models.TransientModel):
         if len(partners) == 1:
             partner = partners
             res['partner_id'] = partner.id
+            # Sugerencia: si el cliente del reporte ya tiene un número guardado en la
+            # agenda, se preselecciona, pero se puede elegir cualquier otro contacto.
             whatsapp = self.env['retana.whatsapp'].search([('partner_id', '=', partner.id)], limit=1)
-            if not whatsapp:
-                raise UserError(
-                    f"{partner.name} no tiene ningún número de WhatsApp registrado. "
-                    "Agrégalo primero en su ficha de contacto (pestaña WhatsApp) o en "
-                    "el menú Números de WhatsApp."
-                )
-            res['whatsapp_id'] = whatsapp.id
+            if whatsapp:
+                res['whatsapp_id'] = whatsapp.id
         return res
 
     def action_send(self):
