@@ -25,6 +25,18 @@ class RetanaWhatsapp(models.Model):
          'Este cliente ya tiene registrado ese número de WhatsApp.'),
     ]
 
+    def name_get(self):
+        return [(rec.id, f"{rec.partner_id.name}\n{rec.number}") for rec in self]
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        args = list(args or [])
+        domain = args
+        if name:
+            domain = args + ['|', ('partner_id.name', operator, name), ('number', operator, name)]
+        records = self.search(domain, limit=limit)
+        return records.name_get()
+
     @api.model
     def _get_green_api_config(self):
         get_param = self.env['ir.config_parameter'].sudo().get_param
