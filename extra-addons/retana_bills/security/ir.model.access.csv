@@ -9,7 +9,5 @@ access_retana_downpayment,access.retana.downpayment,model_retana_downpayment,bas
 access_retana_downpayment_wizard,access.retana.downpayment.wizard,model_retana_downpayment_wizard,base.group_user,1,1,1,1
 access_retana_bulk_downpayment_wizard,access.retana.bulk.downpayment.wizard,model_retana_bulk_downpayment_wizard,base.group_user,1,1,1,1
 access_retana_downpayment_type_concept,access.retana.downpayment.type.concept,model_retana_downpayment_type_concept,base.group_user,1,1,1,1
-access_retana_send_whatsapp_wizard,access.retana.send.whatsapp.wizard,model_retana_send_whatsapp_wizard,base.group_user,1,1,1,1
-access_retana_sent_wh,access.retana.sent.wh,model_retana_sent_wh,base.group_user,1,1,1,1
 access_retana_whatsapp,access.retana.whatsapp,model_retana_whatsapp,base.group_user,1,1,1,1
 access_retana_whatsapp_send_wizard,access.retana.whatsapp.send.wizard,model_retana_whatsapp_send_wizard,base.group_user,1,1,1,1

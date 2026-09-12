@@ -117,10 +117,5 @@
               groups="base.group_system"
               sequence="100"/>
 
-    <menuitem id="menu_retana_sent_wh"
-              name="Agenda de WhatsApp"
-              parent="retana_bills.menu_retana_bills_config"
-              action="action_retana_sent_wh"
-              groups="base.group_system"
-              sequence="70"/>
+
 </odoo>
