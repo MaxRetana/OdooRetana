@@ -15,7 +15,10 @@
                     </group>
                 </page>
                 <page string="WhatsApp" invisible="id == False">
-                    <field name="whatsapp_ids">
+                    <group>
+                        <field name="send_whatsapp"/>
+                    </group>
+                    <field name="whatsapp_ids" invisible="send_whatsapp == False">
                         <tree editable="bottom">
                             <field name="number"/>
                             <field name="active" optional="1"/>

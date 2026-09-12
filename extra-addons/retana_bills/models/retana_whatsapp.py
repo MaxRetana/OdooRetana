@@ -9,7 +9,10 @@ class RetanaWhatsapp(models.Model):
     _description = 'Números de WhatsApp de Clientes Retana'
     _rec_name = 'number'
 
-    partner_id = fields.Many2one('res.partner', string='Cliente', required=True, ondelete='cascade')
+    partner_id = fields.Many2one(
+        'res.partner', string='Cliente', required=True, ondelete='cascade',
+        domain=[('send_whatsapp', '=', True)],
+    )
     number = fields.Char(
         string='Número de WhatsApp',
         required=True,

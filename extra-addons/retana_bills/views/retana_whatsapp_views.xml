@@ -6,7 +6,7 @@
         <field name="model">retana.whatsapp</field>
         <field name="arch" type="xml">
             <tree string="Números de WhatsApp" editable="bottom">
-                <field name="partner_id"/>
+                <field name="partner_id" context="{'default_send_whatsapp': True}"/>
                 <field name="number"/>
                 <field name="active" optional="1"/>
             </tree>
@@ -21,7 +21,7 @@
             <form string="Número de WhatsApp">
                 <sheet>
                     <group>
-                        <field name="partner_id" options="{'no_create': True}"/>
+                        <field name="partner_id" context="{'default_send_whatsapp': True}"/>
                         <field name="number"/>
                         <field name="active"/>
                     </group>
