@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista árbol de números de WhatsApp -->
+    <record id="view_retana_whatsapp_tree" model="ir.ui.view">
+        <field name="name">retana.whatsapp.tree</field>
+        <field name="model">retana.whatsapp</field>
+        <field name="arch" type="xml">
+            <tree string="Números de WhatsApp" editable="bottom">
+                <field name="partner_id"/>
+                <field name="number"/>
+                <field name="active" optional="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista formulario de números de WhatsApp -->
+    <record id="view_retana_whatsapp_form" model="ir.ui.view">
+        <field name="name">retana.whatsapp.form</field>
+        <field name="model">retana.whatsapp</field>
+        <field name="arch" type="xml">
+            <form string="Número de WhatsApp">
+                <sheet>
+                    <group>
+                        <field name="partner_id" options="{'no_create': True}"/>
+                        <field name="number"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana -->
+    <record id="action_retana_whatsapp" model="ir.actions.act_window">
+        <field name="name">Números de WhatsApp</field>
+        <field name="res_model">retana.whatsapp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registra los números de WhatsApp de tus clientes
+            </p>
+        </field>
+    </record>
+</odoo>

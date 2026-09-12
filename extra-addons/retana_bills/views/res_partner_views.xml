@@ -14,6 +14,14 @@
                         <field name="retana_type_res_partner_id" options="{'no_create': True, 'no_edit': True}"/>
                     </group>
                 </page>
+                <page string="WhatsApp" invisible="id == False">
+                    <field name="whatsapp_ids">
+                        <tree editable="bottom">
+                            <field name="number"/>
+                            <field name="active" optional="1"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>

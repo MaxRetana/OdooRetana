@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario del wizard de envío por WhatsApp -->
+    <record id="view_retana_whatsapp_send_wizard_form" model="ir.ui.view">
+        <field name="name">retana.whatsapp.send.wizard.form</field>
+        <field name="model">retana.whatsapp.send.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Enviar por WhatsApp">
+                <field name="res_model" invisible="1"/>
+                <field name="res_ids" invisible="1"/>
+                <group>
+                    <field name="summary"/>
+                    <field name="partner_id" options="{'no_create': True}"/>
+                    <field name="whatsapp_id" options="{'no_create': True}"/>
+                    <field name="number"/>
+                    <field name="save_number"/>
+                    <field name="message"/>
+                </group>
+                <footer>
+                    <button name="action_send" type="object" string="Enviar por WhatsApp" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Botón "Enviar por WhatsApp" en Anticipos (lista y formulario) -->
+    <record id="action_send_whatsapp_downpayment" model="ir.actions.server">
+        <field name="name">Enviar por WhatsApp</field>
+        <field name="model_id" ref="model_retana_downpayment"/>
+        <field name="binding_model_id" ref="model_retana_downpayment"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Enviar por WhatsApp',
+    'res_model': 'retana.whatsapp.send.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {'active_model': model._name, 'active_ids': records.ids},
+}</field>
+    </record>
+
+    <!-- Botón "Enviar por WhatsApp" en Presupuestos / Listas de Materiales (lista y formulario) -->
+    <record id="action_send_whatsapp_budget" model="ir.actions.server">
+        <field name="name">Enviar por WhatsApp</field>
+        <field name="model_id" ref="model_retana_budget"/>
+        <field name="binding_model_id" ref="model_retana_budget"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Enviar por WhatsApp',
+    'res_model': 'retana.whatsapp.send.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {'active_model': model._name, 'active_ids': records.ids},
+}</field>
+    </record>
+</odoo>

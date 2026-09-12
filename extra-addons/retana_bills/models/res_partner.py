@@ -9,6 +9,7 @@ class ResPartner(models.Model):
     
     is_retana_customer = fields.Boolean(string='Cliente Retana', default=False, tracking=True)
     retana_type_res_partner_id = fields.Many2one('retana.type.res.partner', string='Tipo de Cliente Retana', domain="[('active', '=', True)]", tracking=True)
+    whatsapp_ids = fields.One2many('retana.whatsapp', 'partner_id', string='Números de WhatsApp')
     
     
     def create(self, vals):
