@@ -30,12 +30,7 @@ class RetanaWhatsappSendWizard(models.TransientModel):
     record_count = fields.Integer(string='Registros', readonly=True)
     summary = fields.Char(string='Reporte a enviar', readonly=True)
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True)
-    whatsapp_id = fields.Many2one('retana.whatsapp', string='Número guardado')
-    number = fields.Char(
-        string='Número de WhatsApp',
-        required=True,
-        help="Incluye código de país sin '+'. Ejemplo: 521XXXXXXXXXX",
-    )
+    whatsapp_id = fields.Many2one('retana.whatsapp', string='Enviar a', required=True)
     message = fields.Text(string='Mensaje', required=True)
 
     @api.model
@@ -70,26 +65,17 @@ class RetanaWhatsappSendWizard(models.TransientModel):
                 'Selecciona registros de un solo cliente para enviarlos juntos por WhatsApp.'
             )
         if len(partners) == 1:
-            res['partner_id'] = partners.id
+            partner = partners
+            res['partner_id'] = partner.id
+            whatsapp = self.env['retana.whatsapp'].search([('partner_id', '=', partner.id)], limit=1)
+            if not whatsapp:
+                raise UserError(
+                    f"{partner.name} no tiene ningún número de WhatsApp registrado. "
+                    "Agrégalo primero en su ficha de contacto (pestaña WhatsApp) o en "
+                    "el menú Números de WhatsApp."
+                )
+            res['whatsapp_id'] = whatsapp.id
         return res
-
-    @api.onchange('partner_id')
-    def _onchange_partner_id(self):
-        self.whatsapp_id = False
-        self.number = False
-        if self.partner_id:
-            whatsapp = self.env['retana.whatsapp'].search([('partner_id', '=', self.partner_id.id)], limit=1)
-            if whatsapp:
-                self.whatsapp_id = whatsapp
-                self.number = whatsapp.number
-            else:
-                self.number = self.partner_id.mobile or self.partner_id.phone or False
-        return {'domain': {'whatsapp_id': [('partner_id', '=', self.partner_id.id)]}}
-
-    @api.onchange('whatsapp_id')
-    def _onchange_whatsapp_id(self):
-        if self.whatsapp_id:
-            self.number = self.whatsapp_id.number
 
     def action_send(self):
         self.ensure_one()
@@ -108,25 +94,15 @@ class RetanaWhatsappSendWizard(models.TransientModel):
         else:
             filename = f"{config['filename_prefix']}s.pdf"
 
-        if self.partner_id and self.number:
-            existing = self.env['retana.whatsapp'].search([
-                ('partner_id', '=', self.partner_id.id),
-                ('number', '=', self.number),
-            ], limit=1)
-            if not existing:
-                self.env['retana.whatsapp'].create({
-                    'partner_id': self.partner_id.id,
-                    'number': self.number,
-                })
-
-        self.env['retana.whatsapp'].send_pdf_document(self.number, pdf_content, filename, self.message)
+        number = self.whatsapp_id.number
+        self.env['retana.whatsapp'].send_pdf_document(number, pdf_content, filename, self.message)
 
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': 'WhatsApp enviado',
-                'message': f'Se envió {filename} al número {self.number}.',
+                'message': f'Se envió {filename} al número {number}.',
                 'sticky': False,
                 'type': 'success',
             },

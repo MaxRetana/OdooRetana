@@ -11,8 +11,7 @@
                 <field name="partner_id" invisible="1"/>
                 <group>
                     <field name="summary"/>
-                    <field name="whatsapp_id" string="Enviar a" options="{'no_create': True}"/>
-                    <field name="number"/>
+                    <field name="whatsapp_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}"/>
                     <field name="message"/>
                 </group>
                 <footer>
