@@ -492,6 +492,154 @@
         </t>
     </template>
 
+    <template id="retana_web_downpayments_bulk" name="Retana Web Anticipos Masivos">
+        <t t-call="website.layout">
+            <t t-set="retana_current_page" t-value="'downpayments'"/>
+            <div class="sticky-top bg-white border-bottom mb-4" style="z-index: 1020;">
+                <div class="container py-2 d-flex flex-wrap gap-2">
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'home' else 'btn-outline-primary')" href="/">Inicio</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'budgets' else 'btn-outline-primary')" href="/retana/budgets">Presupuestos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'downpayments' else 'btn-outline-primary')" href="/retana/downpayments">Anticipos</a>
+                    <a t-att-class="'btn btn-sm %s' % ('btn-primary' if retana_current_page == 'buildings' else 'btn-outline-primary')" href="/retana/buildings">Obras</a>
+                </div>
+            </div>
+            <style>
+                .retana-bulk-head,
+                .retana-bulk-form,
+                .retana-bulk-result {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 14px;
+                    background: #ffffff;
+                    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+                }
+                .retana-bulk-help {
+                    background-color: #f0f0f0;
+                    border-radius: 8px;
+                }
+                .retana-bulk-help .text-danger-strong {
+                    color: #d32f2f;
+                }
+            </style>
+
+            <div class="container py-4 py-lg-5">
+                <div class="retana-bulk-head p-3 p-lg-4 mb-3">
+                    <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                        <div>
+                            <h2 class="h3 mb-1">Crear Anticipos Masivos</h2>
+                            <p class="text-muted mb-0">Pega un mensaje con varios anticipos y crealos de una sola vez.</p>
+                        </div>
+                        <a class="btn btn-light border" href="/retana/downpayments">Volver a anticipos</a>
+                    </div>
+                </div>
+
+                <div t-if="bulk_error_message" class="alert alert-danger" role="alert">
+                    <t t-esc="bulk_error_message"/>
+                </div>
+
+                <div t-if="bulk_result" class="retana-bulk-result p-3 p-lg-4 mb-3">
+                    <h3 class="h5 mb-3">
+                        Se crearon <t t-esc="len(bulk_result['created'])"/> anticipo(s) correctamente.
+                    </h3>
+                    <ul class="retana-home-list mb-3">
+                        <t t-foreach="bulk_result['created']" t-as="downpayment">
+                            <li>
+                                <a class="fw-semibold text-decoration-none" t-attf-href="/retana/downpayments/#{downpayment.id}">
+                                    <t t-esc="downpayment.name or '-'"/>
+                                </a>
+                                <span class="text-muted ms-1">
+                                    - <t t-esc="downpayment.building_id.name or '-'"/>
+                                    (<t t-esc="'{:,.2f}'.format(downpayment.amount or 0.0)"/>
+                                    <t t-esc="downpayment.currency_id.name or ''"/>)
+                                </span>
+                            </li>
+                        </t>
+                    </ul>
+                    <div t-if="bulk_result['errors']" class="alert alert-warning mb-3">
+                        <strong>Advertencias:</strong>
+                        <ul class="mb-0">
+                            <t t-foreach="bulk_result['errors']" t-as="bulk_error">
+                                <li><t t-esc="bulk_error"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" href="/retana/downpayments/bulk">Crear otro lote</a>
+                        <a class="btn btn-outline-secondary" href="/retana/downpayments">Ver anticipos</a>
+                    </div>
+                </div>
+
+                <t t-else="">
+                    <div class="retana-bulk-form p-3 p-lg-4 mb-3">
+                        <div t-if="bulk_client_conflict" class="alert alert-warning">
+                            Las obras encontradas pertenecen a diferentes clientes. Selecciona manualmente
+                            el cliente por defecto que deseas usar para las obras sin cliente.
+                        </div>
+                        <form action="/retana/downpayments/bulk" method="post" class="row g-3">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="col-md-4">
+                                <label class="form-label mb-1">Fecha del Anticipo</label>
+                                <input type="date" name="date" class="form-control" t-att-value="bulk_date"/>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label mb-1">Cliente por Defecto</label>
+                                <select name="client_id" class="form-select">
+                                    <option value="">Usar el cliente de cada obra</option>
+                                    <t t-foreach="bulk_client_options" t-as="client_option">
+                                        <option t-att-value="client_option.id" t-att-selected="'selected' if bulk_client_id == client_option.id else None">
+                                            <t t-esc="client_option.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label mb-1">Mensaje</label>
+                                <textarea name="message_text" class="form-control" rows="8"
+                                          placeholder="Ejemplo:&#10;$3000 zanya&#10;$5000 KAHLAL&#10;$3000 Naaga, materiales&#10;$5000 clinica, mano de obra">
+                                    <t t-esc="bulk_message_text"/>
+                                </textarea>
+                            </div>
+                            <div t-if="bulk_found_lines_text or bulk_not_found_lines_text" class="col-12">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label mb-1">Lineas con Obra Encontrada</label>
+                                        <textarea class="form-control" rows="6" readonly="readonly"><t t-esc="bulk_found_lines_text or ''"/></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label mb-1">Lineas sin Obra Encontrada</label>
+                                        <textarea class="form-control" rows="6" readonly="readonly"><t t-esc="bulk_not_found_lines_text or ''"/></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex gap-2">
+                                <button type="submit" name="form_action" value="preview" class="btn btn-outline-primary">Previsualizar</button>
+                                <button type="submit" name="form_action" value="create" class="btn btn-primary">Crear Anticipos</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="retana-bulk-help p-3 p-lg-4">
+                        <p><strong>Formato del mensaje:</strong></p>
+                        <ul>
+                            <li>Una linea por anticipo</li>
+                            <li><strong>$monto nombre_obra</strong> - Para anticipo sin concepto especifico (usa el predeterminado)</li>
+                            <li><strong>$monto nombre_obra, concepto</strong> - Para anticipo con concepto especifico</li>
+                        </ul>
+                        <p><strong>Ejemplos:</strong></p>
+                        <ul>
+                            <li>$3000 zanya</li>
+                            <li>$5000 KAHLAL, materiales</li>
+                            <li>$2000 torre120, mano de obra</li>
+                        </ul>
+                        <p class="text-danger-strong mb-0">
+                            <strong>Importante:</strong> el nombre de la obra debe coincidir (o parecerse lo suficiente)
+                            con una obra existente. Si la obra no existe, esa linea se omitira.
+                        </p>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
     <template id="retana_web_buildings" name="Retana Web Obras">
         <t t-call="website.layout">
             <t t-set="retana_current_page" t-value="'buildings'"/>
