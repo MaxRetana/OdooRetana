@@ -243,7 +243,8 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
         errors = []
         default_concept = None
 
-        for line_num, line in enumerate(lines, 1):
+        for line_num, raw_line in enumerate(lines, 1):
+            line = self._strip_line_marker(raw_line).strip()
             parsed = self._parse_line(line)
 
             if not parsed:
