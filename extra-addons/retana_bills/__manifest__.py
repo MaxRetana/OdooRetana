@@ -21,7 +21,9 @@
         "views/retana_downpayment_views.xml",
         "views/retana_downpayment_wizard_views.xml",
         "views/retana_bulk_downpayment_wizard_views.xml",
-        "views/retana_send_whatsapp_wizard_views.xml",
+        "views/retana_whatsapp_views.xml",
+        "views/retana_whatsapp_send_wizard_views.xml",
+        "views/res_config_settings_views.xml",
         "views/retana_budget_type_views.xml",
         "views/retana_company_info_views.xml",
         "views/retana_budget_line_views.xml",
@@ -29,7 +31,6 @@
         "views/retana_res_partner.xml",
         "views/retana_type_res_partner_views.xml",
         "views/retana_downpayment_type_concept_views.xml",
-        "views/retana_sent_wh_views.xml",
         "views/menuitems_retana_view.xml",
         "report/retana_budget_report.xml",
         "report/retana_downpayment_list_report.xml",
@@ -38,7 +39,6 @@
     "assets": {
         "web.assets_backend": [
             "retana_bills/static/src/js/retana_bills.js",
-            "retana_bills/static/src/js/whatsapp_action.js",
             "retana_bills/static/src/xml/retana_bills.xml",
             "retana_bills/static/src/css/retana_bills.css",
         ],

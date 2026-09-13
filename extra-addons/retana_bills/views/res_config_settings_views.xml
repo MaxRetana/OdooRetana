@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_retana_whatsapp" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.retana.whatsapp</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Retana WhatsApp" string="Retana WhatsApp" name="retana_whatsapp"
+                     logo="/retana_bills/static/description/icon.png">
+                    <block title="Cuenta de WhatsApp (Green API)" name="retana_whatsapp_setting_container">
+                        <setting id="retana_whatsapp_credentials_setting"
+                                 help="Crea una cuenta gratuita en green-api.com, crea una instancia y copia aquí el ID y el token.">
+                            <field name="retana_green_api_id_instance" placeholder="Ej. 1101123456"/>
+                            <field name="retana_green_api_token" placeholder="Token de la instancia" password="True"/>
+                            <field name="retana_green_api_host" placeholder="https://api.green-api.com"/>
+                            <field name="retana_green_api_media_host" placeholder="(opcional)"/>
+                        </setting>
+                        <setting id="retana_whatsapp_actions_setting"
+                                 help="Vincula tu WhatsApp escaneando el código QR y comprueba el estado de la conexión.">
+                            <button name="action_retana_whatsapp_get_qr" type="object"
+                                    string="Obtener código QR" class="btn-secondary"/>
+                            <button name="action_retana_whatsapp_check_state" type="object"
+                                    string="Comprobar estado" class="btn-secondary"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
