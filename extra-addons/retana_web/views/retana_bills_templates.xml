@@ -114,6 +114,7 @@
                                 <div class="d-grid gap-2">
                                     <a class="btn btn-sm btn-light" href="/retana/budgets">Ver ultimos presupuestos</a>
                                     <a class="btn btn-sm btn-light" href="/retana/downpayments">Ver ultimos anticipos</a>
+                                    <a class="btn btn-sm btn-light" href="/retana/downpayments/bulk">Crear anticipos masivos</a>
                                     <a class="btn btn-sm btn-light" href="/retana/buildings">Ver obras activas</a>
                                 </div>
                             </div>
@@ -378,6 +379,7 @@
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <span class="retana-total-pill">Total: <t t-esc="downpayment_total or 0"/></span>
+                            <a class="btn btn-primary" href="/retana/downpayments/bulk">Crear Anticipos Masivos</a>
                             <a class="btn btn-light border" href="/">Volver al inicio</a>
                         </div>
                     </div>
