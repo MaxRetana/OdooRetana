@@ -6,4 +6,10 @@
         </xpath>
         <xpath expr="//form[contains(@class, 'oe_login_form')]//button[@name='redirect']" position="replace"/>
     </template>
+
+    <template id="retana_auth_totp_customization" inherit_id="auth_totp.auth_totp_form" name="Retana 2FA Custom">
+        <xpath expr="//div[hasclass('oe_login_form')]" position="attributes">
+            <attribute name="class" add="retana-login-form" separator=" "/>
+        </xpath>
+    </template>
 </odoo>
