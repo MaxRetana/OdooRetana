@@ -23,6 +23,10 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
                 if (links.length !== 2) {
                     throw new Error("Las tarjetas deben ser enlaces con el menu de destino");
                 }
+                const icon = document.querySelector(".o_home_app_card .o_home_app_icon");
+                if (getComputedStyle(icon).backgroundColor !== "rgb(255, 0, 0)") {
+                    throw new Error("El icono debe usar el color configurado");
+                }
             },
         },
         {

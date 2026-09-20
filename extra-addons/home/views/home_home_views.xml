@@ -49,6 +49,7 @@
                             <field name="icon_type"/>
                             <field name="fa_icon" placeholder="fa-rocket" invisible="icon_type != 'fontawesome'"/>
                             <field name="custom_icon" invisible="icon_type != 'custom'"/>
+                            <field name="color" widget="color"/>
                             <field name="sequence"/>
                             <field name="groups_ids" widget="many2many_tags" placeholder="Dejar vacío para todos"/>
                         </group>

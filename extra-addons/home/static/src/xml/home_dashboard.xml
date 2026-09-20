@@ -48,9 +48,10 @@
                                t-att-href="appUrl(app)"
                                t-on-click="(ev) => this.onAppClick(ev, app)"
                                t-att-class="{'o_home_app_active': app_index === state.activeIndex}">
-                                <div class="o_home_app_icon mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto">
+                                <div class="o_home_app_icon mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto"
+                                     t-att-style="app.color ? 'background-color: ' + app.color : ''">
                                     <img t-if="app.icon_url" t-att-src="app.icon_url" alt=""/>
-                                    <i t-else="" t-attf-class="fa #{iconClass(app)} text-primary"/>
+                                    <i t-else="" t-attf-class="fa #{iconClass(app)} #{app.color ? 'text-white' : 'text-primary'}"/>
                                 </div>
                                 <span class="fw-bold text-dark text-truncate d-block">
                                     <t t-out="app.name"/>

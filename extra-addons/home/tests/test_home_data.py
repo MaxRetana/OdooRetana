@@ -49,6 +49,11 @@ class TestHomeData(TransactionCase):
         self.assertNotIn('custom_icon', app)
         self.assertRegex(app['icon_url'], rf'^/web/image/home\.home/{self.open_shortcut.id}/custom_icon\?unique=\d+$')
 
+    def test_color_is_returned(self):
+        self.open_shortcut.color = '#FF0000'
+        apps = self.env['home.home'].with_user(self.user).get_home_data()['apps']
+        self.assertEqual(apps[0]['color'], '#FF0000')
+
     def test_can_configure_flag(self):
         self.assertFalse(self.env['home.home'].with_user(self.user).get_home_data()['can_configure'])
         admin = new_test_user(self.env, login='home_data_admin', groups='home.group_home_home_admin')

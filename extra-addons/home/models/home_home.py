@@ -24,6 +24,11 @@ class HomeHome(models.Model):
 
     fa_icon = fields.Char(string="Icono (FontAwesome)", default="fa-th-large")
     
+    color = fields.Char(
+        string="Color de fondo",
+        help="Color (hexadecimal) del recuadro del icono. Vacío para usar el estilo por defecto.",
+    )
+
     custom_icon = fields.Image(string="Imagen Personalizada", max_width=128, max_height=128)
     
     # Seleccionamos el menú raíz (el que aparece en el tablero de Odoo)
@@ -68,6 +73,15 @@ class HomeHome(models.Model):
         if self.fa_icon and not self.fa_icon.startswith('fa-'):
             self.fa_icon = 'fa-' + self.fa_icon
 
+    @api.constrains('color')
+    def _check_color(self):
+        for record in self:
+            if record.color and not re.fullmatch(r'#[0-9a-fA-F]{6}', record.color):
+                raise ValidationError(_(
+                    "El color '%s' no es válido. Usa el formato hexadecimal, por ejemplo: #714B67.",
+                    record.color,
+                ))
+
     @api.constrains('fa_icon')
     def _check_fa_icon(self):
         for record in self:
@@ -107,6 +121,7 @@ class HomeHome(models.Model):
                 'icon_type': shortcut.icon_type,
                 'fa_icon': shortcut.fa_icon,
                 'icon_url': icon_url,
+                'color': shortcut.color or False,
             })
         return {
             'apps': apps,

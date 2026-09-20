@@ -24,6 +24,12 @@ class TestHomeModel(TransactionCase):
         record = self.env['home.home'].create({'name': 'B', 'fa_icon': 'fa-rocket'})
         self.assertEqual(record.fa_icon, 'fa-rocket')
 
+    def test_color_is_validated(self):
+        with self.assertRaises(ValidationError):
+            self.env['home.home'].create({'name': 'A', 'color': 'red; background: url(x)'})
+        record = self.env['home.home'].create({'name': 'B', 'color': '#714B67'})
+        self.assertEqual(record.color, '#714B67')
+
     def test_archived_shortcuts_are_hidden(self):
         record = self.env['home.home'].create({'name': 'A', 'menu_id': self.menu.id})
         record.active = False
