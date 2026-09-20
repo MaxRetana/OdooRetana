@@ -21,4 +21,11 @@
         <field name="implied_ids" eval="[(4, ref('group_home_home_user'))]"/>
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
+
+    <!-- Multiempresa: cada usuario ve los accesos de sus compañías y los que no tienen compañía -->
+    <record id="rule_home_home_company" model="ir.rule">
+        <field name="name">Home: accesos por compañía</field>
+        <field name="model_id" ref="model_home_home"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
 </odoo>

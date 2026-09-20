@@ -1,13 +1,13 @@
 {
     "name": "Home",
     "summary": "Este modulo adaptara un home para visualizar todas las aplicaciones instaladas en el sistema",
-    "description": 
+    "description":
         """
         Este modulo adaptara un home para visualizar todas las aplicaciones instaladas en el sistema, con el fin de facilitar la navegacion y acceso a las mismas.
         """,
-    "author": ["MaxRetana"],
-    "category": "base",
-    "version": "18.1.0",
+    "author": "MaxRetana",
+    "category": "Tools",
+    "version": "17.0.1.0.0",
     "license": "LGPL-3",
     "installable": True,
     "application": True,
@@ -15,13 +15,22 @@
     "data": [
         "security/groups.xml",
         "security/ir.model.access.csv",
+        "data/config_data.xml",
         "views/home_home_views.xml"
     ],
     'assets': {
         'web.assets_backend': [
             'home/static/src/css/home_dashboard.css',
+            'home/static/src/js/home_apps_service.js',
+            'home/static/src/js/home_navbar.js',
             'home/static/src/js/home_dashboard.js',
+            'home/static/src/js/home_systray.js',
             'home/static/src/xml/home_dashboard.xml',
+            'home/static/src/xml/home_systray.xml',
+            'home/static/src/xml/home_navbar.xml',
+        ],
+        'web.assets_tests': [
+            'home/static/tests/tours/*.js',
         ],
     },
 }

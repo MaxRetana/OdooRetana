@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- 1. VISTA KANBAN: Gestión visual de los accesos -->
+    <!-- 1. VISTA LISTA: ordenar los accesos arrastrando -->
+    <record id="view_home_home_tree" model="ir.ui.view">
+        <field name="name">home.home.tree</field>
+        <field name="model">home.home</field>
+        <field name="arch" type="xml">
+            <tree default_order="sequence, id">
+                <header>
+                    <button name="action_sync_apps" type="object" string="Sincronizar aplicaciones"
+                            class="btn-primary" display="always"
+                            help="Crea un acceso por cada aplicación instalada que aún no tenga uno"/>
+                </header>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="menu_id"/>
+                <field name="icon_type" optional="hide"/>
+                <field name="fa_icon" optional="hide"/>
+                <field name="color" widget="color" optional="show"/>
+                <field name="groups_ids" widget="many2many_tags" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                <field name="active" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- 1b. VISTA KANBAN: Gestión visual de los accesos -->
     <record id="view_home_home_kanban" model="ir.ui.view">
         <field name="name">home.home.kanban</field>
         <field name="model">home.home</field>
         <field name="arch" type="xml">
-            <kanban default_order="sequence">
+            <kanban default_order="sequence, id">
                 <field name="id"/>
                 <field name="name"/>
+                <field name="icon_type"/>
                 <field name="fa_icon"/>
+                <field name="color"/>
                 <field name="sequence"/>
                 <templates>
-                    <t t-name="kanban-box"> <!-- Compatibilidad con parser Kanban del entorno actual -->
+                    <t t-name="kanban-box">
                         <div class="oe_kanban_global_click d-flex align-items-center p-3">
-                            <div class="d-flex align-items-center justify-content-center bg-primary-light rounded" style="width: 50px; height: 50px;">
-                                <i t-attf-class="fa #{record.fa_icon.raw_value} fs-2 text-primary"/>
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded overflow-hidden"
+                                 t-attf-style="width: 50px; height: 50px; #{record.color.raw_value ? 'background-color: ' + record.color.raw_value : ''}">
+                                <img t-if="record.icon_type.raw_value === 'custom'"
+                                     t-att-src="kanban_image('home.home', 'custom_icon', record.id.raw_value)"
+                                     class="w-100 h-100 p-1" style="object-fit: contain;" alt="Icono de la aplicación"/>
+                                <i t-else="" t-attf-class="fa #{record.fa_icon.raw_value} fs-2 #{record.color.raw_value ? 'text-white' : 'text-primary'}"/>
                             </div>
                             <div class="ms-3">
                                 <h5 class="mb-0"><field name="name"/></h5>
@@ -28,13 +58,15 @@
         </field>
     </record>
 
-    <!-- 2. VISTA FORMULARIO: Corregida para Odoo 18[cite: 7] -->
+    <!-- 2. VISTA FORMULARIO -->
     <record id="view_home_home_form" model="ir.ui.view">
         <field name="name">home.home.form</field>
         <field name="model">home.home</field>
         <field name="arch" type="xml">
             <form string="Configuración de Acceso Rápido">
+                <field name="active" invisible="1"/>
                 <sheet>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name" placeholder="Ej. Mis Ventas"/></h1>
@@ -43,15 +75,15 @@
                         <group string="Configuración de Acceso">
                             <!-- Seleccionas el ícono que ves en el tablero principal -->
                             <field name="menu_id" options="{'no_create': True, 'no_open': True}"/>
-                            <!-- La acción se calcula sola en el modelo[cite: 3] -->
-                            <field name="action_id" readonly="1" force_save="1"/>
                         </group>
                         <group string="Personalización Visual">
                             <field name="icon_type"/>
                             <field name="fa_icon" placeholder="fa-rocket" invisible="icon_type != 'fontawesome'"/>
                             <field name="custom_icon" invisible="icon_type != 'custom'"/>
+                            <field name="color" widget="color"/>
                             <field name="sequence"/>
                             <field name="groups_ids" widget="many2many_tags" placeholder="Dejar vacío para todos"/>
+                            <field name="company_id" groups="base.group_multi_company" placeholder="Dejar vacío para todas"/>
                         </group>
                     </group>
                 </sheet>
@@ -59,11 +91,11 @@
         </field>
     </record>
 
-    <!-- 3. ACCIÓN DE CONFIGURACIÓN[cite: 7] -->
+    <!-- 3. ACCIÓN DE CONFIGURACIÓN -->
     <record id="action_home_home_config" model="ir.actions.act_window">
         <field name="name">Configurar Accesos Rápidos</field>
         <field name="res_model">home.home</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crea tu primer acceso rápido aquí seleccionando una aplicación instalada.
@@ -71,20 +103,20 @@
         </field>
     </record>
 
-    <!-- 4. ACCIÓN DE CLIENTE: Carga el Dashboard OWL[cite: 7] -->
+    <!-- 4. ACCIÓN DE CLIENTE: Carga el Dashboard OWL -->
     <record id="action_home_home_dashboard" model="ir.actions.client">
         <field name="name">Inicio</field>
         <field name="tag">home_home_dashboard</field>
     </record>
 
-    <!-- 5. MENÚS: Protegidos por los grupos de seguridad[cite: 7] -->
+    <!-- 5. MENÚS: Protegidos por los grupos de seguridad -->
     
-    <!-- Menú Principal: Visible para todos los usuarios con permiso de lectura[cite: 7] -->
+    <!-- Menú Principal: Visible para todos los usuarios internos -->
     <menuitem id="menu_home_home_root" 
             name="Home" 
             action="action_home_home_dashboard" 
-            groups="home.group_home_home_user"
-            web_icon="fa-home,#FFFFFF,#714B67"
+            groups="base.group_user"
+            web_icon="home,static/description/icon.png"
             sequence="1"/>
     
     <menuitem
@@ -94,11 +126,12 @@
         name="Configuración"
         sequence="10"/>
 
-    <!-- Menú de Configuración: Solo para Administradores del Home[cite: 7] -->
+    <!-- Menú de Configuración: Solo para Administradores del Home -->
     <menuitem id="menu_home_home_settings"
             name="Configuración de Home"
             parent="menu_home_home_root_settings"
             action="action_home_home_config"
+            groups="home.group_home_home_admin"
             sequence="100"/>
 
 </odoo>
