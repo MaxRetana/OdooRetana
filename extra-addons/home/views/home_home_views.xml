@@ -114,7 +114,7 @@
             name="Home" 
             action="action_home_home_dashboard" 
             groups="base.group_user"
-            web_icon="fa-home,#FFFFFF,#714B67"
+            web_icon="home,static/description/icon.png"
             sequence="1"/>
     
     <menuitem

@@ -33,3 +33,7 @@ class TestHomeSecurity(TransactionCase):
     def test_home_admin_can_configure(self):
         self.shortcut.with_user(self.home_admin).write({'name': 'Nuevo'})
         self.assertEqual(self.shortcut.name, 'Nuevo')
+
+    def test_home_app_has_an_image_icon(self):
+        menu = self.env.ref('home.menu_home_home_root')
+        self.assertTrue(menu.web_icon_data, "La app Home debe tener un icono de imagen")
