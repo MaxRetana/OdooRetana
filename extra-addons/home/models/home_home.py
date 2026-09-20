@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class HomeHome(models.Model):
     _name = 'home.home'
     _description = 'Accesos Rápidos del Home'
-    _order = 'sequence'
+    _order = 'sequence, id'
 
     _sql_constraints = [
         ('menu_id_unique', 'unique(menu_id)',
@@ -76,3 +76,39 @@ class HomeHome(models.Model):
                     "El icono '%s' no es válido. Usa el formato de FontAwesome, por ejemplo: fa-rocket.",
                     record.fa_icon,
                 ))
+
+    @api.model
+    def get_home_data(self):
+        """Datos que necesita el dashboard para el usuario actual.
+
+        Solo se devuelven los accesos activos cuyo menú es realmente accesible para el
+        usuario y que no estén restringidos a grupos a los que no pertenece. La imagen
+        personalizada no se envía en base64: se entrega una URL con un parámetro que
+        cambia cuando se modifica el registro, para invalidar la caché del navegador.
+        """
+        shortcuts = self.search([('menu_id', '!=', False)])
+        # ir.ui.menu.search solo devuelve los menús visibles para el usuario actual
+        accessible_menus = self.env['ir.ui.menu'].search([('id', 'in', shortcuts.menu_id.ids)])
+        user_groups = self.env.user.groups_id
+        apps = []
+        for shortcut in shortcuts:
+            if shortcut.menu_id not in accessible_menus:
+                continue
+            if shortcut.groups_ids and not (shortcut.groups_ids & user_groups):
+                continue
+            icon_url = False
+            if shortcut.icon_type == 'custom' and shortcut.custom_icon:
+                version = int(shortcut.write_date.timestamp()) if shortcut.write_date else 0
+                icon_url = f'/web/image/home.home/{shortcut.id}/custom_icon?unique={version}'
+            apps.append({
+                'id': shortcut.id,
+                'name': shortcut.name,
+                'menu_id': shortcut.menu_id.id,
+                'icon_type': shortcut.icon_type,
+                'fa_icon': shortcut.fa_icon,
+                'icon_url': icon_url,
+            })
+        return {
+            'apps': apps,
+            'can_configure': self.env.user.has_group('home.group_home_home_admin'),
+        }
