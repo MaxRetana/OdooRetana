@@ -1,13 +1,13 @@
 {
     "name": "Home",
     "summary": "Este modulo adaptara un home para visualizar todas las aplicaciones instaladas en el sistema",
-    "description": 
+    "description":
         """
         Este modulo adaptara un home para visualizar todas las aplicaciones instaladas en el sistema, con el fin de facilitar la navegacion y acceso a las mismas.
         """,
-    "author": ["MaxRetana"],
-    "category": "base",
-    "version": "18.1.0",
+    "author": "MaxRetana",
+    "category": "Tools",
+    "version": "17.0.1.0.0",
     "license": "LGPL-3",
     "installable": True,
     "application": True,
