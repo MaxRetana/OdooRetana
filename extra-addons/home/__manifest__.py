@@ -23,5 +23,8 @@
             'home/static/src/js/home_dashboard.js',
             'home/static/src/xml/home_dashboard.xml',
         ],
+        'web.assets_tests': [
+            'home/static/tests/tours/*.js',
+        ],
     },
 }
