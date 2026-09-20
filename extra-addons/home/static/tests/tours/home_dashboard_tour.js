@@ -157,6 +157,16 @@ registry.category("web_tour.tours").add("home_dashboard_link_tour", {
             trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
             run: () => {},
         },
+        {
+            content: "El boton Inicio de la barra superior vuelve al Home",
+            trigger: ".o_main_navbar .o_home_systray_button",
+            run: "click",
+        },
+        {
+            content: "Se muestra el dashboard",
+            trigger: ".o_action_manager .o_home_dashboard .o_home_app_card",
+            run: () => {},
+        },
     ],
 });
 
