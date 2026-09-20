@@ -15,6 +15,7 @@
     "data": [
         "security/groups.xml",
         "security/ir.model.access.csv",
+        "data/config_data.xml",
         "views/home_home_views.xml"
     ],
     'assets': {

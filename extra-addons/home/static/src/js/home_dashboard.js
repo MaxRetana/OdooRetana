@@ -138,7 +138,14 @@ export class HomeDashboard extends Component {
     }
 
     appUrl(app) {
-        return `/web#menu_id=${app.menu_id}`;
+        // Igual que el navbar de Odoo: sin "action", la acción de inicio del usuario
+        // (que puede ser este mismo Home) tendría prioridad sobre el menú.
+        const menu = this.menu.getMenu(app.menu_id);
+        const parts = [`menu_id=${app.menu_id}`];
+        if (menu && menu.actionID) {
+            parts.push(`action=${menu.actionID}`);
+        }
+        return `/web#${parts.join("&")}`;
     }
 
     onAppClick(ev, app) {

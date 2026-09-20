@@ -31,7 +31,8 @@ class TestHomeDashboardTour(HttpCase):
 
     def test_card_link_opens_the_app_directly(self):
         menu = self.env['ir.ui.menu'].search([('name', '=', 'Menu A')])
-        self.start_tour(f'/web#menu_id={menu.id}', 'home_dashboard_link_tour', login='admin')
+        action = self.env.ref('base.action_partner_form')
+        self.start_tour(f'/web#menu_id={menu.id}&action={action.id}', 'home_dashboard_link_tour', login='admin')
 
     def test_config_views_tour(self):
         self.start_tour('/web#action=home.action_home_home_config', 'home_config_views_tour', login='admin')
@@ -54,3 +55,29 @@ class TestHomeDashboardEmptyTour(HttpCase):
 
     def test_sync_from_empty_dashboard_tour(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_sync_tour', login='admin')
+
+
+@tagged('post_install', '-at_install')
+class TestHomeLanding(HttpCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        action = cls.env.ref('base.action_partner_form')
+        # Una app que por orden sería la primera: sin el Home como inicio, Odoo abriría esta
+        cls.env['ir.ui.menu'].create({
+            'name': 'Primera App', 'sequence': 0, 'action': f'ir.actions.act_window,{action.id}',
+        })
+        cls.env['home.home'].search([]).write({'active': False})
+        cls.user = new_test_user(cls.env, login='home_landing_user', groups='base.group_user')
+
+    def test_home_is_the_landing_page(self):
+        self.start_tour('/web', 'home_landing_tour', login='home_landing_user')
+
+    def test_landing_can_be_disabled(self):
+        self.env['ir.config_parameter'].set_param('home.use_as_landing', 'False')
+        self.start_tour('/web', 'home_no_landing_tour', login='home_landing_user')
+
+    def test_personal_home_action_is_respected(self):
+        self.user.action_id = self.env.ref('base.action_partner_form').id
+        self.start_tour('/web', 'home_no_landing_tour', login='home_landing_user')

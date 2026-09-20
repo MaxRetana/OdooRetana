@@ -19,7 +19,14 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
             trigger: ".o_home_dashboard .o_home_app_card:contains('Configuración Test')",
             run: () => {
                 assertCardCount(2)();
-                const links = document.querySelectorAll(".o_home_dashboard a.o_home_app_card[href^='/web#menu_id=']");
+                const links = document.querySelectorAll(
+                    ".o_home_dashboard a.o_home_app_card[href^='/web#menu_id=']"
+                );
+                for (const link of links) {
+                    if (!/^\/web#menu_id=\d+&action=\d+$/.test(link.getAttribute("href"))) {
+                        throw new Error("El enlace debe incluir menu_id y action: " + link.getAttribute("href"));
+                    }
+                }
                 if (links.length !== 2) {
                     throw new Error("Las tarjetas deben ser enlaces con el menu de destino");
                 }
@@ -202,6 +209,32 @@ registry.category("web_tour.tours").add("home_dashboard_sync_tour", {
                 const names = [...document.querySelectorAll(".o_home_app_card")].map((el) => el.textContent.trim());
                 if (names.includes("Home")) {
                     throw new Error("El Home no debe tener acceso a si mismo");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_landing_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "Al entrar a /web se abre el Home",
+            trigger: ".o_action_manager .o_home_dashboard",
+            run: () => {},
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_no_landing_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "Con la opcion desactivada (o accion propia) se abre otra pantalla",
+            trigger: ".o_action_manager .o_control_panel",
+            run: () => {
+                if (document.querySelector(".o_home_dashboard")) {
+                    throw new Error("No deberia abrirse el Home");
                 }
             },
         },
