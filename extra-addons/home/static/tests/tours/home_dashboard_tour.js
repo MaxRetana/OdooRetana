@@ -4,7 +4,7 @@ import { registry } from "@web/core/registry";
 
 function assertCardCount(expected) {
     return () => {
-        const count = document.querySelectorAll(".o_home_dashboard .app-card").length;
+        const count = document.querySelectorAll(".o_home_dashboard .o_home_app_card").length;
         if (count !== expected) {
             throw new Error(`Se esperaban ${expected} tarjetas y hay ${count}`);
         }
@@ -16,10 +16,10 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
     steps: () => [
         {
             content: "Solo se muestran los accesos permitidos para el usuario",
-            trigger: ".o_home_dashboard .app-card:contains('Configuración Test')",
+            trigger: ".o_home_dashboard .o_home_app_card:contains('Configuración Test')",
             run: () => {
                 assertCardCount(2)();
-                const links = document.querySelectorAll(".o_home_dashboard a.app-card[href^='/web#menu_id=']");
+                const links = document.querySelectorAll(".o_home_dashboard a.o_home_app_card[href^='/web#menu_id=']");
                 if (links.length !== 2) {
                     throw new Error("Las tarjetas deben ser enlaces con el menu de destino");
                 }
@@ -57,7 +57,7 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
         },
         {
             content: "Solo queda la tarjeta con acento",
-            trigger: ".o_home_dashboard .app-card:contains('Configuración Test')",
+            trigger: ".o_home_dashboard .o_home_app_card:contains('Configuración Test')",
             run: assertCardCount(1),
         },
         {
@@ -81,7 +81,7 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
         },
         {
             content: "Vuelven a verse todas las tarjetas",
-            trigger: ".o_home_dashboard .app-card:contains('Aplicaciones Test')",
+            trigger: ".o_home_dashboard .o_home_app_card:contains('Aplicaciones Test')",
             run: assertCardCount(2),
         },
         {
@@ -91,7 +91,7 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
         },
         {
             content: "El resultado resaltado es la unica tarjeta",
-            trigger: ".o_home_dashboard .app-card.o_home_app_active:contains('Aplicaciones Test')",
+            trigger: ".o_home_dashboard .o_home_app_card.o_home_app_active:contains('Aplicaciones Test')",
             run: assertCardCount(1),
         },
         {
@@ -116,7 +116,7 @@ registry.category("web_tour.tours").add("home_dashboard_member_tour", {
     steps: () => [
         {
             content: "Un miembro del grupo ve tambien los accesos restringidos",
-            trigger: ".o_home_dashboard .app-card:contains('Grupo Restringido Test')",
+            trigger: ".o_home_dashboard .o_home_app_card:contains('Grupo Restringido Test')",
             run: assertCardCount(4),
         },
     ],
