@@ -1,6 +1,6 @@
 from odoo import http
 from odoo.http import request
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, UserError
 from datetime import date, timedelta
 
 
@@ -312,6 +312,77 @@ class RetanaBillsWebsiteController(http.Controller):
                 'downpayment_group_options': group_options,
                 'downpayment_pager': downpayment_pager,
                 'downpayment_total': downpayment_total,
+            },
+        )
+
+    @http.route('/retana/downpayments/bulk', type='http', auth='user', website=True, methods=['GET', 'POST'])
+    def retana_downpayments_bulk(self, **post):
+        self._ensure_portal_user()
+
+        bulk_model = request.env['retana.bulk.downpayment.mixin'].sudo()
+        client_model = request.env['res.partner'].sudo()
+
+        default_date = bulk_model.get_default_downpayment_date()
+        client_options = client_model.search([('is_retana_customer', '=', True)], order='name asc')
+
+        message_text = ''
+        found_lines_text = False
+        not_found_lines_text = False
+        client_conflict = False
+        selected_date = default_date
+        selected_client_id = False
+        result = None
+        error_message = None
+
+        if request.httprequest.method == 'POST':
+            message_text = post.get('message_text') or ''
+            form_action = post.get('form_action') or 'preview'
+
+            try:
+                selected_date = date.fromisoformat(post.get('date')) if post.get('date') else default_date
+            except ValueError:
+                selected_date = default_date
+
+            try:
+                selected_client_id = int(post.get('client_id')) if post.get('client_id') else False
+            except (TypeError, ValueError):
+                selected_client_id = False
+
+            analysis = bulk_model.analyze_bulk_message(message_text)
+            message_text = analysis['updated_message']
+            found_lines_text = analysis['found_lines_text']
+            not_found_lines_text = analysis['not_found_lines_text']
+
+            if analysis['suggested_client_id'] and not selected_client_id:
+                selected_client_id = analysis['suggested_client_id']
+
+            client_conflict = bool(
+                analysis['client_conflict']
+                and selected_client_id
+                and selected_client_id not in analysis['found_client_ids']
+            )
+
+            if form_action == 'create' and not client_conflict:
+                try:
+                    created_downpayments, errors = bulk_model.create_bulk_downpayments(
+                        message_text, selected_date, selected_client_id or None,
+                    )
+                    result = {'created': created_downpayments, 'errors': errors}
+                except UserError as exc:
+                    error_message = str(exc)
+
+        return request.render(
+            'retana_web.retana_web_downpayments_bulk',
+            {
+                'bulk_message_text': message_text,
+                'bulk_found_lines_text': found_lines_text,
+                'bulk_not_found_lines_text': not_found_lines_text,
+                'bulk_client_conflict': client_conflict,
+                'bulk_date': selected_date,
+                'bulk_client_id': selected_client_id,
+                'bulk_client_options': client_options,
+                'bulk_result': result,
+                'bulk_error_message': error_message,
             },
         )
 
