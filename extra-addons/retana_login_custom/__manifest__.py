@@ -11,7 +11,7 @@
     "license": "LGPL-3",
     "installable": True,
     "application": True,
-    "depends": ["base", "website", "web"],
+    "depends": ["base", "website", "web", "auth_totp"],
     "data": [
         "views/retana_login_templates.xml",
     ],

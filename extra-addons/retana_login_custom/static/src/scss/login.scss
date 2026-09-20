@@ -1,17 +1,17 @@
-#wrapwrap:has(form.retana-login-form) > header,
-#wrapwrap:has(form.retana-login-form) > footer,
-#wrapwrap:has(form.retana-login-form) #top,
-#wrapwrap:has(form.retana-login-form) #footer {
+#wrapwrap:has(.retana-login-form) > header,
+#wrapwrap:has(.retana-login-form) > footer,
+#wrapwrap:has(.retana-login-form) #top,
+#wrapwrap:has(.retana-login-form) #footer {
     display: none !important;
 }
 
-#wrapwrap:has(form.retana-login-form) {
+#wrapwrap:has(.retana-login-form) {
     min-height: 100vh;
     background: radial-gradient(circle at 86% 10%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 42%),
         linear-gradient(140deg, #0d0d0d 0%, #151515 54%, #1f1f1f 100%);
 }
 
-#wrapwrap:has(form.retana-login-form) > main {
+#wrapwrap:has(.retana-login-form) > main {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -105,8 +105,27 @@
 
 .retana-login-form .oe_login_buttons .small,
 .retana-login-form .oe_login_buttons a,
+.retana-login-form .btn.btn-link,
+.retana-login-form .text-muted,
+.retana-login-form .text-muted a,
 .retana-login-note {
-    color: #475569;
+    color: #475569 !important;
+}
+
+.retana-login-form a:hover,
+.retana-login-form .btn.btn-link:hover {
+    color: #111 !important;
+}
+
+.retana-login-form label.fw-bold {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: #1f2937;
+}
+
+.retana-login-form .card-title {
+    font-weight: 700;
+    color: #111;
 }
 
 .retana-login-form .oe_login_buttons .justify-content-between {
@@ -123,7 +142,7 @@
 }
 
 @media (max-width: 767.98px) {
-    #wrapwrap:has(form.retana-login-form) > main {
+    #wrapwrap:has(.retana-login-form) > main {
         padding: 0.75rem;
     }
 
