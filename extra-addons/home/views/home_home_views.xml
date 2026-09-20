@@ -33,7 +33,9 @@
         <field name="model">home.home</field>
         <field name="arch" type="xml">
             <form string="Configuración de Acceso Rápido">
+                <field name="active" invisible="1"/>
                 <sheet>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name" placeholder="Ej. Mis Ventas"/></h1>

@@ -1,10 +1,19 @@
-from odoo import models, fields, api
+import re
+
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 class HomeHome(models.Model):
     _name = 'home.home'
     _description = 'Accesos Rápidos del Home'
     _order = 'sequence'
 
+    _sql_constraints = [
+        ('menu_id_unique', 'unique(menu_id)',
+         'Ya existe un acceso rápido para ese menú.'),
+    ]
+
+    active = fields.Boolean(default=True)
     name = fields.Char(string="Etiqueta de la App", required=True, translate=True)
     sequence = fields.Integer(default=10)
     
@@ -45,3 +54,12 @@ class HomeHome(models.Model):
     def _onchange_fa_icon(self):
         if self.fa_icon and not self.fa_icon.startswith('fa-'):
             self.fa_icon = 'fa-' + self.fa_icon
+
+    @api.constrains('fa_icon')
+    def _check_fa_icon(self):
+        for record in self:
+            if record.fa_icon and not re.fullmatch(r'fa-[a-z0-9-]+', record.fa_icon):
+                raise ValidationError(_(
+                    "El icono '%s' no es válido. Usa el formato de FontAwesome, por ejemplo: fa-rocket.",
+                    record.fa_icon,
+                ))
