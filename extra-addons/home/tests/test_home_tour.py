@@ -32,3 +32,15 @@ class TestHomeDashboardTour(HttpCase):
     def test_dashboard_tour_member(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_member_tour',
                         login='home_tour_member')
+
+
+@tagged('post_install', '-at_install')
+class TestHomeDashboardEmptyTour(HttpCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env['home.home'].search([]).write({'active': False})
+
+    def test_empty_dashboard_tour(self):
+        self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_empty_tour', login='admin')

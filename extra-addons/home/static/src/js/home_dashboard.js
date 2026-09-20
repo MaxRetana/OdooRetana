@@ -14,6 +14,7 @@ export class HomeDashboard extends Component {
     static template = "home.HomeDashboardMain";
 
     setup() {
+        this.action = useService("action");
         this.menu = useService("menu");
         this.orm = useService("orm");
         this.notification = useService("notification");
@@ -125,6 +126,10 @@ export class HomeDashboard extends Component {
                 this.state.activeIndex = -1;
                 break;
         }
+    }
+
+    openConfiguration() {
+        return this.action.doAction("home.action_home_home_config");
     }
 
     async openApp(app) {

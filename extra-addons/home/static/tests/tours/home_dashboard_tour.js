@@ -55,6 +55,16 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
             run: assertCardCount(1),
         },
         {
+            content: "Sin coincidencias se muestra un mensaje",
+            trigger: ".o_home_dashboard input",
+            run: "text zzzz",
+        },
+        {
+            content: "Mensaje de sin resultados",
+            trigger: ".o_home_dashboard .o_home_no_results:contains('zzzz')",
+            run: assertCardCount(0),
+        },
+        {
             content: "Escape limpia la busqueda",
             trigger: ".o_home_dashboard input",
             run: () => {
@@ -102,6 +112,22 @@ registry.category("web_tour.tours").add("home_dashboard_member_tour", {
             content: "Un miembro del grupo ve tambien los accesos restringidos",
             trigger: ".o_home_dashboard .app-card:contains('Grupo Restringido Test')",
             run: assertCardCount(4),
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_dashboard_empty_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "Sin accesos se muestra el estado vacio con boton para el administrador",
+            trigger: ".o_home_dashboard .o_home_empty button:contains('Configurar accesos')",
+            run: "click",
+        },
+        {
+            content: "Se abre la configuracion",
+            trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
+            run: () => {},
         },
     ],
 });
