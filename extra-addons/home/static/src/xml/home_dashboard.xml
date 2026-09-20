@@ -5,7 +5,8 @@
             <div class="container-fluid p-5">
 
                 <div class="text-center mb-5 mt-4">
-                    <h2 class="fw-bold text-dark">¿Qué vamos a hacer hoy?</h2>
+                    <h2 class="fw-bold text-dark">Hola, <t t-out="userFirstName"/></h2>
+                    <p class="fs-5 text-muted mb-0">¿Qué vamos a hacer hoy?</p>
                     <div class="d-flex justify-content-center mt-4">
                         <div class="o_home_search input-group shadow-sm">
                             <span class="input-group-text bg-white border-end-0 ps-4">
@@ -42,26 +43,45 @@
                     Sin resultados para «<t t-out="state.searchTerm"/>».
                 </div>
 
+                <t t-if="recentApps.length">
+                    <h6 class="o_home_section_title text-muted text-uppercase text-center mb-3">Recientes</h6>
+                    <div class="o_home_recents row g-4 justify-content-center mb-5">
+                        <t t-foreach="recentApps" t-as="app" t-key="app.id">
+                            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                                <t t-call="home.HomeAppCard"/>
+                            </div>
+                        </t>
+                    </div>
+                    <h6 class="o_home_section_title text-muted text-uppercase text-center mb-3">Aplicaciones</h6>
+                </t>
+
                 <div class="row g-4 justify-content-center">
                     <t t-foreach="filteredApps" t-as="app" t-key="app.id">
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                            <a class="o_home_app_card p-4 h-100 d-block text-decoration-none"
-                               t-att-href="appUrl(app)"
-                               t-on-click="(ev) => this.onAppClick(ev, app)"
-                               t-att-class="{'o_home_app_active': app_index === state.activeIndex}">
-                                <div class="o_home_app_icon mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto"
-                                     t-att-style="app.color ? 'background-color: ' + app.color : ''">
-                                    <img t-if="app.icon_url" t-att-src="app.icon_url" alt=""/>
-                                    <i t-else="" t-attf-class="fa #{iconClass(app)} #{app.color ? 'text-white' : 'text-primary'}"/>
-                                </div>
-                                <span class="fw-bold text-dark text-truncate d-block">
-                                    <t t-out="app.name"/>
-                                </span>
-                            </a>
+                            <t t-call="home.HomeAppCard">
+                                <t t-set="active" t-value="app_index === state.activeIndex"/>
+                            </t>
                         </div>
                     </t>
                 </div>
             </div>
         </div>
+    </t>
+
+    <!-- Tarjeta de una aplicación: espera "app" y opcionalmente "active" en el contexto -->
+    <t t-name="home.HomeAppCard">
+        <a class="o_home_app_card p-4 h-100 d-block text-decoration-none"
+           t-att-href="appUrl(app)"
+           t-on-click="(ev) => this.onAppClick(ev, app)"
+           t-att-class="{'o_home_app_active': active}">
+            <div class="o_home_app_icon mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto"
+                 t-att-style="app.color ? 'background-color: ' + app.color : ''">
+                <img t-if="app.icon_url" t-att-src="app.icon_url" alt=""/>
+                <i t-else="" t-attf-class="fa #{iconClass(app)} #{app.color ? 'text-white' : 'text-primary'}"/>
+            </div>
+            <span class="fw-bold text-dark text-truncate d-block">
+                <t t-out="app.name"/>
+            </span>
+        </a>
     </t>
 </templates>

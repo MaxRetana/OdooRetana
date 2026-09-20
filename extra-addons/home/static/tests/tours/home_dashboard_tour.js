@@ -19,6 +19,12 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
             trigger: ".o_home_dashboard .o_home_app_card:contains('Configuración Test')",
             run: () => {
                 assertCardCount(2)();
+                if (!document.querySelector(".o_home_dashboard h2").textContent.startsWith("Hola, ")) {
+                    throw new Error("El saludo debe incluir el nombre del usuario");
+                }
+                if (document.querySelector(".o_home_recents")) {
+                    throw new Error("Sin uso previo no debe haber recientes");
+                }
                 const links = document.querySelectorAll(
                     ".o_home_dashboard a.o_home_app_card[href^='/web#menu_id=']"
                 );
@@ -117,6 +123,16 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
         {
             content: "El dashboard desaparece al abrir la app",
             trigger: "body:not(:has(.o_home_dashboard))",
+            run: () => {},
+        },
+        {
+            content: "Volver al Home con el boton de la barra superior",
+            trigger: ".o_main_navbar .o_home_systray_button",
+            run: "click",
+        },
+        {
+            content: "La app abierta aparece en Recientes",
+            trigger: ".o_home_dashboard .o_home_recents .o_home_app_card:contains('Aplicaciones Test')",
             run: () => {},
         },
     ],
