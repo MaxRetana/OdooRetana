@@ -19,6 +19,7 @@
                 <field name="fa_icon" optional="hide"/>
                 <field name="color" widget="color" optional="show"/>
                 <field name="groups_ids" widget="many2many_tags" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
                 <field name="active" column_invisible="1"/>
             </tree>
         </field>
@@ -82,6 +83,7 @@
                             <field name="color" widget="color"/>
                             <field name="sequence"/>
                             <field name="groups_ids" widget="many2many_tags" placeholder="Dejar vacío para todos"/>
+                            <field name="company_id" groups="base.group_multi_company" placeholder="Dejar vacío para todas"/>
                         </group>
                     </group>
                 </sheet>

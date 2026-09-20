@@ -43,6 +43,12 @@ class HomeHome(models.Model):
     )
 
     groups_ids = fields.Many2many('res.groups', string="Grupos permitidos")
+
+    company_id = fields.Many2one(
+        'res.company',
+        string="Compañía",
+        help="Si se define, el acceso solo se muestra en esa compañía. Vacío para todas.",
+    )
                 
     @api.model
     def _get_icon_values_from_menu(self, menu):

@@ -54,6 +54,18 @@ class TestHomeData(TransactionCase):
         apps = self.env['home.home'].with_user(self.user).get_home_data()['apps']
         self.assertEqual(apps[0]['color'], '#FF0000')
 
+    def test_company_restriction(self):
+        company = self.env['res.company'].create({'name': 'Otra Compañía'})
+        self.open_shortcut.company_id = company
+        # El usuario solo está en la compañía por defecto: no ve el acceso de otra compañía
+        self.assertEqual(self._names(self.user), [])
+        self.assertEqual(self._names(self.member), ['Menu restringido'])
+        # Con acceso a esa compañía (y activándola) sí lo ve
+        self.user.company_ids = [(4, company.id)]
+        user = self.user.with_context(allowed_company_ids=(self.user.company_id | company).ids)
+        names = [app['name'] for app in self.env['home.home'].with_user(user).get_home_data()['apps']]
+        self.assertEqual(names, ['Abierto'])
+
     def test_can_configure_flag(self):
         self.assertFalse(self.env['home.home'].with_user(self.user).get_home_data()['can_configure'])
         admin = new_test_user(self.env, login='home_data_admin', groups='home.group_home_home_admin')
