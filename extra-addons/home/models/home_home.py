@@ -39,17 +39,30 @@ class HomeHome(models.Model):
 
     groups_ids = fields.Many2many('res.groups', string="Grupos permitidos")
                 
+    @api.model
+    def _get_icon_values_from_menu(self, menu):
+        """Devuelve los valores de icono equivalentes al icono original del menú.
+
+        - Si el web_icon del menú es una clase FontAwesome ('fa-xxx,color,fondo'), se usa tal cual.
+        - Si el menú tiene una imagen (web_icon_data), se copia como imagen personalizada.
+        - En otro caso no se sugiere nada y se conserva el icono actual.
+        """
+        icon_parts = (menu.web_icon or '').split(',')
+        if icon_parts[0].startswith('fa-'):
+            return {'icon_type': 'fontawesome', 'fa_icon': icon_parts[0]}
+        if menu.web_icon_data:
+            return {'icon_type': 'custom', 'custom_icon': menu.web_icon_data}
+        return {}
+
     @api.onchange('menu_id')
     def _onchange_menu_id(self):
-        if self.menu_id:
-            # Sugerimos el nombre y el icono original del menú de Odoo
+        if not self.menu_id:
+            return
+        # No pisar una etiqueta que el usuario ya personalizó
+        if not self.name or self.name == self._origin.menu_id.name:
             self.name = self.menu_id.name
-            if self.menu_id.web_icon:
-                # El formato de web_icon suele ser 'icono,color,fondo' o una clase fa
-                icon_parts = self.menu_id.web_icon.split(',')
-                if len(icon_parts) > 0 and 'fa-' in icon_parts[0]:
-                    self.fa_icon = icon_parts[0]
-    
+        self.update(self._get_icon_values_from_menu(self.menu_id))
+
     @api.onchange('fa_icon')
     def _onchange_fa_icon(self):
         if self.fa_icon and not self.fa_icon.startswith('fa-'):
