@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, onWillStart, useState, onMounted, onWillUnmount, useRef } from "@odoo/owl";
+import { Component, onWillStart, useExternalListener, useState, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
@@ -13,8 +13,7 @@ export class HomeDashboard extends Component {
         this.orm = useService("orm");
         this.notification = useService("notification");
         this.searchInputRef = useRef("searchInput"); // Referencia para el input
-        this.boundWindowKeydown = this.onWindowKeydown.bind(this);
-        
+
         this.state = useState({ 
             apps: [],
             canConfigure: false,
@@ -24,14 +23,8 @@ export class HomeDashboard extends Component {
 
         onWillStart(() => this.loadApps());
 
-        // Detectar teclado globalmente
-        onMounted(() => {
-            window.addEventListener("keydown", this.boundWindowKeydown);
-        });
-
-        onWillUnmount(() => {
-            window.removeEventListener("keydown", this.boundWindowKeydown);
-        });
+        // Detectar teclado globalmente (owl lo desregistra solo al destruir el componente)
+        useExternalListener(window, "keydown", this.onWindowKeydown);
     }
 
     async loadApps() {
@@ -54,15 +47,24 @@ export class HomeDashboard extends Component {
     }
 
     onWindowKeydown(ev) {
-        const inputEl = this.searchInputRef && this.searchInputRef.el;
-        if (!inputEl) {
+        const inputEl = this.searchInputRef.el;
+        if (!inputEl || ev.defaultPrevented) {
             return;
         }
-
-        // Si el usuario presiona una tecla alfanumérica y no está ya en el input
-        if (ev.key.length === 1 && document.activeElement !== inputEl) {
-            inputEl.focus();
+        // Respetar atajos del navegador/sistema (Ctrl+C, Cmd+R, Alt+...) y teclas no imprimibles
+        if (ev.ctrlKey || ev.metaKey || ev.altKey || ev.key.length !== 1) {
+            return;
         }
+        // No robar el foco si el usuario ya escribe en otro campo o hay un diálogo abierto
+        const target = ev.target;
+        if (target !== inputEl && target instanceof Element) {
+            const isEditable =
+                target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
+            if (isEditable || target.closest(".modal")) {
+                return;
+            }
+        }
+        inputEl.focus();
     }
 
     get filteredApps() {

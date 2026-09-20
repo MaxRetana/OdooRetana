@@ -20,6 +20,31 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
             run: assertCardCount(2),
         },
         {
+            content: "Ctrl+tecla no roba el foco hacia el buscador",
+            trigger: ".o_home_dashboard input",
+            run: () => {
+                const input = document.querySelector(".o_home_dashboard input");
+                input.blur();
+                document.body.dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "c", ctrlKey: true, bubbles: true })
+                );
+                if (document.activeElement === input) {
+                    throw new Error("Ctrl+C no debe enfocar el buscador");
+                }
+            },
+        },
+        {
+            content: "Escribir una letra en cualquier parte enfoca el buscador",
+            trigger: ".o_home_dashboard input",
+            run: () => {
+                const input = document.querySelector(".o_home_dashboard input");
+                document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "a", bubbles: true }));
+                if (document.activeElement !== input) {
+                    throw new Error("Una letra debe enfocar el buscador");
+                }
+            },
+        },
+        {
             content: "Buscar filtra las aplicaciones",
             trigger: ".o_home_dashboard input",
             run: "text Aplicaciones",
