@@ -78,11 +78,11 @@
 
     <!-- 5. MENÚS: Protegidos por los grupos de seguridad -->
     
-    <!-- Menú Principal: Visible para todos los usuarios con permiso de lectura -->
+    <!-- Menú Principal: Visible para todos los usuarios internos -->
     <menuitem id="menu_home_home_root" 
             name="Home" 
             action="action_home_home_dashboard" 
-            groups="home.group_home_home_user"
+            groups="base.group_user"
             web_icon="fa-home,#FFFFFF,#714B67"
             sequence="1"/>
     
@@ -98,6 +98,7 @@
             name="Configuración de Home"
             parent="menu_home_home_root_settings"
             action="action_home_home_config"
+            groups="home.group_home_home_admin"
             sequence="100"/>
 
 </odoo>
