@@ -43,18 +43,6 @@
                     Sin resultados para «<t t-out="state.searchTerm"/>».
                 </div>
 
-                <t t-if="recentApps.length">
-                    <h6 class="o_home_section_title text-muted text-uppercase text-center mb-3">Recientes</h6>
-                    <div class="o_home_recents row g-4 justify-content-center mb-5">
-                        <t t-foreach="recentApps" t-as="app" t-key="app.id">
-                            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                                <t t-call="home.HomeAppCard"/>
-                            </div>
-                        </t>
-                    </div>
-                    <h6 class="o_home_section_title text-muted text-uppercase text-center mb-3">Aplicaciones</h6>
-                </t>
-
                 <div class="row g-4 justify-content-center">
                     <t t-foreach="filteredApps" t-as="app" t-key="app.id">
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">

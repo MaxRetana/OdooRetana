@@ -3,11 +3,8 @@
 import { registry } from "@web/core/registry";
 import { Component, onWillStart, useEffect, useExternalListener, useState, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 import { session } from "@web/session";
-
-const RECENT_LIMIT = 4;
 
 // Normaliza para comparar sin importar mayúsculas ni acentos ("Configuración" -> "configuracion")
 function normalize(text) {
@@ -30,7 +27,6 @@ export class HomeDashboard extends Component {
             loadError: false,
             searchTerm: "",
             activeIndex: -1, // tarjeta resaltada con el teclado (-1: ninguna)
-            recentIds: this.readRecentIds(),
         });
 
         onWillStart(() => this.loadApps());
@@ -50,40 +46,6 @@ export class HomeDashboard extends Component {
 
     get userFirstName() {
         return (session.name || "").split(" ")[0];
-    }
-
-    // --- Accesos recientes (por usuario, guardados solo en este navegador) ---
-
-    get recentStorageKey() {
-        return `home.recent_apps.${session.uid}`;
-    }
-
-    readRecentIds() {
-        try {
-            const ids = JSON.parse(browser.localStorage.getItem(this.recentStorageKey));
-            return Array.isArray(ids) ? ids : [];
-        } catch {
-            return [];
-        }
-    }
-
-    saveRecent(app) {
-        const ids = [app.id, ...this.state.recentIds.filter((id) => id !== app.id)];
-        this.state.recentIds = ids.slice(0, RECENT_LIMIT);
-        try {
-            browser.localStorage.setItem(this.recentStorageKey, JSON.stringify(this.state.recentIds));
-        } catch {
-            // Sin almacenamiento disponible (modo privado, etc.): los recientes solo duran la sesión
-        }
-    }
-
-    get recentApps() {
-        if (this.state.searchTerm) {
-            return [];
-        }
-        return this.state.recentIds
-            .map((id) => this.state.apps.find((app) => app.id === id))
-            .filter(Boolean);
     }
 
     async loadApps() {
@@ -202,7 +164,6 @@ export class HomeDashboard extends Component {
 
     async openApp(app) {
         if (app.menu_id) {
-            this.saveRecent(app);
             await this.menu.selectMenu(app.menu_id);
         }
     }
