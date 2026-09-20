@@ -44,7 +44,7 @@
                                  t-attf-style="width: 50px; height: 50px; #{record.color.raw_value ? 'background-color: ' + record.color.raw_value : ''}">
                                 <img t-if="record.icon_type.raw_value === 'custom'"
                                      t-att-src="kanban_image('home.home', 'custom_icon', record.id.raw_value)"
-                                     class="w-100 h-100 p-1" style="object-fit: contain;" alt=""/>
+                                     class="w-100 h-100 p-1" style="object-fit: contain;" alt="Icono de la aplicación"/>
                                 <i t-else="" t-attf-class="fa #{record.fa_icon.raw_value} fs-2 #{record.color.raw_value ? 'text-white' : 'text-primary'}"/>
                             </div>
                             <div class="ms-3">
