@@ -128,6 +128,11 @@ export class HomeDashboard extends Component {
         }
     }
 
+    async syncApps() {
+        await this.orm.call("home.home", "action_sync_apps", [[]]);
+        await this.loadApps();
+    }
+
     openConfiguration() {
         return this.action.doAction("home.action_home_home_config");
     }

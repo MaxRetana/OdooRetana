@@ -73,6 +73,35 @@ class HomeHome(models.Model):
         if self.fa_icon and not self.fa_icon.startswith('fa-'):
             self.fa_icon = 'fa-' + self.fa_icon
 
+    def action_sync_apps(self):
+        """Crea un acceso por cada aplicación (menú raíz) que todavía no tenga uno.
+
+        Se ignoran los menús que ya tienen acceso, incluso archivado (para no resucitar
+        los que el administrador quitó a propósito) y el propio menú del Home. La
+        visibilidad real se comprueba al mostrar el dashboard (get_home_data).
+        """
+        self.check_access_rights('create')
+        Menu = self.env['ir.ui.menu'].with_context(**{'ir.ui.menu.full_list': True})
+        existing_menus = self.with_context(active_test=False).search([]).menu_id
+        home_menu = self.env.ref('home.menu_home_home_root', raise_if_not_found=False)
+        root_menus = Menu.search([('parent_id', '=', False)], order='sequence, id')
+        vals_list = []
+        for menu in root_menus - existing_menus - home_menu:
+            vals = {'name': menu.name, 'menu_id': menu.id, 'sequence': menu.sequence}
+            vals.update(self._get_icon_values_from_menu(menu))
+            vals_list.append(vals)
+        self.create(vals_list)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _("Aplicaciones sincronizadas"),
+                'message': _("Se crearon %s accesos nuevos.", len(vals_list)),
+                'type': 'success',
+                'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+            },
+        }
+
     @api.constrains('color')
     def _check_color(self):
         for record in self:

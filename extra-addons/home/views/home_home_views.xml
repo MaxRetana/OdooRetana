@@ -7,6 +7,11 @@
         <field name="model">home.home</field>
         <field name="arch" type="xml">
             <tree default_order="sequence, id">
+                <header>
+                    <button name="action_sync_apps" type="object" string="Sincronizar aplicaciones"
+                            class="btn-primary" display="always"
+                            help="Crea un acceso por cada aplicación instalada que aún no tenga uno"/>
+                </header>
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="menu_id"/>

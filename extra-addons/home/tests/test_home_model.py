@@ -1,7 +1,8 @@
 from psycopg2 import IntegrityError
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import Form, TransactionCase, tagged
+from odoo.tests.common import new_test_user
 from odoo.tools import mute_logger
 
 
@@ -66,3 +67,32 @@ class TestHomeModel(TransactionCase):
         with Form(record) as form:
             form.menu_id = self.menu
             self.assertEqual(form.name, 'Personalizado')
+
+    def test_sync_apps_creates_missing_shortcuts_once(self):
+        Home = self.env['home.home']
+        Home.search([]).unlink()
+        root_menus = self.env['ir.ui.menu'].with_context(**{'ir.ui.menu.full_list': True}).search(
+            [('parent_id', '=', False)])
+        home_root = self.env.ref('home.menu_home_home_root')
+        expected = root_menus - home_root
+
+        result = Home.action_sync_apps()
+        self.assertEqual(result['tag'], 'display_notification')
+        created = Home.search([])
+        self.assertEqual(created.menu_id, expected, "Un acceso por app, sin incluir el propio Home")
+        self.assertNotIn(home_root, created.menu_id)
+        settings = created.filtered(lambda h: h.menu_id == self.menu)
+        self.assertEqual(settings.name, self.menu.name)
+        self.assertEqual(settings.icon_type, 'custom')
+        self.assertTrue(settings.custom_icon)
+
+        # Idempotente, y no resucita los accesos archivados a propósito
+        settings.active = False
+        Home.action_sync_apps()
+        self.assertEqual(Home.with_context(active_test=False).search_count([]), len(expected))
+        self.assertFalse(Home.search([('id', '=', settings.id)]))
+
+    def test_sync_apps_requires_create_rights(self):
+        user = new_test_user(self.env, login='home_sync_user', groups='base.group_user')
+        with self.assertRaises(AccessError):
+            self.env['home.home'].with_user(user).action_sync_apps()

@@ -51,3 +51,6 @@ class TestHomeDashboardEmptyTour(HttpCase):
 
     def test_empty_dashboard_tour(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_empty_tour', login='admin')
+
+    def test_sync_from_empty_dashboard_tour(self):
+        self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_sync_tour', login='admin')

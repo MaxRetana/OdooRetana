@@ -183,3 +183,27 @@ registry.category("web_tour.tours").add("home_config_views_tour", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("home_dashboard_sync_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "El administrador puede crear los accesos desde el estado vacio",
+            trigger: ".o_home_dashboard .o_home_empty button:contains('Sincronizar aplicaciones')",
+            run: "click",
+        },
+        {
+            content: "Aparecen las aplicaciones sincronizadas y desaparece el estado vacio",
+            trigger: ".o_home_dashboard .o_home_app_card:contains('Settings')",
+            run: () => {
+                if (document.querySelector(".o_home_dashboard .o_home_empty")) {
+                    throw new Error("El estado vacio no deberia mostrarse");
+                }
+                const names = [...document.querySelectorAll(".o_home_app_card")].map((el) => el.textContent.trim());
+                if (names.includes("Home")) {
+                    throw new Error("El Home no debe tener acceso a si mismo");
+                }
+            },
+        },
+    ],
+});
