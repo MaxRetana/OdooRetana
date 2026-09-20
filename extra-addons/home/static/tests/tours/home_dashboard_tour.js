@@ -135,8 +135,8 @@ registry.category("web_tour.tours").add("home_dashboard_empty_tour", {
             run: "click",
         },
         {
-            content: "Se abre la configuracion",
-            trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
+            content: "Se abre la configuracion en vista de lista",
+            trigger: ".o_action_manager .o_list_view",
             run: () => {},
         },
     ],
@@ -148,6 +148,37 @@ registry.category("web_tour.tours").add("home_dashboard_link_tour", {
         {
             content: "El enlace de una tarjeta abre directamente la aplicacion",
             trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
+            run: () => {},
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_config_views_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "La lista de configuracion permite ordenar arrastrando",
+            trigger: ".o_action_manager .o_list_view .o_row_handle",
+            run: () => {},
+        },
+        {
+            content: "Cambiar a la vista kanban",
+            trigger: ".o_cp_switch_buttons .o_switch_view.o_kanban",
+            run: "click",
+        },
+        {
+            content: "El kanban muestra los accesos con su icono",
+            trigger: ".o_kanban_view .o_kanban_record:contains('Configuración Test') .fa",
+            run: () => {},
+        },
+        {
+            content: "Abrir un acceso muestra el formulario con el color",
+            trigger: ".o_kanban_view .o_kanban_record:contains('Configuración Test')",
+            run: "click",
+        },
+        {
+            content: "Formulario de configuracion",
+            trigger: ".o_form_view .o_field_widget[name='color']",
             run: () => {},
         },
     ],

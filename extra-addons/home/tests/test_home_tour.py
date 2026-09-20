@@ -33,6 +33,9 @@ class TestHomeDashboardTour(HttpCase):
         menu = self.env['ir.ui.menu'].search([('name', '=', 'Menu A')])
         self.start_tour(f'/web#menu_id={menu.id}', 'home_dashboard_link_tour', login='admin')
 
+    def test_config_views_tour(self):
+        self.start_tour('/web#action=home.action_home_home_config', 'home_config_views_tour', login='admin')
+
     def test_dashboard_tour_member(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_member_tour',
                         login='home_tour_member')

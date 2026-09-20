@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- 1. VISTA KANBAN: Gestión visual de los accesos -->
+    <!-- 1. VISTA LISTA: ordenar los accesos arrastrando -->
+    <record id="view_home_home_tree" model="ir.ui.view">
+        <field name="name">home.home.tree</field>
+        <field name="model">home.home</field>
+        <field name="arch" type="xml">
+            <tree default_order="sequence, id">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="menu_id"/>
+                <field name="icon_type" optional="hide"/>
+                <field name="fa_icon" optional="hide"/>
+                <field name="color" widget="color" optional="show"/>
+                <field name="groups_ids" widget="many2many_tags" optional="show"/>
+                <field name="active" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- 1b. VISTA KANBAN: Gestión visual de los accesos -->
     <record id="view_home_home_kanban" model="ir.ui.view">
         <field name="name">home.home.kanban</field>
         <field name="model">home.home</field>
         <field name="arch" type="xml">
-            <kanban default_order="sequence">
+            <kanban default_order="sequence, id">
+                <field name="id"/>
                 <field name="name"/>
+                <field name="icon_type"/>
                 <field name="fa_icon"/>
+                <field name="color"/>
                 <field name="sequence"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click d-flex align-items-center p-3">
-                            <div class="d-flex align-items-center justify-content-center bg-primary-light rounded" style="width: 50px; height: 50px;">
-                                <i t-attf-class="fa #{record.fa_icon.raw_value} fs-2 text-primary"/>
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded overflow-hidden"
+                                 t-attf-style="width: 50px; height: 50px; #{record.color.raw_value ? 'background-color: ' + record.color.raw_value : ''}">
+                                <img t-if="record.icon_type.raw_value === 'custom'"
+                                     t-att-src="kanban_image('home.home', 'custom_icon', record.id.raw_value)"
+                                     class="w-100 h-100 p-1" style="object-fit: contain;" alt=""/>
+                                <i t-else="" t-attf-class="fa #{record.fa_icon.raw_value} fs-2 #{record.color.raw_value ? 'text-white' : 'text-primary'}"/>
                             </div>
                             <div class="ms-3">
                                 <h5 class="mb-0"><field name="name"/></h5>
@@ -63,7 +88,7 @@
     <record id="action_home_home_config" model="ir.actions.act_window">
         <field name="name">Configurar Accesos Rápidos</field>
         <field name="res_model">home.home</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crea tu primer acceso rápido aquí seleccionando una aplicación instalada.
