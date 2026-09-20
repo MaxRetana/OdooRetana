@@ -34,6 +34,9 @@ class TestHomeDashboardTour(HttpCase):
         action = self.env.ref('base.action_partner_form')
         self.start_tour(f'/web#menu_id={menu.id}&action={action.id}', 'home_dashboard_link_tour', login='admin')
 
+    def test_navbar_apps_menu_follows_home_config(self):
+        self.start_tour('/web#action=home.action_home_home_dashboard', 'home_navbar_apps_tour', login='admin')
+
     def test_config_views_tour(self):
         self.start_tour('/web#action=home.action_home_home_config', 'home_config_views_tour', login='admin')
 
@@ -52,6 +55,9 @@ class TestHomeDashboardEmptyTour(HttpCase):
 
     def test_empty_dashboard_tour(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_empty_tour', login='admin')
+
+    def test_navbar_falls_back_to_native_menu_without_shortcuts(self):
+        self.start_tour('/web#action=home.action_home_home_dashboard', 'home_navbar_fallback_tour', login='admin')
 
     def test_sync_from_empty_dashboard_tour(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_sync_tour', login='admin')

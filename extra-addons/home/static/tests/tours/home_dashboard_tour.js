@@ -253,3 +253,65 @@ registry.category("web_tour.tours").add("home_no_landing_tour", {
         },
     ],
 });
+
+function appMenuNames() {
+    return [...document.querySelectorAll(".o-dropdown--menu .o_app")].map((el) => el.textContent.trim());
+}
+
+registry.category("web_tour.tours").add("home_navbar_apps_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "Abrir el selector de aplicaciones del navbar",
+            trigger: ".o_navbar_apps_menu button",
+            run: "click",
+        },
+        {
+            content: "Muestra el Home y solo los accesos configurados, con su nombre",
+            trigger: ".o-dropdown--menu .o_app:contains('Aplicaciones Test')",
+            run: () => {
+                const names = appMenuNames();
+                const expected = ["Home", "Configuración Test", "Aplicaciones Test"];
+                if (JSON.stringify(names) !== JSON.stringify(expected)) {
+                    throw new Error(`Se esperaba ${expected} y hay ${names}`);
+                }
+            },
+        },
+        {
+            content: "Abrir una app desde el selector",
+            trigger: ".o-dropdown--menu .o_app:contains('Configuración Test')",
+            run: "click",
+        },
+        {
+            content: "La app se abre",
+            trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
+            run: () => {},
+        },
+        {
+            content: "Volver a abrir el selector",
+            trigger: ".o_navbar_apps_menu button",
+            run: "click",
+        },
+        {
+            content: "La app actual queda resaltada aunque tenga otro nombre",
+            trigger: ".o-dropdown--menu .o_app.focus:contains('Configuración Test')",
+            run: () => {},
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_navbar_fallback_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "Abrir el selector de aplicaciones del navbar",
+            trigger: ".o_navbar_apps_menu button",
+            run: "click",
+        },
+        {
+            content: "Sin accesos configurados se conserva la lista nativa de Odoo",
+            trigger: ".o-dropdown--menu .o_app:contains('Settings')",
+            run: () => {},
+        },
+    ],
+});

@@ -21,10 +21,13 @@
     'assets': {
         'web.assets_backend': [
             'home/static/src/css/home_dashboard.css',
+            'home/static/src/js/home_apps_service.js',
+            'home/static/src/js/home_navbar.js',
             'home/static/src/js/home_dashboard.js',
             'home/static/src/js/home_systray.js',
             'home/static/src/xml/home_dashboard.xml',
             'home/static/src/xml/home_systray.xml',
+            'home/static/src/xml/home_navbar.xml',
         ],
         'web.assets_tests': [
             'home/static/tests/tours/*.js',

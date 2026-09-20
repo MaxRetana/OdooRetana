@@ -19,6 +19,7 @@ export class HomeDashboard extends Component {
         this.menu = useService("menu");
         this.orm = useService("orm");
         this.notification = useService("notification");
+        this.homeApps = useService("home.apps");
         this.searchInputRef = useRef("searchInput"); // Referencia para el input
 
         this.state = useState({ 
@@ -52,6 +53,7 @@ export class HomeDashboard extends Component {
         try {
             const data = await this.orm.call("home.home", "get_home_data", []);
             this.state.apps = data.apps;
+            this.homeApps.update(data.apps); // mantener el selector del navbar al día
             this.state.canConfigure = data.can_configure;
             this.state.loadError = false;
         } catch (error) {
