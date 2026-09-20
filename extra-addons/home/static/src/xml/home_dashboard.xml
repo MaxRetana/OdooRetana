@@ -1,50 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="home.HomeDashboardMain" owl="1">
-        <div class="o_home_dashboard container-fluid p-5 bg-white" style="min-height: 100vh;">
-            
-            <div class="text-center mb-5 mt-4">
-                <h2 class="fw-bold text-dark">¿Qué vamos a hacer hoy?</h2>
-                <div class="d-flex justify-content-center mt-4">
-                    <div class="input-group shadow-sm" style="max-width: 500px; border-radius: 25px; overflow: hidden;">
-                        <span class="input-group-text bg-white border-end-0 ps-4">
-                            <i class="fa fa-search text-muted"/>
-                        </span>
-                        <input type="text" 
-                               class="form-control border-start-0 fs-5 py-3" 
-                               placeholder="Escribe para buscar aplicaciones..."
-                               t-ref="searchInput"
-                               t-on-input="onSearchInput"
-                               t-att-value="state.searchTerm"/>
-                    </div>
-                </div>
-            </div>
+    <t t-name="home.HomeDashboardMain">
+        <div class="o_home_dashboard">
+            <div class="container-fluid p-5">
 
-            <div class="row g-4 justify-content-center">
-                <t t-foreach="filteredApps" t-as="app" t-key="app.id">
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center" 
-                         t-on-click="() => this.openApp(app)">
-                        <div class="app-card rounded-4 p-4 h-100 shadow-none">
-                            <div class="icon-wrapper mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto"
-                                 style="width: 70px; height: 70px; background: #f8f9fa;">
-                                
-                                <t t-if="app.icon_type === 'fontawesome'">
-                                    <i t-attf-class="fa #{app.fa_icon} text-primary" style="font-size: 2rem;"/>
-                                </t>
-                                <t t-else="">
-                                    <img t-if="app.custom_icon" 
-                                         t-att-src="`/web/image/home.home/${app.id}/custom_icon`"
-                                         style="width: 100%; height: 100%; object-fit: contain; padding: 8px;"/>
-                                </t>
-                            </div>
-                            <span class="fw-bold text-dark text-truncate d-block">
-                                <t t-esc="app.name"/>
+                <div class="text-center mb-5 mt-4">
+                    <h2 class="fw-bold text-dark">Hola, <t t-out="userFirstName"/></h2>
+                    <p class="fs-5 text-muted mb-0">¿Qué vamos a hacer hoy?</p>
+                    <div class="d-flex justify-content-center mt-4">
+                        <div class="o_home_search input-group shadow-sm">
+                            <span class="input-group-text bg-white border-end-0 ps-4">
+                                <i class="fa fa-search text-muted"/>
                             </span>
+                            <input type="text"
+                                   class="form-control border-start-0 fs-5 py-3"
+                                   placeholder="Escribe para buscar aplicaciones..."
+                                   t-ref="searchInput"
+                                   t-on-input="onSearchInput"
+                                   t-on-keydown="onSearchKeydown"
+                                   t-att-value="state.searchTerm"/>
                         </div>
                     </div>
-                </t>
+                </div>
+
+                <div t-if="state.loadError" class="o_home_message alert alert-danger text-center mx-auto" role="alert">
+                    No se pudieron cargar las aplicaciones.
+                    <button class="btn btn-link p-0 align-baseline" t-on-click="loadApps">Reintentar</button>
+                </div>
+
+                <div t-if="!state.loadError and !state.apps.length" class="o_home_message o_home_empty text-center text-muted mx-auto">
+                    <i class="fa fa-th-large fa-3x mb-3 d-block"/>
+                    <p class="fs-5">Aún no hay accesos configurados.</p>
+                    <t t-if="state.canConfigure">
+                        <button class="btn btn-primary me-2" t-on-click="syncApps">Sincronizar aplicaciones</button>
+                        <button class="btn btn-secondary" t-on-click="openConfiguration">Configurar accesos</button>
+                    </t>
+                    <p t-else="">Pide a un administrador que configure los accesos del inicio.</p>
+                </div>
+
+                <div t-elif="!state.loadError and !filteredApps.length" class="o_home_no_results text-center text-muted mx-auto fs-5">
+                    <i class="fa fa-search fa-2x mb-3 d-block"/>
+                    Sin resultados para «<t t-out="state.searchTerm"/>».
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <t t-foreach="filteredApps" t-as="app" t-key="app.id">
+                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                            <t t-call="home.HomeAppCard">
+                                <t t-set="active" t-value="app_index === state.activeIndex"/>
+                            </t>
+                        </div>
+                    </t>
+                </div>
             </div>
         </div>
     </t>
-</templates>
 
+    <!-- Tarjeta de una aplicación: espera "app" y opcionalmente "active" en el contexto -->
+    <t t-name="home.HomeAppCard">
+        <a class="o_home_app_card p-4 h-100 d-block text-decoration-none"
+           t-att-href="appUrl(app)"
+           t-on-click="(ev) => this.onAppClick(ev, app)"
+           t-att-class="{'o_home_app_active': active}">
+            <div class="o_home_app_icon mb-3 rounded-3 d-flex align-items-center justify-content-center m-auto"
+                 t-att-style="app.color ? 'background-color: ' + app.color : ''">
+                <img t-if="app.icon_url" t-att-src="app.icon_url" alt=""/>
+                <i t-else="" t-attf-class="fa #{iconClass(app)} #{app.color ? 'text-white' : 'text-primary'}"/>
+            </div>
+            <span class="fw-bold text-dark text-truncate d-block">
+                <t t-out="app.name"/>
+            </span>
+        </a>
+    </t>
+</templates>
