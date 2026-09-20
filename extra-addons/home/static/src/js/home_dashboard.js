@@ -1,9 +1,14 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, onWillStart, useExternalListener, useState, useRef } from "@odoo/owl";
+import { Component, onWillStart, useEffect, useExternalListener, useState, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
+
+// Normaliza para comparar sin importar mayúsculas ni acentos ("Configuración" -> "configuracion")
+function normalize(text) {
+    return (text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
 
 export class HomeDashboard extends Component {
     static template = "home.HomeDashboardMain";
@@ -19,9 +24,19 @@ export class HomeDashboard extends Component {
             canConfigure: false,
             loadError: false,
             searchTerm: "",
+            activeIndex: -1, // tarjeta resaltada con el teclado (-1: ninguna)
         });
 
         onWillStart(() => this.loadApps());
+
+        // Mantener a la vista la tarjeta resaltada al navegar con el teclado
+        useEffect(
+            () => {
+                const card = document.querySelector(".o_home_dashboard .o_home_app_active");
+                card?.scrollIntoView({ block: "nearest" });
+            },
+            () => [this.state.activeIndex]
+        );
 
         // Detectar teclado globalmente (owl lo desregistra solo al destruir el componente)
         useExternalListener(window, "keydown", this.onWindowKeydown);
@@ -52,7 +67,8 @@ export class HomeDashboard extends Component {
             return;
         }
         // Respetar atajos del navegador/sistema (Ctrl+C, Cmd+R, Alt+...) y teclas no imprimibles
-        if (ev.ctrlKey || ev.metaKey || ev.altKey || ev.key.length !== 1) {
+        const isNavigationKey = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key);
+        if (ev.ctrlKey || ev.metaKey || ev.altKey || (ev.key.length !== 1 && !isNavigationKey)) {
             return;
         }
         // No robar el foco si el usuario ya escribe en otro campo o hay un diálogo abierto
@@ -68,13 +84,47 @@ export class HomeDashboard extends Component {
     }
 
     get filteredApps() {
-        const term = this.state.searchTerm.toLowerCase().trim();
+        const term = normalize(this.state.searchTerm);
         if (!term) return this.state.apps;
-        return this.state.apps.filter(app => app.name.toLowerCase().includes(term));
+        return this.state.apps.filter((app) => normalize(app.name).includes(term));
     }
 
     onSearchInput(ev) {
         this.state.searchTerm = ev.target.value;
+        // Al buscar se resalta el primer resultado, para abrirlo con Enter
+        this.state.activeIndex = normalize(this.state.searchTerm) ? 0 : -1;
+    }
+
+    onSearchKeydown(ev) {
+        const count = this.filteredApps.length;
+        switch (ev.key) {
+            case "ArrowRight":
+            case "ArrowDown":
+                ev.preventDefault();
+                if (count) {
+                    this.state.activeIndex = Math.min(this.state.activeIndex + 1, count - 1);
+                }
+                break;
+            case "ArrowLeft":
+            case "ArrowUp":
+                ev.preventDefault();
+                if (count) {
+                    this.state.activeIndex = Math.max(this.state.activeIndex - 1, 0);
+                }
+                break;
+            case "Enter": {
+                const app = this.filteredApps[this.state.activeIndex];
+                if (app) {
+                    ev.preventDefault();
+                    this.openApp(app);
+                }
+                break;
+            }
+            case "Escape":
+                this.state.searchTerm = "";
+                this.state.activeIndex = -1;
+                break;
+        }
     }
 
     async openApp(app) {

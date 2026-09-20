@@ -19,3 +19,8 @@
     transform: translateY(-3px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
 }
+
+.app-card.o_home_app_active {
+    border-color: var(--bs-primary, #714B67) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}

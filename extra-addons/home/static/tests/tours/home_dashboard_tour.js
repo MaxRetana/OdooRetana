@@ -16,7 +16,7 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
     steps: () => [
         {
             content: "Solo se muestran los accesos permitidos para el usuario",
-            trigger: ".o_home_dashboard .app-card:contains('Ajustes Test')",
+            trigger: ".o_home_dashboard .app-card:contains('Configuración Test')",
             run: assertCardCount(2),
         },
         {
@@ -45,19 +45,47 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
             },
         },
         {
-            content: "Buscar filtra las aplicaciones",
+            content: "La busqueda ignora acentos y mayusculas",
             trigger: ".o_home_dashboard input",
-            run: "text Aplicaciones",
+            run: "text CONFIGURACION",
         },
         {
-            content: "Solo queda la aplicacion buscada",
-            trigger: ".o_home_dashboard .app-card:contains('Aplicaciones Test')",
+            content: "Solo queda la tarjeta con acento",
+            trigger: ".o_home_dashboard .app-card:contains('Configuración Test')",
             run: assertCardCount(1),
         },
         {
-            content: "Abrir la aplicacion navega fuera del dashboard",
+            content: "Escape limpia la busqueda",
+            trigger: ".o_home_dashboard input",
+            run: () => {
+                document
+                    .querySelector(".o_home_dashboard input")
+                    .dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+            },
+        },
+        {
+            content: "Vuelven a verse todas las tarjetas",
             trigger: ".o_home_dashboard .app-card:contains('Aplicaciones Test')",
-            run: "click",
+            run: assertCardCount(2),
+        },
+        {
+            content: "Buscar resalta el primer resultado",
+            trigger: ".o_home_dashboard input",
+            run: "text aplic",
+        },
+        {
+            content: "El resultado resaltado es la unica tarjeta",
+            trigger: ".o_home_dashboard .app-card.o_home_app_active:contains('Aplicaciones Test')",
+            run: assertCardCount(1),
+        },
+        {
+            content: "Enter abre la aplicacion resaltada",
+            trigger: ".o_home_dashboard input",
+            run: () => {
+                document
+                    .querySelector(".o_home_dashboard input")
+                    .dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+            },
         },
         {
             content: "El dashboard desaparece al abrir la app",

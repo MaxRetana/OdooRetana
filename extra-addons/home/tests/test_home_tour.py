@@ -17,7 +17,7 @@ class TestHomeDashboardTour(HttpCase):
         menu_c = Menu.create({'name': 'Menu C', 'groups_id': [(6, 0, group.ids)], **values})
         menu_d = Menu.create({'name': 'Menu D', **values})
         cls.env['home.home'].create([
-            {'name': 'Ajustes Test', 'menu_id': menu_a.id, 'sequence': 1},
+            {'name': 'Configuración Test', 'menu_id': menu_a.id, 'sequence': 1},
             {'name': 'Aplicaciones Test', 'menu_id': menu_b.id, 'sequence': 2},
             {'name': 'Menu Restringido Test', 'menu_id': menu_c.id, 'sequence': 3},
             {'name': 'Grupo Restringido Test', 'menu_id': menu_d.id, 'sequence': 4,
