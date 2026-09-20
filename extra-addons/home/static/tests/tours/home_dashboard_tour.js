@@ -17,7 +17,13 @@ registry.category("web_tour.tours").add("home_dashboard_tour", {
         {
             content: "Solo se muestran los accesos permitidos para el usuario",
             trigger: ".o_home_dashboard .app-card:contains('Configuración Test')",
-            run: assertCardCount(2),
+            run: () => {
+                assertCardCount(2)();
+                const links = document.querySelectorAll(".o_home_dashboard a.app-card[href^='/web#menu_id=']");
+                if (links.length !== 2) {
+                    throw new Error("Las tarjetas deben ser enlaces con el menu de destino");
+                }
+            },
         },
         {
             content: "Ctrl+tecla no roba el foco hacia el buscador",
@@ -126,6 +132,17 @@ registry.category("web_tour.tours").add("home_dashboard_empty_tour", {
         },
         {
             content: "Se abre la configuracion",
+            trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
+            run: () => {},
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("home_dashboard_link_tour", {
+    test: true,
+    steps: () => [
+        {
+            content: "El enlace de una tarjeta abre directamente la aplicacion",
             trigger: ".o_action_manager:not(:has(.o_home_dashboard)) .o_control_panel",
             run: () => {},
         },

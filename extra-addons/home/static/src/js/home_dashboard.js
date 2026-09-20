@@ -132,6 +132,19 @@ export class HomeDashboard extends Component {
         return this.action.doAction("home.action_home_home_config");
     }
 
+    appUrl(app) {
+        return `/web#menu_id=${app.menu_id}`;
+    }
+
+    onAppClick(ev, app) {
+        // Con Ctrl/Cmd/Shift se deja al navegador abrir el enlace en otra pestaña o ventana
+        if (ev.ctrlKey || ev.metaKey || ev.shiftKey) {
+            return;
+        }
+        ev.preventDefault();
+        this.openApp(app);
+    }
+
     async openApp(app) {
         if (app.menu_id) {
             await this.menu.selectMenu(app.menu_id);
