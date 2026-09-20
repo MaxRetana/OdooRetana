@@ -3,33 +3,26 @@
 import { registry } from "@web/core/registry";
 import { Component, onWillStart, useState, onMounted, onWillUnmount, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
+import { _t } from "@web/core/l10n/translation";
 
 export class HomeDashboard extends Component {
     static template = "home.HomeDashboardMain";
 
     setup() {
-        this.action = useService("action");
         this.menu = useService("menu");
         this.orm = useService("orm");
+        this.notification = useService("notification");
         this.searchInputRef = useRef("searchInput"); // Referencia para el input
         this.boundWindowKeydown = this.onWindowKeydown.bind(this);
         
         this.state = useState({ 
             apps: [],
+            canConfigure: false,
+            loadError: false,
             searchTerm: "",
         });
 
-        onWillStart(async () => {
-            try {
-                this.state.apps = await this.orm.searchRead(
-                    "home.home", 
-                    [], 
-                    ["id", "name", "fa_icon", "custom_icon", "icon_type", "menu_id"]
-                );
-            } catch (error) {
-                console.error("Error al cargar aplicaciones:", error);
-            }
-        });
+        onWillStart(() => this.loadApps());
 
         // Detectar teclado globalmente
         onMounted(() => {
@@ -39,6 +32,25 @@ export class HomeDashboard extends Component {
         onWillUnmount(() => {
             window.removeEventListener("keydown", this.boundWindowKeydown);
         });
+    }
+
+    async loadApps() {
+        try {
+            const data = await this.orm.call("home.home", "get_home_data", []);
+            this.state.apps = data.apps;
+            this.state.canConfigure = data.can_configure;
+            this.state.loadError = false;
+        } catch (error) {
+            console.error("Error al cargar aplicaciones:", error);
+            this.state.loadError = true;
+            this.notification.add(_t("No se pudieron cargar las aplicaciones."), {
+                type: "danger",
+            });
+        }
+    }
+
+    iconClass(app) {
+        return app.icon_type === "fontawesome" && app.fa_icon ? app.fa_icon : "fa-th-large";
     }
 
     onWindowKeydown(ev) {
@@ -64,9 +76,8 @@ export class HomeDashboard extends Component {
     }
 
     async openApp(app) {
-        const menuId = Array.isArray(app.menu_id) ? app.menu_id[0] : app.menu_id;
-        if (menuId) {
-            await this.menu.selectMenu(menuId);
+        if (app.menu_id) {
+            await this.menu.selectMenu(app.menu_id);
         }
     }
 }
