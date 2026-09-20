@@ -1,21 +1,60 @@
+/* Todos los selectores cuelgan de .o_home_dashboard para no afectar al resto del backend */
 .o_home_dashboard {
-    background-color: #f8f9fa;
-    min-height: 100vh;
+    height: 100%;
+    overflow-y: auto;
+    background-color: var(--bs-gray-100, #f8f9fa);
 }
 
-/* Mantenemos la barra superior pero ajustamos su color si deseas que combine */
-.o_main_navbar {
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.o_home_dashboard .o_home_search {
+    max-width: 500px;
+    border-radius: 25px;
+    overflow: hidden;
 }
 
-/* Estilo para las tarjetas del Dashboard */
-.app-card {
+.o_home_dashboard .o_home_search .form-control,
+.o_home_dashboard .o_home_search .input-group-text {
+    border: 0;
+    box-shadow: none;
+    background-color: var(--bs-white, #fff);
+}
+
+.o_home_dashboard .o_home_message {
+    max-width: 500px;
+}
+
+/* Tarjeta de cada aplicación */
+.o_home_dashboard .o_home_app_card {
     cursor: pointer;
+    background-color: var(--bs-white, #fff);
+    border: 1px solid var(--bs-border-color, #eee);
+    border-radius: 1rem;
     transition: all 0.2s ease;
-    border: 1px solid #eee !important;
 }
 
-.app-card:hover {
+.o_home_dashboard .o_home_app_card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Tarjeta resaltada con el teclado (buscador) */
+.o_home_dashboard .o_home_app_card.o_home_app_active {
+    border-color: var(--bs-primary, #714B67);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.o_home_dashboard .o_home_app_icon {
+    width: 70px;
+    height: 70px;
+    background-color: var(--bs-gray-100, #f8f9fa);
+}
+
+.o_home_dashboard .o_home_app_icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+.o_home_dashboard .o_home_app_icon .fa {
+    font-size: 2rem;
 }

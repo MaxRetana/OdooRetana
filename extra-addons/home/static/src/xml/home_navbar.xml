@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- El selector de aplicaciones muestra los accesos configurados en el Home -->
+    <t t-inherit="web.NavBar" t-inherit-mode="extension">
+        <xpath expr="//t[@t-set='apps']" position="attributes">
+            <attribute name="t-value">homeApps</attribute>
+        </xpath>
+    </t>
+
+    <!-- Al usar copias del menú (con el nombre del acceso), se compara por id -->
+    <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
+        <xpath expr="//DropdownItem" position="attributes">
+            <attribute name="class">{ 'o_app': true, focus: isCurrentApp(app) }</attribute>
+        </xpath>
+    </t>
+</templates>
