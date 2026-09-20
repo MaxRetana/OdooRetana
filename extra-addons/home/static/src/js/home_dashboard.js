@@ -24,7 +24,7 @@ export class HomeDashboard extends Component {
                 this.state.apps = await this.orm.searchRead(
                     "home.home", 
                     [], 
-                    ["id", "name", "fa_icon", "custom_icon", "icon_type", "menu_id", "action_id"]
+                    ["id", "name", "fa_icon", "custom_icon", "icon_type", "menu_id"]
                 );
             } catch (error) {
                 console.error("Error al cargar aplicaciones:", error);

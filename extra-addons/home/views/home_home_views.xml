@@ -42,8 +42,6 @@
                         <group string="Configuración de Acceso">
                             <!-- Seleccionas el ícono que ves en el tablero principal -->
                             <field name="menu_id" options="{'no_create': True, 'no_open': True}"/>
-                            <!-- La acción se calcula sola en el modelo -->
-                            <field name="action_id" readonly="1" force_save="1"/>
                         </group>
                         <group string="Personalización Visual">
                             <field name="icon_type"/>

@@ -28,37 +28,8 @@ class HomeHome(models.Model):
         help="Selecciona el ícono del menú principal que quieres mostrar"
     )
 
-    # La acción se vuelve automática basada en el menú
-    action_id = fields.Many2one(
-        'ir.actions.actions', 
-        string="Acción Automática",
-        compute='_compute_action_id',
-        store=True,
-        readonly=True
-    )
-
     groups_ids = fields.Many2many('res.groups', string="Grupos permitidos")
                 
-    @api.depends('menu_id')
-    def _compute_action_id(self):
-        for record in self:
-            if record.menu_id:
-                # Obtenemos la referencia de la acción
-                action_ref = record.menu_id.action
-                if action_ref:
-                    # Extraemos solo el ID numérico para evitar conflictos de tipo
-                    record.action_id = action_ref.id
-                else:
-                    # Búsqueda en submenús si el principal es solo un contenedor
-                    first_child = self.env['ir.ui.menu'].search([
-                        ('parent_id', '=', record.menu_id.id),
-                        ('action', '!=', False)
-                    ], limit=1, order='sequence')
-                    # Asignamos el ID del primer hijo encontrado
-                    record.action_id = first_child.action.id if first_child and first_child.action else False
-            else:
-                record.action_id = False
-
     @api.onchange('menu_id')
     def _onchange_menu_id(self):
         if self.menu_id:
