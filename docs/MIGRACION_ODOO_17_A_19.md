@@ -117,19 +117,23 @@ Estimación para un equipo de 1-2 desarrolladores Odoo. Con 7 módulos en alcanc
 
 ## 6. Checklist técnico por módulo
 
-Aplicar a cada uno de los **7 módulos instalados** (sección 3.1); marcar N/A cuando no aplique. Los 4 módulos no instalados (sección 3.2) quedan fuera de este checklist salvo que se decida reactivarlos.
+Aplicar a cada uno de los **7 módulos instalados** (sección 3.1); marcar N/A cuando no aplique. Los 4 módulos no instalados se retiraron del repo (ver [ADR 0001](decisions/0001-retiro-modulos-legacy-no-instalados.md)) y quedan fuera de este checklist.
 
-- [ ] `__manifest__.py`: actualizar `'version'` a `19.0.x.x.x`; revisar `'depends'` (módulos core removidos/renombrados).
-- [ ] Vistas XML: revisar atributos y widgets deprecados; validar que las vistas cargan sin `ValueError` en el log de arranque.
-- [ ] Seguridad (`ir.model.access.csv`, `security/*.xml`, `groups_id`/`category_id`): confirmar contra el reporte oficial de upgrade si el modelo de grupos/privilegios cambió, y ajustar `home/security/groups.xml` y las referencias en `home/views/home_home_views.xml` y `grades_manager/views/res_partner_views.xml`.
-- [ ] Controladores HTTP (`retana_web/controllers`, `maintenance_odoo_retana/controllers`): validar rutas contra la versión de Werkzeug que use Odoo 19; **resolver antes que nada el conflicto de dos módulos sobrescribiendo `ir.http`** (revisar orden de herencia y si ambos siguen siendo necesarios).
-- [ ] Frontend OWL (`home`, `custom_home_dashboard`, `retana_bills`, `retana_custom`): revisar sintaxis de componentes (props, template, hooks/servicios) contra la versión de OWL que trae Odoo 19; re-probar `home/static/tests/tours/home_dashboard_tour.js`.
-- [ ] Reportes QWeb (`retana_bills/report/*.xml`): renderizar cada reporte y comparar salida PDF con la versión 17.
-- [ ] Wizards (`retana_bills/wizard`, `retana_bills_weekday_config`): probar flujo completo de creación/confirmación.
-- [ ] Extensiones de modelos core (`capture_data_camera` sobre `hr.employee`): confirmar que el modelo/campos extendidos siguen existiendo con el mismo nombre en 19.0.
-- [ ] Datos de carga (`data/*.xml`, `*.csv` como `retana_company_info_import.csv`): revalidar `noupdate` y referencias externas (`ir.model.data`) tras el salto de versión.
-- [ ] Dependencias Python (`requirements.txt`: `pytesseract`, `pillow`): confirmar compatibilidad con la versión de Python que exige Odoo 19 y con el contenedor base que se use.
-- [ ] Limpiar `__pycache__` versionado por error en el repo (se ve incluido en varios módulos) y confirmar `.gitignore`.
+> **Estado (2026-09-22):** los 7 módulos ya se portaron a la sintaxis/API de 19.0 en el repo (rama `131-feature-plan-de-migracion-a-version-19`, un commit por módulo), validados con análisis estático (`py_compile`, `xmllint`, `node --check`) y verificación de cada cambio contra el código fuente real de `odoo/odoo` rama `19.0` en GitHub. **No** se corrió todavía contra una instancia Odoo 19.0 real ni contra datos reales — eso sigue pendiente (ver nota de bloqueo al final de esta sección).
+
+- [x] `__manifest__.py`: version actualizada a `19.0.1.0.0` en los 7 módulos; `depends` revisado, sin módulos core removidos/renombrados detectados.
+- [x] Vistas XML: `<tree>` → `<list>` en las 12 vistas de lista que lo usaban (`home`, `retana_bills`); `attrs="..."` → atributos directos en `retana_bills/views/retana_budget_views.xml`. Validado con `xmllint --noout`, no validado aún contra el log de arranque real de Odoo 19.0.
+- [x] Seguridad: `res.groups.category_id` → `res.groups.privilege_id` y `res.groups.users`/`res.users.groups_id` → `user_ids`/`group_ids` en `home/security/groups.xml` y `home/models/home_home.py` (ver [ADR 0003](decisions/0003-migracion-a-res-groups-privilege.md)). `grades_manager` se retiró del repo, no aplica.
+- [x] Controladores HTTP (`retana_web/controllers`): revisados, sin sintaxis deprecada; `_render_qweb_pdf` verificado sin cambios en 19.0. El conflicto de doble `ir.http` se resolvió al retirar `maintenance_odoo_retana` (no instalado, ver ADR 0001) — solo queda el override de `home`.
+- [x] Frontend OWL (`home`, `retana_bills`, `retana_custom`): revisado — rutas de import, plantillas heredadas de `web.NavBar`/`web.NavBar.AppsMenu` y hooks de OWL verificados sin cambios en 19.0. `custom_home_dashboard` se retiró del repo, no aplica. Tours de `home` no re-ejecutados (requieren instancia real).
+- [ ] Reportes QWeb (`retana_bills/report/*.xml`): revisados estáticamente (usan `web.html_container`, sin sintaxis deprecada); **falta** renderizar cada reporte y comparar el PDF de salida contra la versión 17 — requiere instancia real.
+- [ ] Wizards (`retana_bills/wizard`, `retana_bills_weekday_config`): revisados y refactorizados (ver commit de `retana_bills_weekday_config`); **falta** probar el flujo completo de creación/confirmación en una instancia real.
+- [x] Extensiones de modelos core: `capture_data_camera` (sobre `hr.employee`) se retiró del repo, no aplica.
+- [x] Datos de carga: `data/retana_company_info_data.xml` revisado, sin cambios necesarios; se detectó que `data/retana_company_info_import.csv` no está referenciado en el manifest (archivo huérfano, documentado en el README de `retana_bills`, no se borró sin confirmar con el negocio).
+- [ ] Dependencias Python (`pytesseract`, `pillow`): no confirmado contra la versión de Python del contenedor `odoo:19` — requiere levantar el stack (`docker-compose-19.yaml`) o el worktree de `odev` para probarlo.
+- [x] `__pycache__`: confirmado que **no** está versionado en git (ya estaba cubierto por `.gitignore`); se corrigió además una regla `README.md` genérica en `.gitignore` que hubiera bloqueado los README por módulo.
+
+**Bloqueo de entorno para las pruebas reales (los ítems sin marcar arriba):** no hay Docker disponible en este entorno de trabajo, y `odev` (que gestiona bases Odoo locales por versión) necesita un Personal Access Token de GitHub configurado (`odev setup github`) para clonar el código fuente de Odoo 19.0 — no estaba configurado al momento de este porting. Cualquiera de las dos rutas (`docker compose -f docker-compose-19.yaml up`, o configurar el token de `odev`) desbloquea las pruebas reales pendientes.
 
 ---
 
@@ -182,9 +186,13 @@ Aplicar a cada uno de los **7 módulos instalados** (sección 3.1); marcar N/A c
 ## 11. Próximos pasos inmediatos
 
 1. ~~Confirmar versión real de manifests y decidir destino de `custom_home_dashboard`/`field_tracking_mixin`/conflicto `ir_http`~~ — resuelto en esta revisión (sección 3): alcance de porting = 7 módulos instalados; `custom_home_dashboard`, `capture_data_camera`, `grades_manager` y `maintenance_odoo_retana` quedan fuera al no estar instalados.
-2. Decidir con el negocio si los 4 módulos no instalados se eliminan del repo/`extra-addons` o se conservan sin instalar (documentado como legacy) antes de iniciar el porting.
-3. Solicitar/generar la base de datos de prueba de upgrade oficial de Odoo para obtener el reporte real de incompatibilidades sobre esta instancia específica.
-4. Crear `docker-compose-19.yaml` para levantar un entorno local de desarrollo en 19.0.
+2. ~~Decidir con el negocio si los 4 módulos no instalados se eliminan del repo/`extra-addons` o se conservan sin instalar~~ — resuelto: se eliminaron del repo (ver [ADR 0001](decisions/0001-retiro-modulos-legacy-no-instalados.md)).
+3. ~~Crear `docker-compose-19.yaml` para levantar un entorno local de desarrollo en 19.0~~ — hecho (`docker-compose-19.yaml`, base de datos vacía y desechable).
+4. ~~Portar el código de los 7 módulos instalados a la sintaxis/API de 19.0~~ — hecho, un commit por módulo en la rama `131-feature-plan-de-migracion-a-version-19` (ver sección 6 para el detalle de cada módulo). Validado con análisis estático y verificación contra el código fuente oficial de Odoo 19.0; **no** validado todavía contra una instancia real corriendo.
+5. **Pendiente y bloqueado:** correr los 7 módulos contra una instancia Odoo 19.0 real (`docker compose -f docker-compose-19.yaml up`, o configurar `odev setup github` para usar el worktree local de `odev`) y ejecutar la suite de tests de `home` (unitarios + tours). Ninguna de las dos rutas estaba disponible en el entorno donde se hizo este porting.
+6. Solicitar/generar la base de datos de prueba de upgrade oficial de Odoo para obtener el reporte real de incompatibilidades sobre esta instancia específica — sigue pendiente, requiere la cuenta/suscripción de Odoo.com del negocio.
+7. Decidir la ruta de migración de **datos** de la base real (Opción A vs B, sección 4.1) — pospuesta a propósito hasta que el código esté validado en runtime (ver [ADR 0002](decisions/0002-porting-de-codigo-primero-datos-despues.md)).
+8. Decidir si la instancia necesita soportar más de un idioma, y en ese caso retomar el trabajo de traducciones (ver [ADR 0004](decisions/0004-estado-de-traducciones-i18n.md)).
 
 ---
 
