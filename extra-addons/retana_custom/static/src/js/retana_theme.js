@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { Component, onMounted } from "@odoo/owl";
-
 // Funcionalidades adicionales para el tema oscuro Retana
+// Nota: este archivo no define un componente OWL, es JS plano que se
+// engancha al DOM directamente; no requiere importar nada de "@odoo/owl".
 class RetanaDarkTheme {
     constructor() {
         this.initTheme();

@@ -4,7 +4,7 @@
     'summary': 'This module costomizes Odoo for Retana',
     'author': 'MaxRetana',
     'category': 'Base',
-    'version': '17.0.0.1',
+    'version': '19.0.1.0.0',
     'depends': ['base', 'web'],
     'data': [
         # 'static/src/xml/retana_theme.xml',
