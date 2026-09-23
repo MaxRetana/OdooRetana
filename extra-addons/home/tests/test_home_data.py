@@ -11,12 +11,12 @@ class TestHomeData(TransactionCase):
         cls.group = cls.env['res.groups'].create({'name': 'Grupo Home Test'})
         cls.user = new_test_user(cls.env, login='home_data_user', groups='base.group_user')
         cls.member = new_test_user(cls.env, login='home_data_member', groups='base.group_user')
-        cls.member.groups_id = [(4, cls.group.id)]
+        cls.member.group_ids = [(4, cls.group.id)]
         action = cls.env.ref('base.action_partner_form')
         cls.open_menu = cls.env['ir.ui.menu'].create({'name': 'Menu abierto', 'action': f'ir.actions.act_window,{action.id}'})
         cls.hidden_menu = cls.env['ir.ui.menu'].create({
             'name': 'Menu oculto', 'action': f'ir.actions.act_window,{action.id}',
-            'groups_id': [(6, 0, cls.group.ids)],
+            'group_ids': [(6, 0, cls.group.ids)],
         })
         Home = cls.env['home.home']
         cls.open_shortcut = Home.create({'name': 'Abierto', 'menu_id': cls.open_menu.id, 'sequence': 1})

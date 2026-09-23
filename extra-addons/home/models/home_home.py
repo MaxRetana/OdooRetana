@@ -138,7 +138,7 @@ class HomeHome(models.Model):
         shortcuts = self.search([('menu_id', '!=', False)])
         # ir.ui.menu.search solo devuelve los menús visibles para el usuario actual
         accessible_menus = self.env['ir.ui.menu'].search([('id', 'in', shortcuts.menu_id.ids)])
-        user_groups = self.env.user.groups_id
+        user_groups = self.env.user.group_ids
         apps = []
         for shortcut in shortcuts:
             if shortcut.menu_id not in accessible_menus:

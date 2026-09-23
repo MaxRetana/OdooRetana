@@ -14,7 +14,7 @@ class TestHomeDashboardTour(HttpCase):
         values = {'action': f'ir.actions.act_window,{action.id}'}
         menu_a = Menu.create({'name': 'Menu A', **values})
         menu_b = Menu.create({'name': 'Menu B', **values})
-        menu_c = Menu.create({'name': 'Menu C', 'groups_id': [(6, 0, group.ids)], **values})
+        menu_c = Menu.create({'name': 'Menu C', 'group_ids': [(6, 0, group.ids)], **values})
         menu_d = Menu.create({'name': 'Menu D', **values})
         cls.env['home.home'].create([
             {'name': 'Configuración Test', 'menu_id': menu_a.id, 'sequence': 1, 'color': '#FF0000'},
@@ -24,7 +24,7 @@ class TestHomeDashboardTour(HttpCase):
              'groups_ids': [(6, 0, group.ids)]},
         ])
         cls.member = new_test_user(cls.env, login='home_tour_member', groups='base.group_user')
-        cls.member.groups_id = [(4, group.id)]
+        cls.member.group_ids = [(4, group.id)]
 
     def test_dashboard_tour(self):
         self.start_tour('/web#action=home.action_home_home_dashboard', 'home_dashboard_tour', login='admin')
