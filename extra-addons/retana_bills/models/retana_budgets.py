@@ -9,7 +9,8 @@ class RetanaBudget(models.Model):
     _name = 'retana.budget'
     _description = 'Presupuestos Retana'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'field.tracking.mixin']
-    
+    _order = 'date desc, id desc'
+
     _tracked_fields = {
         'linea_ids': {
             'type': 'one2many',
