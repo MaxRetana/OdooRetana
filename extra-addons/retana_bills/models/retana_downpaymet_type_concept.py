@@ -5,7 +5,8 @@ class RetanaDownpaymentTypeConcept(models.Model):
     _name = 'retana.downpayment.type.concept'
     _description = 'Concepto de Tipo de Anticipo Retana'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    
+    _order = 'name'
+
     name        =fields.Char(string='Concepto de Anticipo' , tracking=True)
     default_concept =fields.Boolean(string='Concepto Predeterminado', default=False, tracking=True)
     active      =fields.Boolean(string='Activo', default=True, tracking=True)

@@ -4,7 +4,8 @@ class RetanaBudgetType(models.Model):
     _name = 'retana.budget.type'
     _description = 'Tipo de Presupuesto Retana'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    
+    _order = 'name'
+
     name    =fields.Char(string='Tipo de Presupuesto' , tracking=True)
     is_material_list =fields.Boolean(string='Es lista de materiales', default=False, tracking=True)
     active  =fields.Boolean(string='Activo', default=True, tracking=True)
