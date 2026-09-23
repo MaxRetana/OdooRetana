@@ -3,10 +3,10 @@
 
     <!-- View retana.downpayment View Tree -->
     <record id="view_retana_downpayment_tree" model="ir.ui.view">
-        <field name="name">view_retana_downpayment_tree</field>
+        <field name="name">view_retana_downpayment_list</field>
         <field name="model">retana.downpayment</field>
         <field name="arch" type="xml">
-            <tree string="Anticipos Retana">
+            <list string="Anticipos Retana">
                 <field name="name"/>
                 <field name="concept_id"/>
                 <field name="amount" widget="monetary" sum="Total"/>
@@ -14,7 +14,7 @@
                 <field name="date"/>
                 <field name="building_id"/>
                 <field name="client_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -75,7 +75,7 @@
         <field name="name">Anticipos Retana</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">retana.downpayment</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{'search_default_current_week': 1}</field>
         <field name="help" type="html">

@@ -3,12 +3,12 @@
 
     <!-- View retana.downpayment.type.concept View Tree -->
     <record id="view_retana_downpayment_type_concept_tree" model="ir.ui.view">
-        <field name="name">view_retana_downpayment_type_concept_tree</field>
+        <field name="name">view_retana_downpayment_type_concept_list</field>
         <field name="model">retana.downpayment.type.concept</field>
         <field name="arch" type="xml">
-            <tree string="Tipos de Conceptos de Anticipo Retana">
+            <list string="Tipos de Conceptos de Anticipo Retana">
                 <field name="name"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -57,7 +57,7 @@
         <field name="name">Tipo de Concepto de Anticipo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">retana.downpayment.type.concept</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
         <field name="help" type="html">

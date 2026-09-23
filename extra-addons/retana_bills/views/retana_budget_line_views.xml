@@ -2,10 +2,10 @@
 <odoo>
     <!-- Vista Tree de Líneas de Presupuesto -->
     <record id="view_retana_budget_line_tree" model="ir.ui.view">
-        <field name="name">retana.budget.line.tree</field>
+        <field name="name">retana.budget.line.list</field>
         <field name="model">retana.budget.line</field>
         <field name="arch" type="xml">
-            <tree string="Líneas de Presupuesto" default_order="id desc">
+            <list string="Líneas de Presupuesto" default_order="id desc">
                 <field name="budget_id"/>
                 <field name="product_id"/>
                 <field name="description"/>
@@ -13,7 +13,7 @@
                 <field name="unit_price" widget="monetary"/>
                 <field name="taxes_ids" widget="many2many_tags"/>
                 <field name="subtotal" widget="monetary"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -63,7 +63,7 @@
     <record id="action_retana_budget_line" model="ir.actions.act_window">
         <field name="name">Líneas de Presupuesto</field>
         <field name="res_model">retana.budget.line</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No hay líneas de presupuesto

@@ -2,17 +2,17 @@
 <odoo>
     <!-- Vista Tree de Obras -->
     <record id="view_retana_buildings_tree" model="ir.ui.view">
-        <field name="name">retana.buildings.tree</field>
+        <field name="name">retana.buildings.list</field>
         <field name="model">retana.buildings</field>
         <field name="arch" type="xml">
-            <tree string="Obras">
+            <list string="Obras">
                 <field name="name" widget="CopyClipboardChar"/>
                 <field name="client_id"/>
                 <field name="active"/>
                 <!-- Botones de acciones -->
                 <button name="action_create_downpayment" type="object" string="Crear Anticipo" class="oe_highlight" icon="fa-plus"/>
                 <button name="action_print_downpayments_list" type="object" string="Imprimir Relación de Pagos" icon="fa-print"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -69,7 +69,7 @@
     <record id="action_retana_buildings" model="ir.actions.act_window">
         <field name="name">Obras</field>
         <field name="res_model">retana.buildings</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_active': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
