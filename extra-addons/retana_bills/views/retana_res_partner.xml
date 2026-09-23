@@ -6,7 +6,7 @@
         <field name="name">view.retana.res.partner.tree</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
-            <tree string="Proveedores Retana">
+            <tree string="Proveedores Retana" default_order="name asc">
                 <field name="name"/>
                 <field name="retana_type_res_partner_id"/>
                 <field name="is_retana_customer" optional="1"/>

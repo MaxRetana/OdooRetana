@@ -6,7 +6,8 @@ class RetanaDownpayment(models.Model):
     _name = 'retana.downpayment'
     _description = 'Anticipos de Presupuestos Retana'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'field.tracking.mixin']
-    
+    _order = 'date desc, id desc'
+
     def _get_default_saturday(self):
         """Retorna el jueves de la semana en curso"""
         today = datetime.today()

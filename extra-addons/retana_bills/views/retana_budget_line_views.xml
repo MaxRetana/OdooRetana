@@ -5,7 +5,7 @@
         <field name="name">retana.budget.line.tree</field>
         <field name="model">retana.budget.line</field>
         <field name="arch" type="xml">
-            <tree string="Líneas de Presupuesto">
+            <tree string="Líneas de Presupuesto" default_order="id desc">
                 <field name="budget_id"/>
                 <field name="product_id"/>
                 <field name="description"/>
