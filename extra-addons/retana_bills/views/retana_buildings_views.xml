@@ -58,7 +58,7 @@
                 <field name="client_id" string="Cliente"/>
                 <filter string="Activas" name="active" domain="[('active', '=', True)]"/>
                 <filter string="Archivadas" name="inactive" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Agrupar Por">
+                <group>
                     <filter string="Cliente" name="group_by_client" context="{'group_by': 'client_id'}"/>
                 </group>
             </search>

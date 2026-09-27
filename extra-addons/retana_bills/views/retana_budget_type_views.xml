@@ -44,7 +44,7 @@
                 <field name="name" string="Tipo" filter_domain="[('name','ilike',self)]"/>
                 <filter string="Activos" name="active" domain="[('active','=',True)]"/>
                 <filter string="Archivados" name="inactive" domain="[('active','=',False)]"/>
-                <group expand="0" string="Agrupar Por">
+                <group>
                     <filter string="Estado" name="group_by_active" context="{'group_by':'active'}"/>
                 </group>
             </search>
