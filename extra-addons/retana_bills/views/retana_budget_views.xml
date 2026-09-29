@@ -75,11 +75,7 @@
                         <field name="total_amount" widget="monetary" class="oe_subtotal_footer_separator" readonly="1"/>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
+                <chatter/>
             </form>
         </field>
     </record>
