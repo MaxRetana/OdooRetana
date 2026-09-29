@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="retana_login_customization" inherit_id="web.login" name="Retana Login Custom">
-        <xpath expr="//form[contains(@class, 'oe_login_form')]" position="attributes">
-            <attribute name="class" add="retana-login-form" separator=" "/>
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]" position="attributes">
+            <attribute name="t-attf-class" add="retana-login-form" separator=" "/>
         </xpath>
-        <xpath expr="//form[contains(@class, 'oe_login_form')]//button[@name='redirect']" position="replace"/>
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]//button[@name='redirect']" position="replace"/>
     </template>
 
     <template id="retana_auth_totp_customization" inherit_id="auth_totp.auth_totp_form" name="Retana 2FA Custom">
