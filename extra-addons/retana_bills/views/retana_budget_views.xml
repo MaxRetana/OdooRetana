@@ -56,13 +56,13 @@
                                     </control>
                                     <field name="sequence" widget="handle"/>
                                     <field name="display_type" optional="1"/>
-                                    <field name="product_id" required="display_type in (False, None)" column_invisible="not parent.id" force_save="1"/>
+                                    <field name="product_id" required="display_type in (False, None)" force_save="1"/>
                                     <field name="description" widget="section_and_note_text"/>
-                                    <field name="quantity" required="display_type in (False, None)" column_invisible="not parent.id" force_save="1"/>
+                                    <field name="quantity" required="display_type in (False, None)" force_save="1"/>
                                     <field name="uom_id"/>
-                                    <field name="unit_price" widget="monetary" required="display_type in (False, None)" column_invisible="not parent.id" force_save="1"/>
-                                    <field name="taxes_ids" widget="many2many_tags" column_invisible="not parent.id" force_save="1"/>
-                                    <field name="subtotal" widget="monetary" column_invisible="not parent.id" force_save="1"/>
+                                    <field name="unit_price" widget="monetary" required="display_type in (False, None)" force_save="1"/>
+                                    <field name="taxes_ids" widget="many2many_tags" force_save="1"/>
+                                    <field name="subtotal" widget="monetary" force_save="1"/>
                                 </list>
                             </field>
                         </page>
