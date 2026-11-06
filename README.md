@@ -27,9 +27,24 @@ retiraron del repo — ver
 
 ## Entornos
 
-- `docker-compose.yaml` — producción (Odoo 17.0, detrás de nginx).
+- `docker-compose.yaml` — producción (Odoo 19.0, detrás de nginx). Usa `config/prod.conf` y `nginx/nginx.conf`, y su propio volumen de PostgreSQL, `odoo_data` y filestore (`odoo-filestore-19/`).
+- `docker-compose-17.yaml` — copia de la producción anterior (Odoo 17.0). Usa `config/prod-17.conf` y `nginx/nginx-17.conf`, con sus volúmenes originales.
 - `docker-compose-local.yaml` / `docker-compose-test.yaml` — desarrollo/prueba local (Odoo 17.0).
 - `docker-compose-19.yaml` — desarrollo local contra Odoo 19.0 (base de datos vacía, sin datos reales — ver [ADR 0002](docs/decisions/0002-porting-de-codigo-primero-datos-despues.md)).
+
+### Cambio de producción 17 → 19
+
+Los dos stacks de producción publican los puertos 80/443, así que no pueden
+correr a la vez:
+
+```bash
+docker compose -f docker-compose-17.yaml down      # baja la producción 17 (no borra volúmenes)
+docker compose up -d                               # levanta la producción 19
+```
+
+Para volver atrás: `docker compose down` y `docker compose -f docker-compose-17.yaml up -d`.
+La base de datos de 19 empieza vacía en su propio volumen: restaura ahí la base
+migrada y copia su filestore a `odoo-filestore-19/<nombre_de_la_base>/`.
 
 ## Documentación
 
