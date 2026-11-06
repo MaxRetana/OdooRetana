@@ -1,0 +1,105 @@
+/* Estilos para el widget de selector de cantidades */
+.retana_amount_selector {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.retana_amount_selector .current_amount {
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 6px;
+    border: 2px solid #dee2e6;
+}
+
+.retana_amount_selector .current_value {
+    font-size: 1.5em;
+    color: #0d6efd;
+    margin-top: 5px;
+}
+
+.retana_amount_selector .amount_grid {
+    margin-top: 15px;
+}
+
+.retana_amount_selector .amount_row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.retana_amount_selector .amount_btn {
+    flex: 1;
+    padding: 15px 10px;
+    font-size: 0.95em;
+    font-weight: 600;
+    border-width: 2px;
+    transition: all 0.2s ease;
+}
+
+.retana_amount_selector .amount_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.retana_amount_selector .amount_btn.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.retana_amount_selector .custom_amount_row {
+    text-align: center;
+}
+
+.retana_amount_selector .custom_amount_btn {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-width: 2px;
+}
+
+.retana_amount_selector .custom_input_container {
+    animation: fadeIn 0.3s ease;
+}
+
+.retana_amount_selector .custom_input_container input {
+    font-size: 1.1em;
+    padding: 10px;
+}
+
+.retana_amount_selector .custom_buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.retana_amount_selector .custom_buttons button {
+    flex: 1;
+    padding: 10px;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos responsivos */
+@media (max-width: 576px) {
+    .retana_amount_selector {
+        max-width: 100%;
+    }
+    
+    .retana_amount_selector .amount_btn {
+        padding: 12px 8px;
+        font-size: 0.85em;
+    }
+}

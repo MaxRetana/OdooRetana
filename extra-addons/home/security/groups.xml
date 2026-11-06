@@ -7,19 +7,28 @@
         <field name="sequence">10</field>
     </record>
 
+    <!-- Odoo 19.0: res.groups ya no tiene category_id; los grupos se agrupan
+         visualmente en el formulario de Usuario mediante res.groups.privilege,
+         que a su vez sí apunta a una ir.module.category (ver ADR 0003). -->
+    <record id="privilege_home_home" model="res.groups.privilege">
+        <field name="name">Home</field>
+        <field name="category_id" ref="module_category_home_home"/>
+        <field name="sequence">10</field>
+    </record>
+
     <!-- Grupo: Lector -->
     <record id="group_home_home_user" model="res.groups">
         <field name="name">Usuario: Solo Lectura</field>
-        <field name="category_id" ref="module_category_home_home"/>
+        <field name="privilege_id" ref="privilege_home_home"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
     <!-- Grupo: Administrador -->
     <record id="group_home_home_admin" model="res.groups">
         <field name="name">Administrador: Configuración</field>
-        <field name="category_id" ref="module_category_home_home"/>
+        <field name="privilege_id" ref="privilege_home_home"/>
         <field name="implied_ids" eval="[(4, ref('group_home_home_user'))]"/>
-        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
     <!-- Multiempresa: cada usuario ve los accesos de sus compañías y los que no tienen compañía -->

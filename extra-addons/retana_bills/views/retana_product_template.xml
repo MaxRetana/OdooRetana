@@ -3,10 +3,10 @@
     
     <!-- Vista de árbol personalizada para productos Retana -->
     <record id="view_retana_product_template_tree" model="ir.ui.view">
-        <field name="name">view.retana.product.template.tree</field>
+        <field name="name">view.retana.product.template.list</field>
         <field name="model">product.template</field>
         <field name="arch" type="xml">
-            <tree string="Productos Retana" default_order="name asc">
+            <list string="Productos Retana" default_order="name asc">
                 <field name="default_code" string="Referencia"/>
                 <field name="name" string="Nombre"/>
                 <field name="display_name" optional="hide"/>
@@ -15,7 +15,7 @@
                 <field name="taxes_id" widget="many2many_tags" string="IVA"/>
                 <field name="uom_id" string="Unidad de Medida"/>
                 <field name="categ_id" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -51,10 +51,10 @@
     <record id="action_retana_product_template" model="ir.actions.act_window">
         <field name="name">Productos Retana</field>
         <field name="res_model">product.template</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'default_detailed_type': 'product'}</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_retana_product_template_tree')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_retana_product_template_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_retana_product_template_form')})]"/>
     </record>
 </odoo>

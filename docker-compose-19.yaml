@@ -1,0 +1,35 @@
+services:
+  db_retana_19:
+    image: postgres:15
+    volumes:
+      - odoo_pg_data_retana_19:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    restart: always
+    container_name: db_retana_19
+
+  odoo_19_retana:
+    image: odoo:19
+    depends_on:
+      - db_retana_19
+    ports:
+      - "8090:8069"
+    volumes:
+      - odoo_data_retana_19:/var/lib/odoo
+      - ./extra-addons:/mnt/extra-addons
+      - ./config/local.conf:/etc/odoo/odoo.conf
+      - ./odoo-filestore:/root/.local/share/Odoo/filestore
+    environment:
+      - HOST=db_retana_19
+      - USER=odoo
+      - PASSWORD=odoo
+    restart: always
+    container_name: odoo_19_retana
+    user: "root"
+    command: bash -c "pip install --no-cache-dir -r /mnt/extra-addons/requirements.txt && apt-get update && apt-get install -y tesseract-ocr tesseract-ocr-spa && /usr/bin/odoo -c /etc/odoo/odoo.conf --dev all"
+
+volumes:
+  odoo_pg_data_retana_19:
+  odoo_data_retana_19:
