@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="home.HomeSystrayButton">
+        <button class="o_home_systray_button o_nav_entry btn border-0" title="Inicio" aria-label="Inicio"
+                t-on-click="openHome">
+            <i class="fa fa-home fa-lg"/>
+        </button>
+    </t>
+</templates>

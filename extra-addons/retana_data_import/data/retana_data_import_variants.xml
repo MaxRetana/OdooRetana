@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Se ejecuta justo despues de cargar product.template.csv -->
+    <function model="retana.data.import.helper" name="register_product_variant_xmlids"/>
+</odoo>

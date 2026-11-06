@@ -1,0 +1,146 @@
+id,name,sequence,type,categ_id/id,list_price,sale_ok,uom_id/id,active
+retana_data_import.product_template_52,AIRE ACONDICIONADO MINI SPLIT MAGNUM 22 A 220 VOLTS INVETER 1 TR,1,consu,product.product_category_goods,1.0,False,uom.product_uom_unit,True
+retana_data_import.product_template_53,AIRE ACONDICIONADO MINI SPLIT MAGNUM 22 A 220 VOLTS INVETER 2 TR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_54,ALIMENTACION GENERAL PARA CENTRO DE CARGA QU30,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_55,ALIMENTACION GENERAL PARA CUARTO DE MAQUINAS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_56,"ALIMENTACION SUBTERRANEA PARA TV, TEL E INTREFON",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_57,BASE DE MEDICION A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_58,CAJA DE DISTRIBUCION,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_59,CIRCUITO A 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_60,COLOCACION DE ACCESORIOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_61,COLOCACION DE AIRE ACONDICIONADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_62,COLOCACION DE AIRES ACONDICIONADOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_63,COLOCACION DE CANDIL DOBLE ALTURA GRANDE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_64,COLOCACION DE CARGADOR TESLA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_65,COLOCACION DE CENTRO DE CARGA QU12,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_66,COLOCACION DE CENTRO DE CARGA QU30,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_67,COLOCACION DE CENTRO DE CARGA QU8,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_68,COLOCACION DE LAMPARA CILINDRO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_69,COLOCACION DE LAMPARA COLGANTE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_70,COLOCACION DE LAMPARA ESCALERA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_71,COLOCACION DE LAMPARA JARDIN,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_72,COLOCACION DE LAMPARA MURO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_73,COLOCACION DE LAMPARA PISO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_74,COLOCACION DE LED ESPEJO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_75,COLOCACION DE PANTALLA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_76,COLOCACION DE REFLECTOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_77,COLOCACION DE SOPORTE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_78,COLOCACION DE TIRA LED,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_79,COLOCACION DE VENTILADOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_80,COLOCACIÓN DE CONTACTOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_81,CONTACTOS ADICIONALES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_82,LOTE DE DETALLES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_83,MATERIAL UTILIZADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_84,MOVIMIENTO DE EQUIPO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_85,QUITAR Y LAVAR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_86,QUITAR Y PONER,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_87,SALIDA PARA AIRE ACONDICIONADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_88,SALIDA PARA APAGADOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_89,SALIDA PARA BOILER A 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_90,SALIDA PARA BOMBA SUMERGIBLE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_91,"SALIDA PARA CAMARAS, BOCINAS, REPETIDOR E INTERFON",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_92,SALIDA PARA CIRCUITO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_93,SALIDA PARA CONTACTO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_94,SALIDA PARA CONTACTO A 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_95,SALIDA PARA CONTACTO A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_96,SALIDA PARA LAMPARA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_97,SALIDA PARA PANELES SOLARES A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_98,"SALIDA PARA TV, TEL E INTERFON",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_99,SALIDA PARA VENTILADOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_100,SUMINISTRO Y COLOCACION  DE ALIMENTACION A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_101,TIERRA FISICA EN CONTACTOS Y ATERRIZACION DE TABLEROS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_102,TUBERIA ADICCIONAL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_103,SUMINISTRO DE AIRE ACONDICINADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_104,INSTALACIÓN ELÉCTRICA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_105,MANTENIMIENTO PRECENTIVO DE AIRES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_106,DIAGNOSTICO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_107,SUMINISTRO Y COLOCACION DE AIRE ACONDICIONADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_108,COLOCACION DE ACOMETIDA AEREA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_109,DETALLES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_110,SALIDA PARA CONTACTOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_111,SALIDA A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_112,"SALIDAS PARA TELEFONIA, INTERNET, TV",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_113,CAJAS DE REGISTROS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_114,TIERRA FISICA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_115,COLOCACION DE INTERRUPTOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_116,SALIDAS PARA AIRES ACONDICIONADOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_117,ALIMENTACIONES PARA TELEFONIA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_118,ALIMENTACIONES GENERALES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_119,SALIDA PARA TERMOSTATO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_120,CONCENTRACION DE MEDIDORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_121,ALIMENTACION GENERAL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_122,ALIMENTACION TRIFACICA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_123,"SALIDAS PARA LAMPARAS, CONTACTOS Y APAGADORES",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_124,DETALLE DE CONTACTOS Y APAGADORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_125,CONTACTOS A 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_126,MODIFICACION Y DETALLES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_127,ALIMENTACION SUBTERRANEA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_128,SALIDAS A 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_129,SALIDA PARA ANUNCIO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_130,COLOCACION DE LAMPARAS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_131,COLOCACION DE LAMPARAS TIPO RIEL DE LED,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_132,BASE PARA MEDICION,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_133,MOVIMIENTO DE BASE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_134,CAMBIO DE CABLE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_135,COLOCACION Y SALIDA PARA EXTRACTORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_136,COLOCACION DE LAMPARAS DE PISO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_137,COLOCACION DE LAMPARAS DE TECHO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_138,COLOCACION DE LAMPARA JARDIN INTERNO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_139,COLOCACION DE LAMPARAS COLGANTES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_140,COLOCACION DE LAMPARAS MURO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_141,MODIFICACION,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_142,COLOCACION DE CONTACTOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_143,COLOCACION DE REFLECTORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_144,COLOCACIÓN DE TIMER,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_145,COLOCACIÓN DE SENSOR DE MOVIMIENTO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_146,AIRE ACONDICIONADO MINI SPLIT MAGNUM 22 A 220 VOLTS INVETER 1.5 TR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_147,COLOCACIÓN DE AIRE ACONDICIONADOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_148,COLOCACION DE FOCOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_149,SALIDA PARA BOMBA SUMERGIBLE Y PRESURIZADOR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_150,CONEXION PARA AIRE ACONDICIONADO A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_151,SALIDA PARA BOMBA FUENTE 110 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_152,COLOCACION DE CENTRO DE CARGA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_153,BASE DE MEDICION,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_154,SALIDA PARA CONTACTO EN AZOTEA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_155,COLOCACION DE LAMPARAS DOBLE ALTURA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_156,COLOCACION DE LAMPARAS LED JARDIN,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_157,COLOCACION DE LAMPARAS CILINDRO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_158,COLOCACION TIRA LED,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_159,COLCOACION DE SPOT CHICO MONEDAS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_160,ALIMENTACIÓN,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_161,COLOCACIÓN DE CANDILES GRANDES DOBLE ALTURA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_162,COLOCACIÓN DE LÁMPARAS TIPO RIEL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_163,COLOCACIÓN DE LÁMPARAS TIPO RIEL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_164,AIRE ACONDICIONADO MINI SPLIT MAGNUM 18 A 220 VOLTS 3 TR,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_165,SALIDA PARA VENTILADORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_166,"SALIDA PARA CAMPANAS, BOCINA Y REPETIDOR",1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_167,CAJAS DE DISTRIBUCION,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_168,SUMINISTRO Y COLOCACION DE CENTRO DE CARGA QU20,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_169,MURETE A 220 VOLTS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_170,COLOCACION DE VENTILADORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_171,COLOCACION DE LAMPARAS ESCALERA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_172,COLOCACION DE LAMPARAS JARDIN,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_173,COLOCACION DE LAMPARAS ESPOT CHICOS Y GRANDES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_174,COLOCACION DE LAMPARAS PIY,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_175,CAMBIO DE CONTACTOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_176,CAMBIO DE APAGADORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_177,TOMAS TV Y TEL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_178,ZUMBADOR Y TIMBRE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_179,MANTENIMIENTO DE AIRE ACONDICIONADO MINI SPLIT,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_180,COLOCACIÓN DE SOPORTE PARA MURO Y MOVIMIENTO DE AIRE ACONDICIONADO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_181,COLOCACION DE APAGADORES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_182,ALIMENTACION PARA CONTACTO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_183,SALIDA PARA LAMPARAS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_184,COLOCACION DE ESPOT,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_185,COLOCACION LAMPARAS LATON,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_186,SALIDA PARA TV Y TEL E NTERFON,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_187,SALIDA PARA BOCINA Y CAMARAS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_188,CAJA DE DISTRIBUCION TELEFONICA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_189,SUMINISTRO Y COLOCACION DE CENTRO DE CARGA QU30 BIFACICO,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_190,ALIMENTACION GENERAL3 HILOS,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_191,MURETE PROVICIONAL,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_192,COLOCACION DE LAMPARAS JARIN,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_193,COLOCACION DE ESPOT CHICO Y GRANDE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_194,COLOCACION LAMPARAS BARRA COCINA,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_195,SALIDA Y CORRECCION DE BOMBA PARA FUENTE,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True
+retana_data_import.product_template_196,SALIDAS GENERALES,1,consu,product.product_category_goods,1.0,True,uom.product_uom_unit,True

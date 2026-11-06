@@ -46,42 +46,53 @@ class FieldTrackingMixin(models.AbstractModel):
     def write(self, vals):
         """
         Sobrescribir write para trackear cambios en campos relacionales configurados
+
+        Nota (migracion 19.0): la version anterior de este metodo llamaba a
+        super().write(vals) y hacia return dentro del "for record in self",
+        por lo que en un write() sobre un recordset con mas de un registro
+        solo se procesaba (y trackeaba) el primero; el resto se escribia
+        igual, pero sin quedar registrado en el chatter, y el write real se
+        hacia una vez por registro en vez de en batch. Se corrige para tomar
+        el snapshot "antes" de cada registro, hacer un unico write() por
+        lotes sobre todo el recordset (como espera el ORM de Odoo) y luego
+        comparar/registrar los cambios de cada registro.
         """
         # Verificar si algún campo trackeado está en vals
         fields_to_track = set(self._tracked_fields.keys()) & set(vals.keys())
-        
-        if fields_to_track:
-            for record in self:
-                # Guardar snapshots de todos los campos trackeados que van a cambiar
-                old_snapshots = {}
-                for field_name in fields_to_track:
-                    field_value = record[field_name]
-                    old_snapshots[field_name] = self._prepare_field_snapshot(
-                        field_name, field_value
-                    )
-                
-                # Ejecutar el write original
-                result = super(FieldTrackingMixin, record).write(vals)
-                
-                # Comparar y registrar cambios para cada campo
-                all_changes = []
-                for field_name in fields_to_track:
-                    new_snapshot = self._prepare_field_snapshot(
-                        field_name, record[field_name]
-                    )
-                    field_changes = self._compare_field_snapshots(
-                        field_name, old_snapshots[field_name], new_snapshot
-                    )
-                    if field_changes:
-                        all_changes.append(field_changes)
-                
-                # Registrar todos los cambios en un solo mensaje
-                if all_changes:
-                    record.message_post(body='<br/>'.join(all_changes))
-                
-                return result
-        
-        return super(FieldTrackingMixin, self).write(vals)
+
+        if not fields_to_track:
+            return super().write(vals)
+
+        # Guardar snapshots de todos los campos trackeados que van a cambiar,
+        # para cada registro, antes de escribir nada.
+        old_snapshots = {
+            record.id: {
+                field_name: self._prepare_field_snapshot(field_name, record[field_name])
+                for field_name in fields_to_track
+            }
+            for record in self
+        }
+
+        # Ejecutar el write original una sola vez, sobre todo el recordset.
+        result = super().write(vals)
+
+        for record in self:
+            all_changes = []
+            for field_name in fields_to_track:
+                new_snapshot = self._prepare_field_snapshot(
+                    field_name, record[field_name]
+                )
+                field_changes = self._compare_field_snapshots(
+                    field_name, old_snapshots[record.id][field_name], new_snapshot
+                )
+                if field_changes:
+                    all_changes.append(field_changes)
+
+            # Registrar todos los cambios en un solo mensaje
+            if all_changes:
+                record.message_post(body='<br/>'.join(all_changes))
+
+        return result
 
     def _prepare_field_snapshot(self, field_name, field_value):
         """

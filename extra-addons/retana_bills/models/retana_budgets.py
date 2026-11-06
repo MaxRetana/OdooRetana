@@ -11,13 +11,19 @@ class RetanaBudget(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'field.tracking.mixin']
     _order = 'date desc, id desc'
 
+    # Nota (migracion 19.0): las claves usaban 'linea_ids'/'producto_id', que no
+    # existen en el modelo (los campos reales son 'line_ids'/'product_id', ver
+    # mas abajo). Por ese typo, field.tracking.mixin nunca encontraba
+    # coincidencia entre _tracked_fields y los vals de write(), asi que el
+    # tracking de lineas de presupuesto en el chatter nunca se disparaba. Se
+    # corrige para que coincida con los nombres reales de los campos.
     _tracked_fields = {
-        'linea_ids': {
+        'line_ids': {
             'type': 'one2many',
             'display_name': 'Líneas de Presupuesto',
-            'fields_to_track': ['producto_id', 'quantity', 'unit_price', 'taxes_ids', 'subtotal', 'display_type'],
+            'fields_to_track': ['product_id', 'quantity', 'unit_price', 'taxes_ids', 'subtotal', 'display_type'],
             'display_fields': {
-                'producto_id': lambda val: val.name if val else 'Sin producto',
+                'product_id': lambda val: val.name if val else 'Sin producto',
                 'quantity': lambda val: str(val),
                 'unit_price': lambda val: f"${val:,.2f}",
                 'subtotal': lambda val: f"${val:,.2f}",

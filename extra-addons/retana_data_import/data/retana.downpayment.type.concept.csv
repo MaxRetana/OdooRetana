@@ -1,0 +1,26 @@
+id,name,default_concept,active
+retana_data_import.retana_downpayment_type_concept_12,Finiquito,False,True
+retana_data_import.retana_downpayment_type_concept_13,Anticipo,True,True
+retana_data_import.retana_downpayment_type_concept_14,Trabajos de ducterias,False,True
+retana_data_import.retana_downpayment_type_concept_15,Aire Fan&Coil,False,True
+retana_data_import.retana_downpayment_type_concept_16,Aire Mini Split,False,True
+retana_data_import.retana_downpayment_type_concept_17,Detalles Colocación de Pantalla y Lampara,False,True
+retana_data_import.retana_downpayment_type_concept_18,Tuberias para aire acondicionado,False,True
+retana_data_import.retana_downpayment_type_concept_19,a cuenta de colocación de aires acondicionados Minis plis,False,True
+retana_data_import.retana_downpayment_type_concept_20,por checar fuga de refrigerante 410 y 2 cargas de gas y un kit de tubería,False,True
+retana_data_import.retana_downpayment_type_concept_21,Colocacion de aire acondicionado,False,True
+retana_data_import.retana_downpayment_type_concept_22,DETALLES CABECERA CONTACTOS,False,True
+retana_data_import.retana_downpayment_type_concept_23,COLOCACIÓN DE AIRE ACONDICIONADO DE 1 TR EN SALA DE ESPERA CHICA,False,True
+retana_data_import.retana_downpayment_type_concept_24,QUITAR Y PONER AIRE ACONDICIONADO DE 1.5 TR EN CONSULTORIO DE DOCTOR,False,True
+retana_data_import.retana_downpayment_type_concept_25,DETALLES DE CABLEADO DE INTERNET Y COLOCACIÓN DE TIMER LÁMPARAS EN JARDÍN,False,True
+retana_data_import.retana_downpayment_type_concept_26,Colocación de aire acondicionado 3 piezas en departamento Bruno,False,True
+retana_data_import.retana_downpayment_type_concept_27,DETALLES DE TUBERÍA DE COBRE PARA AIRE ACONDICIONADO MINISPLIT MATERIAL Y MANO DE OBRA,False,True
+retana_data_import.retana_downpayment_type_concept_28,Detalles de contactos y controles de Aires,False,True
+retana_data_import.retana_downpayment_type_concept_29,Quitar y poner Aire Acondicionado de 2 TR y Forrar con armaflex y aluminio las tuberías de gas,False,True
+retana_data_import.retana_downpayment_type_concept_30,Detalles,False,True
+retana_data_import.retana_downpayment_type_concept_31,AIRES ACONDICIONADOS Y COLOCACIÓN A CUENTA,False,True
+retana_data_import.retana_downpayment_type_concept_32,AIRES ACONDICIONADOS FINIQUITO,False,True
+retana_data_import.retana_downpayment_type_concept_33,ALIMENTACIÓN A 220 CON PASTILLA 2X20 PARA BOMBA LODERA,False,True
+retana_data_import.retana_downpayment_type_concept_34,Colocación de Aires Acondicionados a Cuenta,False,True
+retana_data_import.retana_downpayment_type_concept_35,Colocación de Aires Acondicionados Finiquito,False,True
+retana_data_import.retana_downpayment_type_concept_36,Elevador alimentación bifacica con cable 8 y 10,False,True
