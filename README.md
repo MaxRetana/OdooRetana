@@ -28,7 +28,7 @@ retiraron del repo — ver
 ## Entornos
 
 - `docker-compose.yaml` — producción (Odoo 19.0, detrás de nginx). Usa `config/prod.conf` y `nginx/nginx.conf`, y su propio volumen de PostgreSQL, `odoo_data` y filestore (`odoo-filestore-19/`).
-- `docker-compose-17.yaml` — copia de la producción anterior (Odoo 17.0). Usa `config/prod-17.conf` y `nginx/nginx-17.conf`, con sus volúmenes originales.
+- `docker-compose-17.yaml` — copia de la producción anterior (Odoo 17.0). Usa `config/prod-17.conf`, `nginx/nginx-17.conf` y `extra-addons-17/` (copia exacta del código de `main`, también etiquetado como `odoo-17-final`), con sus volúmenes originales. Así el 17 arranca con su código aunque estés en la rama de 19.
 - `docker-compose-local.yaml` / `docker-compose-test.yaml` — desarrollo/prueba local (Odoo 17.0).
 - `docker-compose-19.yaml` — desarrollo local contra Odoo 19.0 (base de datos vacía, sin datos reales — ver [ADR 0002](docs/decisions/0002-porting-de-codigo-primero-datos-despues.md)).
 
@@ -43,6 +43,12 @@ docker compose up -d                               # levanta la producción 19
 ```
 
 Para volver atrás: `docker compose down` y `docker compose -f docker-compose-17.yaml up -d`.
+
+Reglas para poder regresar sin sorpresas:
+- Para el stack 17 usa siempre `-f docker-compose-17.yaml`: un `docker compose down` sin `-f` baja el de 19.
+- Nunca uses `down -v` (borra los volúmenes con las bases de datos).
+- Lo capturado en 19 después del cambio no existe en 17: la migración es de un solo sentido.
+- No borres la base ni el filestore de 17 hasta confirmar que 19 está estable.
 La base de datos de 19 empieza vacía en su propio volumen: restaura ahí la base
 migrada y copia su filestore a `odoo-filestore-19/<nombre_de_la_base>/`.
 
