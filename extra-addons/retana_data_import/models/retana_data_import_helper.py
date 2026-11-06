@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from odoo import api, models
+
+_logger = logging.getLogger(__name__)
 
 MODULE = 'retana_data_import'
 
@@ -78,3 +82,22 @@ class RetanaDataImportHelper(models.AbstractModel):
                                  'number_next': number_next, 'number_increment': 1, 'company_id': False})
             elif sequence.number_next_actual < number_next:
                 sequence.number_next = number_next
+
+    @api.model
+    def set_company_currency(self):
+        """Deja la moneda de la empresa en MXN, como estaba en Odoo 17.
+
+        Los modelos de Retana usan la moneda de la empresa como moneda por defecto; en una base
+        nueva de Odoo 19 es USD. Odoo no deja cambiarla si ya hay movimientos contables, en cuyo
+        caso solo se avisa en el log y no se toca nada.
+        """
+        mxn = self.env.ref('base.MXN')
+        company = self.env.ref('base.main_company')
+        if company.currency_id == mxn:
+            return
+        if self.env['account.move'].sudo().search_count([('company_id', '=', company.id)]):
+            _logger.warning('retana_data_import: la moneda de %s no se cambia a MXN porque ya tiene '
+                            'asientos contables.', company.display_name)
+            return
+        mxn.active = True
+        company.currency_id = mxn
