@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <menuitem id="grades_manager_menu" name="Grades Manager"/>
+  <menuitem id="grades_course_menu_group" name="Courses" parent="grades_manager_menu" action="grades_course_action"/>
+  <menuitem id="teachers_menu" name="Teachers" parent="grades_manager_menu" action="teachers_action"/>
+  <menuitem id="students_menu" name="Students" parent="grades_manager_menu" action="students_action"/>
+  <menuitem id="grades_course_menu" name="Courses" parent="grades_course_menu_group" action="grades_course_action"/>
+  <menuitem id="grades_evaluation_menu" name="Evaluations" parent="grades_course_menu_group" action="grades_evaluation_action"/>
+  
+</odoo>

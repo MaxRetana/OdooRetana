@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de configuración del modo mantenimiento -->
+    <record id="res_config_settings_view_form_maintenance" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.maintenance</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='general_settings']" position="after">
+                <app name="maintenance_odoo_retana" string="Modo Mantenimiento">
+                    <block title="Configuración de Mantenimiento">
+                        <setting help="Activar el modo mantenimiento bloqueará el acceso al sistema para todos los usuarios excepto aquellos con permisos de administración (grupo Ajustes/Configuración)">
+                            <field name="maintenance_mode_enabled"/>
+                            <label for="maintenance_mode_enabled"/>
+                        </setting>
+                        
+                        <setting help="Mensaje que se mostrará a los usuarios durante el mantenimiento" invisible="not maintenance_mode_enabled">
+                            <label for="maintenance_message" string="Mensaje de Mantenimiento"/>
+                            <field name="maintenance_message" placeholder="El sistema está en mantenimiento..."/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

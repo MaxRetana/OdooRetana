@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_retana_budget,access.retana.budget,model_retana_budget,base.group_user,1,1,1,1
+access_retana_budget_type,access.retana.budget.type,model_retana_budget_type,base.group_user,1,1,1,1
+access_retana_budget_line,access.retana.budget.line,model_retana_budget_line,base.group_user,1,1,1,1
+access_retana_buildings,access.retana.buildings,model_retana_buildings,base.group_user,1,1,1,1
+access_retana_type_res_partner,access.retana.type.res.partner,model_retana_type_res_partner,base.group_user,1,1,1,1
+access_retana_company_info,access.retana.company.info,model_retana_company_info,base.group_user,1,1,1,1
+access_retana_downpayment,access.retana.downpayment,model_retana_downpayment,base.group_user,1,1,1,1
+access_retana_downpayment_wizard,access.retana.downpayment.wizard,model_retana_downpayment_wizard,base.group_user,1,1,1,1
+access_retana_bulk_downpayment_wizard,access.retana.bulk.downpayment.wizard,model_retana_bulk_downpayment_wizard,base.group_user,1,1,1,1
+access_retana_downpayment_type_concept,access.retana.downpayment.type.concept,model_retana_downpayment_type_concept,base.group_user,1,1,1,1
+access_retana_send_whatsapp_wizard,access.retana.send.whatsapp.wizard,model_retana_send_whatsapp_wizard,base.group_user,1,1,1,1
+access_retana_sent_wh,access.retana.sent.wh,model_retana_sent_wh,base.group_user,1,1,1,1

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Usar el Home como pantalla de inicio (poner False para desactivarlo) -->
+    <record id="config_param_use_as_landing" model="ir.config_parameter">
+        <field name="key">home.use_as_landing</field>
+        <field name="value">True</field>
+    </record>
+</odoo>

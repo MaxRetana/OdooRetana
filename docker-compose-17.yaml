@@ -19,7 +19,7 @@ services:
             - "8072"
         volumes:
             - odoo_data_retana:/var/lib/odoo
-            - ./extra-addons:/mnt/extra-addons
+            - ./extra-addons-17:/mnt/extra-addons
             - ./config/prod-17.conf:/etc/odoo/odoo.conf
             - ./odoo-filestore:/root/.local/share/Odoo/filestore
         environment:
