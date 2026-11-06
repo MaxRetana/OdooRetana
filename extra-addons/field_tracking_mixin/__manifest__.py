@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Field Tracking Mixin',
-    'version': '15.0.1',
+    'version': '19.0.1.0.0',
     'category': 'Tools',
     'summary': 'Mixin genérico para trackear cambios en campos One2many y Many2many',
     'description': """

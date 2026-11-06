@@ -164,7 +164,6 @@ cython_debug/
 #.github/
 #.gitignore
 Dockerfile
-README.md
 certbot/
 docker-compose.yml
 etc/
@@ -185,4 +184,4 @@ odoo-filestore/db_retana/
 nginx/ssl/
 
 .graphify-out/
-graphify-out/
+graphify-out/odoo-filestore-19/

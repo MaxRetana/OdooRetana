@@ -1,0 +1,14 @@
+id,name,is_material_list,active
+retana_data_import.retana_budget_type_8,Presupuesto de Aires Acondicionados,False,True
+retana_data_import.retana_budget_type_9,Presupuesto Electrico,False,True
+retana_data_import.retana_budget_type_10,COLOCACION DE AIRES ACONDICIONADOS,False,True
+retana_data_import.retana_budget_type_11,COLOCACION DE AIRES ACONDICIONADOS Y DETALLES,False,True
+retana_data_import.retana_budget_type_12,Presupuesto de Aires Acondicionados Faltantes,False,True
+retana_data_import.retana_budget_type_13,Presupuesto de Aires Acondicionados Faltantes Departamento 3 y 4,False,True
+retana_data_import.retana_budget_type_14,TRABAJOS DE AIRES ACONDICIONADOS,False,True
+retana_data_import.retana_budget_type_15,Carta Diagnostico,False,True
+retana_data_import.retana_budget_type_16,Trabajos Electricos,False,True
+retana_data_import.retana_budget_type_17,Trabajos adicionales eléctricos,False,True
+retana_data_import.retana_budget_type_18,PRESUPUESTO COLOCACIÓN DE AIRES ACONDICIONADOS MINI SPLIT,False,True
+retana_data_import.retana_budget_type_19,Trabajos adicionales,False,True
+retana_data_import.retana_budget_type_20,PRESUPUESTO DE COLOCACIÓN DE AIRES ACONDICIONADOS,False,True

@@ -1,0 +1,33 @@
+id,name,tz,active,type,country_id/id,email,phone,is_company,is_retana_customer,retana_type_res_partner_id/id
+base.main_partner,Electricos Retana,,True,contact,base.mx,maxretana981@gmail.com,3123025006,True,False,
+retana_data_import.res_partner_29,Alberto Zepeda,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_30,Ana Rosa,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_31,Casillas,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_32,Clemente,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_33,Don Gil,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_34,Edgar Lopez,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_35,Ely,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_36,Francisco Contreras,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_37,Horacio Bautista,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_38,Jose Alberto Zepeda Pamplona,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_39,Jose Oseguera,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_40,Juan Jose,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_41,Juan Jose Lopez Arzate,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_42,Katia Carrillo,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_43,Marcos Gonzalez,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_44,Maria Luisa Osorio De Guzman,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_8
+retana_data_import.res_partner_45,Mary,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_46,Matias Di Frenna,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_47,Miguel Gonzales,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_48,Paulina Franco,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_49,Shikimoto,America/Mexico_City,True,contact,,,,False,True,
+retana_data_import.res_partner_50,Ursua,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_51,Berenice Carmona,America/Mexico_City,True,contact,,berenice.carmonacastellanos@gmail.com,,False,False,
+retana_data_import.res_partner_52,Pepe Retana,America/Mexico_City,True,contact,,peperetana66@gmail.com,,False,False,
+retana_data_import.res_partner_53,Francisco Rivas,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_54,Laura Soto,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_6
+retana_data_import.res_partner_55,Jorge Gómez Mejía,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_5
+retana_data_import.res_partner_56,Jose,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_57,Gildardo Guzmán,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_7
+retana_data_import.res_partner_58,Juan Guardado,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_9
+retana_data_import.res_partner_59,Marcela Gomez,America/Mexico_City,True,contact,,,,False,True,retana_data_import.retana_type_res_partner_10
