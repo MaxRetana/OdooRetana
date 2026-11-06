@@ -27,7 +27,6 @@
         'data/retana.downpayment.csv',
         'data/retana.sent.wh.csv',
         'data/retana.company.info.csv',
-        'data/retana_data_import_sequences.xml',
     ],
     'license': 'AGPL-3',
     'application': False,
