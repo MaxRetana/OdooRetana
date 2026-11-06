@@ -7,5 +7,5 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
     date = fields.Date(
         string='Fecha del Anticipo',
         required=True,
-        default='_get_default_saturday',
+        default=lambda self: self._get_default_saturday(),
     )
