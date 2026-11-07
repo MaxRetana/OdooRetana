@@ -1,11 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 
-import logging
-_logger = logging.getLogger(__name__)
-RED = '\033[91m'
-ENDC = '\033[0m'
-
 # Campos que no se pueden modificar cuando el presupuesto esta aprobado
 APPROVED_LOCKED_FIELDS = {
     'title', 'description', 'client_id', 'building_id', 'date', 'currency_id',
@@ -42,9 +37,9 @@ class RetanaBudget(models.Model):
     name                =fields.Char(string='Referencia', copy=False, default='Nuevo', tracking=True)
     title               =fields.Char(string='Título', tracking=True)
     description         =fields.Text(string='Descripción', tracking=True)
-    client_id           =fields.Many2one('res.partner', string='Cliente', domain="[('is_retana_customer', '=', True)]", tracking=True)
+    client_id           =fields.Many2one('res.partner', string='Cliente', domain="[('is_retana_customer', '=', True)]", tracking=True, index=True)
     building_id         =fields.Many2one('retana.buildings', string='Obra', domain="[('client_id', '=', client_id)]", tracking=True)
-    date                =fields.Date(string='Fecha', default=fields.Date.context_today, tracking=True)
+    date                =fields.Date(string='Fecha', default=fields.Date.context_today, tracking=True, index=True)
     currency_id         =fields.Many2one('res.currency', string='Moneda', default=lambda self: self.env.company.currency_id, tracking=True)
     subtotal_amount     =fields.Monetary(string='Subtotal', compute='_compute_amounts', currency_field='currency_id', tracking=True)
     tax_amount          =fields.Monetary(string='IVA', compute='_compute_amounts', currency_field='currency_id', tracking=True)
@@ -185,20 +180,7 @@ class RetanaBudget(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('name') or vals.get('name') == 'Nuevo':
-                # Buscar si existe la secuencia, si no existe la crea
-                sequence = self.env['ir.sequence'].search([('code', '=', 'retana.budget')], limit=1)
-                if not sequence:
-                    sequence = self.env['ir.sequence'].create({
-                        'name': 'Retana Budget Sequence',
-                        'code': 'retana.budget',
-                        'prefix': 'RB',
-                        'padding': 4,
-                        'number_next': 1,
-                        'number_increment': 1,
-                    })
-                # Generar el siguiente número
-                next_number = self.env['ir.sequence'].next_by_code('retana.budget') or '0001'
-                vals['name'] = f"{next_number}"
+                vals['name'] = self.env['ir.sequence'].next_by_code('retana.budget') or '0001'
         return super().create(vals_list)
     
     @api.onchange('discount')

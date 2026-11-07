@@ -1,21 +1,16 @@
 from odoo import models
 from odoo.exceptions import UserError
-from datetime import datetime, timedelta
 import re
 import unicodedata
 
 
 class RetanaBulkDownpaymentMixin(models.AbstractModel):
     _name = 'retana.bulk.downpayment.mixin'
+    _inherit = ['retana.downpayment.date.mixin']
     _description = 'Logica compartida para crear multiples anticipos desde un mensaje de texto'
 
     def get_default_downpayment_date(self):
-        """Retorna el jueves de la semana en curso"""
-        today = datetime.today()
-        # weekday() retorna 0=Lunes, 3=Jueves
-        days_until_thursday = (3 - today.weekday()) % 7
-        thursday = today + timedelta(days=days_until_thursday)
-        return thursday.date()
+        return self._get_default_downpayment_date()
 
     def _parse_line(self, line):
         """
