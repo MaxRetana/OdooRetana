@@ -6,6 +6,7 @@
         <field name="model">retana.budget.line</field>
         <field name="arch" type="xml">
             <list string="Líneas de Presupuesto" default_order="id desc">
+                <field name="currency_id" column_invisible="True"/>
                 <field name="budget_id"/>
                 <field name="product_id"/>
                 <field name="description"/>
@@ -31,6 +32,7 @@
                             <field name="description"/>
                         </group>
                         <group>
+                            <field name="currency_id" invisible="1"/>
                             <field name="quantity"/>
                             <field name="unit_price" widget="monetary"/>
                             <field name="taxes_ids" widget="many2many_tags"/>
