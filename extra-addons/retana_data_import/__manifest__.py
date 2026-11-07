@@ -28,6 +28,7 @@
         'data/retana.sent.wh.csv',
         'data/retana.company.info.csv',
     ],
+    'post_init_hook': 'post_init_hook',
     'license': 'AGPL-3',
     'application': False,
     'installable': True,

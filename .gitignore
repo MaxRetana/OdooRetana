@@ -184,4 +184,7 @@ odoo-filestore/db_retana/
 nginx/ssl/
 
 .graphify-out/
-graphify-out/odoo-filestore-19/
+graphify-out/
+odoo-filestore-19/
+
+.claude/
