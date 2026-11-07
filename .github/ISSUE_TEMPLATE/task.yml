@@ -1,0 +1,24 @@
+name: 🧰 Tarea
+description: Trabajo técnico, mantenimiento o deuda técnica
+title: "[Task]: "
+labels: ["chore"]
+assignees: ["MaxRetana"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: Qué hay que hacer y por qué.
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist
+      value: |
+        - [ ]
+        - [ ]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notas o enlaces relacionados
