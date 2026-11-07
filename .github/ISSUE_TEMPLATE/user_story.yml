@@ -1,0 +1,36 @@
+name: 📖 Historia de usuario
+description: Funcionalidad descrita desde la perspectiva del usuario
+title: "[Story]: "
+labels: ["story"]
+assignees: ["MaxRetana"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: Historia
+      value: "Como <rol>, quiero <acción> para <beneficio>."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: Uno por línea, idealmente verificables (Dado / Cuando / Entonces).
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Código revisado (PR aprobado)
+        - label: Pruebas agregadas o actualizadas
+        - label: Documentación actualizada
+  - type: input
+    id: estimate
+    attributes:
+      label: Estimación (story points)
+      placeholder: "3"
