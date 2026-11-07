@@ -1,0 +1,40 @@
+name: ✨ Solicitud de funcionalidad
+description: Propón una mejora o una funcionalidad nueva
+title: "🚀[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+assignees: ["MaxRetana"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema a resolver
+      description: Cuenta qué te está costando hoy, no la solución.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Solución propuesta
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: ¿Cómo sabremos que está resuelto?
+      value: |
+        - [ ]
+        - [ ]
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: ¿Quieres implementarlo tú?
+      options:
+        - Sí
+        - Con ayuda
+        - No
+      default: 0
