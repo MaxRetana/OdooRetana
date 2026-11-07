@@ -77,6 +77,9 @@ class RetanaBudget(models.Model):
 
     @api.constrains('line_ids', 'downpayment_amount', 'discount', 'taxes_ids')
     def _check_total_not_negative(self):
+        # En la carga de datos de modulos los presupuestos llegan antes que sus lineas
+        if self.env.context.get('install_mode'):
+            return
         for budget in self:
             if budget.currency_id and budget.currency_id.compare_amounts(budget.total_amount, 0.0) < 0:
                 raise ValidationError(
