@@ -1,9 +1,17 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 import logging
 _logger = logging.getLogger(__name__)
 RED = '\033[91m'
 ENDC = '\033[0m'
+
+# Campos que no se pueden modificar cuando el presupuesto esta aprobado
+APPROVED_LOCKED_FIELDS = {
+    'title', 'description', 'client_id', 'building_id', 'date', 'currency_id',
+    'budget_type_id', 'discount', 'line_ids', 'downpayment_amount', 'taxes_ids', 'show_sign',
+}
+
 
 class RetanaBudget(models.Model):
     _name = 'retana.budget'
@@ -48,6 +56,41 @@ class RetanaBudget(models.Model):
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
+    state               =fields.Selection([
+        ('draft', 'Borrador'),
+        ('sent', 'Enviado'),
+        ('approved', 'Aprobado'),
+        ('rejected', 'Rechazado'),
+    ], string='Estado', default='draft', required=True, copy=False, tracking=True, index=True)
+
+    def action_send(self):
+        self.filtered(lambda budget: budget.state == 'draft').write({'state': 'sent'})
+
+    def action_approve(self):
+        self.filtered(lambda budget: budget.state in ('draft', 'sent')).write({'state': 'approved'})
+
+    def action_reject(self):
+        self.filtered(lambda budget: budget.state in ('draft', 'sent')).write({'state': 'rejected'})
+
+    def action_draft(self):
+        """Rechazado vuelve a borrador; reabrir un aprobado es solo del administrador."""
+        if self.filtered(lambda budget: budget.state == 'approved') and \
+                not self.env.user.has_group('retana_bills.group_retana_admin'):
+            raise UserError('Solo un administrador puede reabrir un presupuesto aprobado.')
+        self.filtered(lambda budget: budget.state in ('approved', 'rejected')).write({'state': 'draft'})
+
+    def write(self, vals):
+        if APPROVED_LOCKED_FIELDS & vals.keys() and 'state' not in vals \
+                and not self.env.context.get('install_mode') \
+                and self.filtered(lambda budget: budget.state == 'approved'):
+            raise UserError('El presupuesto está aprobado y no se puede modificar. '
+                            'Un administrador puede reabrirlo.')
+        return super().write(vals)
+
+    def unlink(self):
+        if not self.env.context.get('install_mode') and self.filtered(lambda budget: budget.state == 'approved'):
+            raise UserError('No se puede borrar un presupuesto aprobado. Reábralo primero.')
+        return super().unlink()
     
     @api.onchange('budget_type_id', 'client_id', 'building_id')
     def _onchange_budget_type_id(self):

@@ -8,7 +8,13 @@
             <list string="Presupuestos">
                 <field name="name"/>
                 <field name="client_id"/>
+                <field name="building_id" optional="show"/>
+                <field name="budget_type_id" optional="hide"/>
                 <field name="date"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'sent'"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'rejected'"/>
                 <field name="total_amount" widget="monetary"/>
             </list>
         </field>
@@ -20,6 +26,19 @@
         <field name="model">retana.budget</field>
         <field name="arch" type="xml">
             <form string="Presupuesto">
+                <header>
+                    <button name="action_send" string="Marcar como enviado" type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Aprobar" type="object" class="btn-primary"
+                            invisible="state not in ('draft', 'sent')"/>
+                    <button name="action_reject" string="Rechazar" type="object"
+                            invisible="state not in ('draft', 'sent')"/>
+                    <button name="action_draft" string="Volver a borrador" type="object"
+                            invisible="state != 'rejected'"/>
+                    <button name="action_draft" string="Reabrir" type="object"
+                            invisible="state != 'approved'" groups="retana_bills.group_retana_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,approved"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -27,27 +46,27 @@
                         </h1>
                     </div>
                     <group name="header_info" string="Información del Presupuesto">
-                        <field name="title"/>
-                        <field name="description"/>
+                        <field name="title" readonly="state == 'approved'"/>
+                        <field name="description" readonly="state == 'approved'"/>
                     </group>
                     <group>
                         <group name="general_info" string="Información General">
-                            <field name="budget_type_id" required="1"/>
-                            <field name="client_id" required="1"/>
-                            <field name="building_id" required="1"/>
+                            <field name="budget_type_id" required="1" readonly="state == 'approved'"/>
+                            <field name="client_id" required="1" readonly="state == 'approved'"/>
+                            <field name="building_id" required="1" readonly="state == 'approved'"/>
                         </group>
                         <group name="aditional_info" string="Información Adicional">
-                            <field name="date" required="1"/>
-                            <field name="downpayment_amount" widget="monetary"/>
-                            <field name="discount" widget="percentage"/>
-                            <field name="taxes_ids" widget="many2many_tags"/>   
-                            <field name="currency_id" required="1"/>
-                            <field name="show_sign"/>
+                            <field name="date" required="1" readonly="state == 'approved'"/>
+                            <field name="downpayment_amount" widget="monetary" readonly="state == 'approved'"/>
+                            <field name="discount" widget="percentage" readonly="state == 'approved'"/>
+                            <field name="taxes_ids" widget="many2many_tags" readonly="state == 'approved'"/>
+                            <field name="currency_id" required="1" readonly="state == 'approved'"/>
+                            <field name="show_sign" readonly="state == 'approved'"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Conceptos">
-                            <field name="line_ids">
+                            <field name="line_ids" readonly="state == 'approved'">
                                 <list editable="bottom" decoration-bf="display_type == 'line_section'" decoration-it="display_type == 'line_note'">
                                     <control>
                                         <create name="add_product_control" string="Agregar concepto"/>
@@ -77,6 +96,33 @@
                 </sheet>
                 <chatter/>
             </form>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda de Presupuestos -->
+    <record id="view_retana_budget_search" model="ir.ui.view">
+        <field name="name">retana.budget.search</field>
+        <field name="model">retana.budget</field>
+        <field name="arch" type="xml">
+            <search string="Presupuestos">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="client_id"/>
+                <field name="building_id"/>
+                <filter name="filter_draft" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_sent" string="Enviado" domain="[('state', '=', 'sent')]"/>
+                <filter name="filter_approved" string="Aprobado" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_rejected" string="Rechazado" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter name="filter_this_month" string="Mes actual"
+                        domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <group>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                    <filter name="group_client" string="Cliente" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_building" string="Obra" context="{'group_by': 'building_id'}"/>
+                    <filter name="group_date" string="Mes" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
