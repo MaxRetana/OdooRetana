@@ -115,21 +115,21 @@ class RetanaBudget(models.Model):
             # Unir todas las partes con espacio
             budget.title = " ".join(title_parts).upper()
 
-    @api.depends('line_ids.subtotal', 'line_ids.taxes_ids', 'discount', 'downpayment_amount')
+    @api.depends('line_ids.subtotal', 'line_ids.taxes_ids', 'line_ids.quantity', 'line_ids.unit_price',
+                 'line_ids.display_type', 'currency_id', 'discount', 'downpayment_amount')
     def _compute_amounts(self):
         for budget in self:
             subtotal = 0.0
             tax_total = 0.0
-            for line in budget.line_ids:
-                subtotal += line.subtotal
-                for tax in line.taxes_ids:
-                    tax_total += line.subtotal * tax.amount / 100
+            for line in budget.line_ids.filtered(lambda l: not l.display_type):
+                taxes = line._compute_taxes()
+                subtotal += taxes['total_excluded']
+                tax_total += sum(tax['amount'] for tax in taxes['taxes'])
             budget.subtotal_amount = subtotal
             budget.tax_amount = tax_total
             # El widget percentage guarda el valor como decimal (0.1 = 10%)
-            budget.discount_amount = subtotal * budget.discount
+            budget.discount_amount = budget.currency_id.round(subtotal * budget.discount) if budget.currency_id else subtotal * budget.discount
             budget.total_amount = subtotal + tax_total - budget.discount_amount - budget.downpayment_amount
-            _logger.info(f"{RED}Descuento: {budget.discount*100}%, Importe: {budget.discount_amount}{ENDC}")
 
     def copy(self, default=None):
         default = dict(default or {})
