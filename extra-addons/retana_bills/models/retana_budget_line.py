@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class RetanaBudgetLine(models.Model):
     _name = 'retana.budget.line'
@@ -33,3 +34,23 @@ class RetanaBudgetLine(models.Model):
             self.description = self.product_id.name
             self.unit_price = self.product_id.standard_price
             self.uom_id = self.product_id.uom_id
+
+    def _check_budget_not_approved(self, budgets):
+        # La carga de datos de modulos (install_mode) no pasa por el bloqueo
+        if not self.env.context.get('install_mode') and budgets.filtered(lambda budget: budget.state == 'approved'):
+            raise UserError('El presupuesto está aprobado y sus líneas no se pueden modificar. '
+                            'Un administrador puede reabrirlo.')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        budgets = self.env['retana.budget'].browse([vals['budget_id'] for vals in vals_list if vals.get('budget_id')])
+        self._check_budget_not_approved(budgets)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._check_budget_not_approved(self.budget_id)
+        return super().write(vals)
+
+    def unlink(self):
+        self._check_budget_not_approved(self.budget_id)
+        return super().unlink()
