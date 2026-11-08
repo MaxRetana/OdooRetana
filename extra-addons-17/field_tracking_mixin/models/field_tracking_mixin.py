@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from markupsafe import Markup
+
 from odoo import models, api
+from odoo.tools import html_escape
 
 
 class FieldTrackingMixin(models.AbstractModel):
@@ -77,7 +80,7 @@ class FieldTrackingMixin(models.AbstractModel):
                 
                 # Registrar todos los cambios en un solo mensaje
                 if all_changes:
-                    record.message_post(body='<br/>'.join(all_changes))
+                    record.message_post(body=Markup('<br/>').join(all_changes))
                 
                 return result
         
@@ -160,7 +163,7 @@ class FieldTrackingMixin(models.AbstractModel):
         deleted_ids = set(old_snapshot.keys()) - set(new_snapshot.keys())
         for record_id in deleted_ids:
             record_desc = self._get_record_description(
-                old_snapshot[record_id], fields_to_track
+                old_snapshot[record_id], fields_to_track, field_name
             )
             changes.append(f"<li><strong>❌ Eliminado:</strong> {record_desc}</li>")
         
@@ -168,7 +171,7 @@ class FieldTrackingMixin(models.AbstractModel):
         new_ids = set(new_snapshot.keys()) - set(old_snapshot.keys())
         for record_id in new_ids:
             record_desc = self._get_record_description(
-                new_snapshot[record_id], fields_to_track
+                new_snapshot[record_id], fields_to_track, field_name
             )
             changes.append(f"<li><strong>✅ Agregado:</strong> {record_desc}</li>")
         
@@ -186,25 +189,34 @@ class FieldTrackingMixin(models.AbstractModel):
                 if old_value != new_value:
                     old_display = old_value if old_value else 'Vacío'
                     new_display = new_value if new_value else 'Vacío'
+                    label = self._get_tracked_field_label(field_name, field)
                     record_changes.append(
-                        f"{field}: {old_display} → {new_display}"
+                        f"{html_escape(label)}: {html_escape(old_display)} → {html_escape(new_display)}"
                     )
             
             if record_changes:
                 main_field = fields_to_track[0] if fields_to_track else 'id'
-                record_identifier = new_record.get(main_field, f'ID: {record_id}')
+                record_identifier = html_escape(new_record.get(main_field) or f'ID: {record_id}')
                 changes.append(
                     f"<li><strong>✏️ Modificado ({record_identifier}):</strong><br/>"
                     f"&nbsp;&nbsp;&nbsp;&nbsp;{('<br/>&nbsp;&nbsp;&nbsp;&nbsp;').join(record_changes)}</li>"
                 )
         
         if changes:
-            header = f"<p><strong>📝 Cambios en {display_name}:</strong></p>"
-            return header + "<ul>" + "".join(changes) + "</ul>"
+            header = f"<p><strong>📝 Cambios en {html_escape(display_name)}:</strong></p>"
+            return Markup(header + "<ul>" + "".join(changes) + "</ul>")
         
         return False
 
-    def _get_record_description(self, record_data, fields_to_track):
+    def _get_tracked_field_label(self, field_name, tracked_field):
+        """Etiqueta legible (string del campo) de un campo trackeado de la linea."""
+        field = self._fields.get(field_name)
+        comodel = self.env.get(field.comodel_name) if field and field.comodel_name else None
+        if comodel is not None and tracked_field in comodel._fields:
+            return comodel._fields[tracked_field].string or tracked_field
+        return tracked_field
+
+    def _get_record_description(self, record_data, fields_to_track, field_name=None):
         """
         Obtener una descripción legible de un registro
         
@@ -217,7 +229,7 @@ class FieldTrackingMixin(models.AbstractModel):
             return "Registro"
         
         main_field = fields_to_track[0]
-        main_value = record_data.get(main_field, 'Sin valor')
+        main_value = record_data.get(main_field) or 'Sin valor'
         
         # Si hay más campos, agregarlos como detalles
         if len(fields_to_track) > 1:
@@ -225,9 +237,10 @@ class FieldTrackingMixin(models.AbstractModel):
             for field in fields_to_track[1:]:
                 value = record_data.get(field, '')
                 if value:
-                    details.append(f"{field}: {value}")
+                    label = self._get_tracked_field_label(field_name, field) if field_name else field
+                    details.append(f"{html_escape(label)}: {html_escape(value)}")
             
             if details:
-                return f"{main_value} ({', '.join(details)})"
+                return f"{html_escape(main_value)} ({', '.join(details)})"
         
-        return main_value
+        return html_escape(main_value)
