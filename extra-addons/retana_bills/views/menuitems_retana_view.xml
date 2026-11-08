@@ -64,6 +64,7 @@
               name="Líneas de Presupuesto"
               parent="retana_bills.menu_retana_budget_root_config"
               action="action_retana_budget_line"
+              groups="base.group_no_one"
               sequence="30"/>
 
     <menuitem id="menu_retana_buildings_root_config"

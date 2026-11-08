@@ -5,7 +5,8 @@ from . import retana_buildings
 from . import res_partner
 from . import retana_type_res_partner
 from . import retana_company_info
-from . import retana_downpaymet
-from . import retana_downpaymet_type_concept
+from . import retana_downpayment_date_mixin
+from . import retana_downpayment
+from . import retana_downpayment_type_concept
 from . import retana_sent_wh
 from . import retana_bulk_downpayment_mixin
