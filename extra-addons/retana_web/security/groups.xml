@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Personal (portal): ve en el sitio web los registros de todos los
+         clientes y puede crear anticipos masivos. Un usuario de portal sin
+         este grupo y sin ser cliente Retana no ve nada. No implica
+         base.group_user, asi que el usuario sigue siendo de portal. -->
+    <record id="group_retana_portal_staff" model="res.groups">
+        <field name="name">Personal (sitio web)</field>
+        <field name="privilege_id" ref="retana_bills.privilege_retana_bills"/>
+    </record>
+</odoo>

@@ -57,29 +57,28 @@ class RetanaBillsWebsiteController(http.Controller):
 
         return groups
 
-    def _ensure_portal_user(self):
+    def _is_staff(self):
         user = request.env.user
-        try:
-            is_portal = user.has_group('base.group_portal') or user.has_group('base.group_system')
-        except ValueError:
-            is_portal = False
-
-        if not is_portal:
-            raise AccessDenied('Solo usuarios de portal pueden acceder a esta pagina.')
+        return user.has_group('base.group_system') or user.has_group('retana_web.group_retana_portal_staff')
 
     def _customer_partner(self):
         """Cliente Retana al que esta limitado el usuario, o vacio si ve todo.
 
-        Un usuario de portal cuyo contacto esta marcado como Cliente Retana solo
-        ve los registros de su cliente. El resto (administradores y usuarios de
-        portal que no son clientes, por ejemplo el personal que captura
-        anticipos desde el sitio) conserva el acceso completo.
+        Ven todo los administradores y el personal (grupo "Personal (sitio
+        web)"). Un usuario de portal cuyo contacto esta marcado como Cliente
+        Retana solo ve los registros de su cliente.
         """
-        user = request.env.user
-        if user.has_group('base.group_system'):
+        if self._is_staff():
             return request.env['res.partner']
-        partner = user.partner_id.commercial_partner_id
+        partner = request.env.user.partner_id.commercial_partner_id
         return partner if partner.is_retana_customer else request.env['res.partner']
+
+    def _ensure_portal_user(self):
+        user = request.env.user
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+            raise AccessDenied('Solo usuarios de portal pueden acceder a esta pagina.')
+        if not (self._is_staff() or self._customer_partner()):
+            raise AccessDenied('Tu usuario no es cliente Retana ni personal; pide acceso al administrador.')
 
     def _scope_domain(self):
         partner = self._customer_partner()

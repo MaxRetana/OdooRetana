@@ -24,8 +24,13 @@ class TestWebScope(HttpCase):
             'name': 'Portal Alfa', 'login': 'portal_alfa', 'password': 'portal_alfa',
             'partner_id': cls.client_a.id, 'group_ids': [(6, 0, [portal.id])],
         })
+        staff_group = cls.env.ref('retana_web.group_retana_portal_staff')
         cls.staff_user = Users.create({
             'name': 'Personal portal', 'login': 'portal_staff', 'password': 'portal_staff',
+            'group_ids': [(6, 0, [portal.id, staff_group.id])],
+        })
+        cls.stranger_user = Users.create({
+            'name': 'Portal sin cliente', 'login': 'portal_stranger', 'password': 'portal_stranger',
             'group_ids': [(6, 0, [portal.id])],
         })
 
@@ -52,9 +57,20 @@ class TestWebScope(HttpCase):
         self.assertNotEqual(self._get('portal_alfa', '/retana/downpayments/bulk').status_code, 200)
         self.assertNotIn('/retana/downpayments/bulk', self._get('portal_alfa', '/retana/downpayments').text)
 
-    def test_non_customer_portal_user_keeps_full_access(self):
+    def test_staff_portal_user_has_full_access(self):
         body = self._get('portal_staff', '/retana/budgets').text
         self.assertIn('Presupuesto a', body)
         self.assertIn('Presupuesto b', body)
         self.assertEqual(self._get('portal_staff', '/retana/downpayments/bulk').status_code, 200)
         self.assertEqual(self._get('portal_staff', f'/retana/budgets/{self.records["b"]["budget"].id}').status_code, 200)
+
+    def test_portal_user_without_client_or_staff_group_sees_nothing(self):
+        for path in ('/retana/budgets', '/retana/downpayments', '/retana/buildings', '/retana/downpayments/bulk'):
+            response = self._get('portal_stranger', path)
+            self.assertNotEqual(response.status_code, 200, path)
+            self.assertNotIn('Presupuesto a', response.text, path)
+        self.assertNotEqual(self._get('portal_stranger', f'/retana/budgets/{self.records["a"]["budget"].id}').status_code, 200)
+
+    def test_staff_group_does_not_make_user_internal(self):
+        self.assertFalse(self.staff_user._is_internal())
+        self.assertTrue(self.staff_user.has_group('base.group_portal'))
