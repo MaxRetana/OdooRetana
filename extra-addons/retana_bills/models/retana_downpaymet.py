@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta
 
 class RetanaDownpayment(models.Model):
@@ -32,6 +32,16 @@ class RetanaDownpayment(models.Model):
                 raise UserError("El importe del anticipo debe ser un valor positivo.")
     
     
+    @api.constrains('building_id', 'client_id')
+    def _check_building_belongs_to_client(self):
+        for record in self:
+            building_client = record.building_id.client_id
+            if building_client and record.client_id and building_client != record.client_id:
+                raise ValidationError(
+                    f'La obra "{record.building_id.name}" pertenece a {building_client.name}, '
+                    f'no a {record.client_id.name}.'
+                )
+
     @api.onchange('building_id')
     def _onchange_building_id(self):
         if self.building_id:
