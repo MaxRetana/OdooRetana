@@ -6,8 +6,21 @@
             <t t-foreach="docs" t-as="o">
                 <t t-set="company_info" t-value="o.env['retana.company.info'].get_company_info()"/>
                 <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-                    <div class="page" style="font-family: Arial, Helvetica, sans-serif; font-size: 13pt; padding: 0px 50px !important; border: none !important;">
+                    <div class="page retana_downpayment_page" style="font-family: Arial, Helvetica, sans-serif; font-size: 13pt; padding: 0px 50px !important; border: none !important;">
                         
+                        <!-- Las tablas de este recibo se usan solo para alinear texto: sin bordes
+                             aunque el CSS del reporte (Bootstrap/layout) intente ponerlos -->
+                        <style>
+                            .retana_downpayment_page table,
+                            .retana_downpayment_page table tr,
+                            .retana_downpayment_page table td {
+                                border: none !important;
+                                border-top: none !important;
+                                border-bottom: none !important;
+                                background: transparent !important;
+                            }
+                        </style>
+
                         <!-- Encabezado centrado -->
                         <div style="text-align: center; margin-bottom: 5px;">
                             <div style="font-size: 16pt; font-weight: bold; margin-bottom: 3px;">
