@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -63,10 +63,48 @@ class RetanaBudget(models.Model):
         ('rejected', 'Rechazado'),
     ], string='Estado', default='draft', required=True, copy=False, tracking=True, index=True)
 
+    def _check_has_lines(self):
+        for budget in self:
+            if not budget.line_ids.filtered(lambda line: not line.display_type):
+                raise UserError(f'El presupuesto {budget.name} no tiene conceptos. Agrega al menos uno antes de continuar.')
+
+    @api.constrains('discount')
+    def _check_discount_range(self):
+        for budget in self:
+            if not 0.0 <= budget.discount <= 1.0:
+                raise ValidationError('El descuento debe estar entre 0 % y 100 %.')
+
+    @api.constrains('downpayment_amount')
+    def _check_downpayment_not_negative(self):
+        for budget in self:
+            if budget.downpayment_amount < 0:
+                raise ValidationError('El anticipo no puede ser negativo.')
+
+    @api.constrains('line_ids', 'downpayment_amount', 'discount', 'taxes_ids')
+    def _check_total_not_negative(self):
+        for budget in self:
+            if budget.currency_id and budget.currency_id.compare_amounts(budget.total_amount, 0.0) < 0:
+                raise ValidationError(
+                    f'El total del presupuesto {budget.name} no puede ser negativo: '
+                    'el anticipo y el descuento superan el importe de los conceptos.'
+                )
+
+    @api.constrains('client_id', 'building_id')
+    def _check_building_belongs_to_client(self):
+        for budget in self:
+            building_client = budget.building_id.client_id
+            if building_client and budget.client_id and building_client != budget.client_id:
+                raise ValidationError(
+                    f'La obra "{budget.building_id.name}" pertenece a {building_client.name}, '
+                    f'no a {budget.client_id.name}.'
+                )
+
     def action_send(self):
+        self._check_has_lines()
         self.filtered(lambda budget: budget.state == 'draft').write({'state': 'sent'})
 
     def action_approve(self):
+        self._check_has_lines()
         self.filtered(lambda budget: budget.state in ('draft', 'sent')).write({'state': 'approved'})
 
     def action_reject(self):
@@ -134,17 +172,14 @@ class RetanaBudget(models.Model):
     def copy(self, default=None):
         default = dict(default or {})
         default['name'] = 'Nuevo'
-        new_budget = super().copy(default=default)
-
-        if self.line_ids:
-            line_vals = []
-            for line in self.line_ids:
-                vals = line.copy_data()[0]
-                vals.pop('budget_id', None)
-                line_vals.append((0, 0, vals))
-            new_budget.write({'line_ids': line_vals})
-
-        return new_budget
+        line_vals = []
+        for line in self.line_ids:
+            vals = line.copy_data()[0]
+            vals.pop('budget_id', None)
+            line_vals.append((0, 0, vals))
+        # Las lineas viajan en el create para que las validaciones vean el presupuesto completo
+        default['line_ids'] = line_vals
+        return super().copy(default=default)
 
     @api.model_create_multi
     def create(self, vals_list):
