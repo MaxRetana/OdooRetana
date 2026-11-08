@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_retana_bills" model="ir.module.category">
+        <field name="name">Electricos Retana</field>
+        <field name="description">Nivel de acceso a presupuestos, anticipos y obras</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Odoo 19.0: los grupos se agrupan en el formulario de Usuario mediante
+         res.groups.privilege (mismo patron que el modulo home, ver ADR 0003). -->
+    <record id="privilege_retana_bills" model="res.groups.privilege">
+        <field name="name">Electricos Retana</field>
+        <field name="category_id" ref="module_category_retana_bills"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Usuario: lee, escribe y crea. No borra registros ni cambia catalogos. -->
+    <record id="group_retana_user" model="res.groups">
+        <field name="name">Usuario</field>
+        <field name="privilege_id" ref="privilege_retana_bills"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Administrador: ademas borra y administra catalogos y configuracion. -->
+    <record id="group_retana_admin" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="privilege_id" ref="privilege_retana_bills"/>
+        <field name="implied_ids" eval="[(4, ref('group_retana_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>
