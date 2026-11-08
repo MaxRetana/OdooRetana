@@ -5,3 +5,4 @@ from . import test_budget_amounts
 from . import test_validations
 from . import test_cleanup
 from . import test_chatter_tracking
+from . import test_downpayment_report
