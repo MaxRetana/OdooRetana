@@ -16,7 +16,7 @@ class ResConfigSettings(models.TransientModel):
         ],
         string="Dia por defecto para anticipos",
         config_parameter="retana_bills_weekday_config.downpayment_weekday",
-        default="2",
+        default="3",
         required=True,
-        help="Dia de la semana que se usara por defecto en la fecha del wizard de anticipos.",
+        help="Dia de la semana que se usara por defecto en la fecha de los anticipos (jueves si no se configura).",
     )

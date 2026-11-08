@@ -1,0 +1,10 @@
+# Configuracion minima de ruff para los modulos custom (extra-addons/).
+# Uso: ruff check extra-addons
+line-length = 120
+target-version = "py312"
+extend-exclude = ["extra-addons-17"]
+
+[lint]
+select = ["E", "F", "W"]
+# Los modelos usan campos alineados con "=" (E221/E225) y lineas largas heredadas
+ignore = ["E221", "E225", "E501", "W291", "W293"]
