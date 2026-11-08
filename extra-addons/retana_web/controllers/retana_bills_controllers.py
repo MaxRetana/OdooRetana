@@ -57,15 +57,41 @@ class RetanaBillsWebsiteController(http.Controller):
 
         return groups
 
+    def _is_staff(self):
+        user = request.env.user
+        return user.has_group('base.group_system') or user.has_group('retana_web.group_retana_portal_staff')
+
+    def _customer_partner(self):
+        """Cliente Retana al que esta limitado el usuario, o vacio si ve todo.
+
+        Ven todo los administradores y el personal (grupo "Personal (sitio
+        web)"). Un usuario de portal cuyo contacto esta marcado como Cliente
+        Retana solo ve los registros de su cliente.
+        """
+        if self._is_staff():
+            return request.env['res.partner']
+        partner = request.env.user.partner_id.commercial_partner_id
+        return partner if partner.is_retana_customer else request.env['res.partner']
+
     def _ensure_portal_user(self):
         user = request.env.user
-        try:
-            is_portal = user.has_group('base.group_portal') or user.has_group('base.group_system')
-        except ValueError:
-            is_portal = False
-
-        if not is_portal:
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
             raise AccessDenied('Solo usuarios de portal pueden acceder a esta pagina.')
+        if not (self._is_staff() or self._customer_partner()):
+            raise AccessDenied('Tu usuario no es cliente Retana ni personal; pide acceso al administrador.')
+
+    def _scope_domain(self):
+        partner = self._customer_partner()
+        return [('client_id', 'child_of', partner.id)] if partner else []
+
+    def _ensure_unrestricted_user(self):
+        if self._customer_partner():
+            raise AccessDenied('Esta accion no esta disponible para usuarios cliente.')
+
+    def _scoped_records(self, model_name, record_ids):
+        """Registros por id que el usuario puede ver; vacio si ninguno aplica."""
+        domain = [('id', 'in', record_ids)] + self._scope_domain()
+        return request.env[model_name].sudo().with_context(active_test=False).search(domain)
 
     @http.route('/', type='http', auth='user', website=True)
     def retana_home(self, **kwargs):
@@ -73,16 +99,18 @@ class RetanaBillsWebsiteController(http.Controller):
         budget_model = request.env['retana.budget'].sudo()
         downpayment_model = request.env['retana.downpayment'].sudo()
         building_model = request.env['retana.buildings'].sudo()
+        scope = self._scope_domain()
 
         return request.render(
             'retana_web.retana_web_home',
             {
-                'home_budget_count': budget_model.search_count([]),
-                'home_downpayment_count': downpayment_model.search_count([]),
-                'home_building_count': building_model.search_count([]),
-                'home_recent_budgets': budget_model.search([], order='date desc, id desc', limit=5),
-                'home_recent_downpayments': downpayment_model.search([], order='date desc, id desc', limit=5),
-                'home_recent_buildings': building_model.search([], order='id desc', limit=5),
+                'can_bulk_downpayments': not self._customer_partner(),
+                'home_budget_count': budget_model.search_count(scope),
+                'home_downpayment_count': downpayment_model.search_count(scope),
+                'home_building_count': building_model.search_count(scope),
+                'home_recent_budgets': budget_model.search(scope, order='date desc, id desc', limit=5),
+                'home_recent_downpayments': downpayment_model.search(scope, order='date desc, id desc', limit=5),
+                'home_recent_buildings': building_model.search(scope, order='id desc', limit=5),
             },
         )
 
@@ -115,7 +143,7 @@ class RetanaBillsWebsiteController(http.Controller):
         if group_by not in dict(group_options):
             group_by = 'none'
 
-        domain = []
+        domain = self._scope_domain()
         if search:
             domain += [
                 '|', '|', '|',
@@ -197,7 +225,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/budgets/<int:budget_id>', type='http', auth='user', website=True)
     def retana_budget_detail(self, budget_id, **kwargs):
         self._ensure_portal_user()
-        budget = request.env['retana.budget'].sudo().browse(budget_id)
+        budget = self._scoped_records('retana.budget', [budget_id])
         if not budget.exists():
             return request.not_found()
 
@@ -211,7 +239,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/budgets/<int:budget_id>/report', type='http', auth='user', website=True)
     def retana_budget_report_download(self, budget_id, **kwargs):
         self._ensure_portal_user()
-        budget = request.env['retana.budget'].sudo().browse(budget_id)
+        budget = self._scoped_records('retana.budget', [budget_id])
         if not budget.exists():
             return request.not_found()
 
@@ -245,7 +273,7 @@ class RetanaBillsWebsiteController(http.Controller):
         if group_by not in dict(group_options):
             group_by = 'none'
 
-        domain = []
+        domain = self._scope_domain()
         if search:
             domain += [
                 '|', '|', '|',
@@ -303,6 +331,7 @@ class RetanaBillsWebsiteController(http.Controller):
         return request.render(
             'retana_web.retana_web_downpayments',
             {
+                'can_bulk_downpayments': not self._customer_partner(),
                 'downpayments': downpayments,
                 'downpayment_groups': downpayment_groups,
                 'downpayment_search': search,
@@ -318,6 +347,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/downpayments/bulk', type='http', auth='user', website=True, methods=['GET', 'POST'])
     def retana_downpayments_bulk(self, **post):
         self._ensure_portal_user()
+        self._ensure_unrestricted_user()
 
         bulk_model = request.env['retana.bulk.downpayment.mixin'].sudo()
         client_model = request.env['res.partner'].sudo()
@@ -389,7 +419,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/downpayments/<int:downpayment_id>', type='http', auth='user', website=True)
     def retana_downpayment_detail(self, downpayment_id, **kwargs):
         self._ensure_portal_user()
-        downpayment = request.env['retana.downpayment'].sudo().browse(downpayment_id)
+        downpayment = self._scoped_records('retana.downpayment', [downpayment_id])
         if not downpayment.exists():
             return request.not_found()
 
@@ -403,7 +433,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/downpayments/<int:downpayment_id>/report', type='http', auth='user', website=True)
     def retana_downpayment_report_download(self, downpayment_id, **kwargs):
         self._ensure_portal_user()
-        downpayment = request.env['retana.downpayment'].sudo().browse(downpayment_id)
+        downpayment = self._scoped_records('retana.downpayment', [downpayment_id])
         if not downpayment.exists():
             return request.not_found()
 
@@ -427,7 +457,7 @@ class RetanaBillsWebsiteController(http.Controller):
         if not selected_ids:
             return request.redirect('/retana/downpayments')
 
-        downpayments = request.env['retana.downpayment'].sudo().browse(selected_ids).exists()
+        downpayments = self._scoped_records('retana.downpayment', selected_ids)
         if not downpayments:
             return request.redirect('/retana/downpayments')
 
@@ -467,7 +497,7 @@ class RetanaBillsWebsiteController(http.Controller):
         if group_by not in dict(group_options):
             group_by = 'none'
 
-        domain = []
+        domain = self._scope_domain()
         if search:
             domain += ['|', ('name', 'ilike', search), ('client_id.name', 'ilike', search)]
 
@@ -529,7 +559,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/buildings/<int:building_id>', type='http', auth='user', website=True)
     def retana_building_detail(self, building_id, **kwargs):
         self._ensure_portal_user()
-        building = request.env['retana.buildings'].sudo().browse(building_id)
+        building = self._scoped_records('retana.buildings', [building_id])
         if not building.exists():
             return request.not_found()
 
@@ -543,7 +573,7 @@ class RetanaBillsWebsiteController(http.Controller):
     @http.route('/retana/buildings/<int:building_id>/report', type='http', auth='user', website=True)
     def retana_building_report_download(self, building_id, **kwargs):
         self._ensure_portal_user()
-        building = request.env['retana.buildings'].sudo().browse(building_id)
+        building = self._scoped_records('retana.buildings', [building_id])
         if not building.exists():
             return request.not_found()
 
