@@ -4,6 +4,7 @@
     <menuitem id="menu_retana_bills_root"
               name="Electricos Retana"
               web_icon="retana_bills,static/description/icon.png"
+              groups="retana_bills.group_retana_user"
               sequence="10"/>
 
     <!-- Menú de presupuestos -->
@@ -38,6 +39,7 @@
     <menuitem id="menu_retana_bills_config"
               name="Configuración"
               parent="retana_bills.menu_retana_bills_root"
+              groups="retana_bills.group_retana_admin"
               sequence="100"/>
 
     <!-- Menús de configuración -->
@@ -62,6 +64,7 @@
               name="Líneas de Presupuesto"
               parent="retana_bills.menu_retana_budget_root_config"
               action="action_retana_budget_line"
+              groups="base.group_no_one"
               sequence="30"/>
 
     <menuitem id="menu_retana_buildings_root_config"

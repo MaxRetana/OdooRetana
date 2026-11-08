@@ -1,9 +1,12 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 
-import logging
-_logger = logging.getLogger(__name__)
-RED = '\033[91m'
-ENDC = '\033[0m'
+# Campos que no se pueden modificar cuando el presupuesto esta aprobado
+APPROVED_LOCKED_FIELDS = {
+    'title', 'description', 'client_id', 'building_id', 'date', 'currency_id',
+    'budget_type_id', 'discount', 'line_ids', 'downpayment_amount', 'taxes_ids', 'show_sign',
+}
+
 
 class RetanaBudget(models.Model):
     _name = 'retana.budget'
@@ -34,9 +37,9 @@ class RetanaBudget(models.Model):
     name                =fields.Char(string='Referencia', copy=False, default='Nuevo', tracking=True)
     title               =fields.Char(string='Título', tracking=True)
     description         =fields.Text(string='Descripción', tracking=True)
-    client_id           =fields.Many2one('res.partner', string='Cliente', domain="[('is_retana_customer', '=', True)]", tracking=True)
+    client_id           =fields.Many2one('res.partner', string='Cliente', domain="[('is_retana_customer', '=', True)]", tracking=True, index=True)
     building_id         =fields.Many2one('retana.buildings', string='Obra', domain="[('client_id', '=', client_id)]", tracking=True)
-    date                =fields.Date(string='Fecha', default=fields.Date.context_today, tracking=True)
+    date                =fields.Date(string='Fecha', default=fields.Date.context_today, tracking=True, index=True)
     currency_id         =fields.Many2one('res.currency', string='Moneda', default=lambda self: self.env.company.currency_id, tracking=True)
     subtotal_amount     =fields.Monetary(string='Subtotal', compute='_compute_amounts', currency_field='currency_id', tracking=True)
     tax_amount          =fields.Monetary(string='IVA', compute='_compute_amounts', currency_field='currency_id', tracking=True)
@@ -48,6 +51,82 @@ class RetanaBudget(models.Model):
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
+    state               =fields.Selection([
+        ('draft', 'Borrador'),
+        ('sent', 'Enviado'),
+        ('approved', 'Aprobado'),
+        ('rejected', 'Rechazado'),
+    ], string='Estado', default='draft', required=True, copy=False, tracking=True, index=True)
+
+    def _check_has_lines(self):
+        for budget in self:
+            if not budget.line_ids.filtered(lambda line: not line.display_type):
+                raise UserError(f'El presupuesto {budget.name} no tiene conceptos. Agrega al menos uno antes de continuar.')
+
+    @api.constrains('discount')
+    def _check_discount_range(self):
+        for budget in self:
+            if not 0.0 <= budget.discount <= 1.0:
+                raise ValidationError('El descuento debe estar entre 0 % y 100 %.')
+
+    @api.constrains('downpayment_amount')
+    def _check_downpayment_not_negative(self):
+        for budget in self:
+            if budget.downpayment_amount < 0:
+                raise ValidationError('El anticipo no puede ser negativo.')
+
+    @api.constrains('line_ids', 'downpayment_amount', 'discount', 'taxes_ids')
+    def _check_total_not_negative(self):
+        # En la carga de datos de modulos los presupuestos llegan antes que sus lineas
+        if self.env.context.get('install_mode'):
+            return
+        for budget in self:
+            if budget.currency_id and budget.currency_id.compare_amounts(budget.total_amount, 0.0) < 0:
+                raise ValidationError(
+                    f'El total del presupuesto {budget.name} no puede ser negativo: '
+                    'el anticipo y el descuento superan el importe de los conceptos.'
+                )
+
+    @api.constrains('client_id', 'building_id')
+    def _check_building_belongs_to_client(self):
+        for budget in self:
+            building_client = budget.building_id.client_id
+            if building_client and budget.client_id and building_client != budget.client_id:
+                raise ValidationError(
+                    f'La obra "{budget.building_id.name}" pertenece a {building_client.name}, '
+                    f'no a {budget.client_id.name}.'
+                )
+
+    def action_send(self):
+        self._check_has_lines()
+        self.filtered(lambda budget: budget.state == 'draft').write({'state': 'sent'})
+
+    def action_approve(self):
+        self._check_has_lines()
+        self.filtered(lambda budget: budget.state in ('draft', 'sent')).write({'state': 'approved'})
+
+    def action_reject(self):
+        self.filtered(lambda budget: budget.state in ('draft', 'sent')).write({'state': 'rejected'})
+
+    def action_draft(self):
+        """Rechazado vuelve a borrador; reabrir un aprobado es solo del administrador."""
+        if self.filtered(lambda budget: budget.state == 'approved') and \
+                not self.env.user.has_group('retana_bills.group_retana_admin'):
+            raise UserError('Solo un administrador puede reabrir un presupuesto aprobado.')
+        self.filtered(lambda budget: budget.state in ('approved', 'rejected')).write({'state': 'draft'})
+
+    def write(self, vals):
+        if APPROVED_LOCKED_FIELDS & vals.keys() and 'state' not in vals \
+                and not self.env.context.get('install_mode') \
+                and self.filtered(lambda budget: budget.state == 'approved'):
+            raise UserError('El presupuesto está aprobado y no se puede modificar. '
+                            'Un administrador puede reabrirlo.')
+        return super().write(vals)
+
+    def unlink(self):
+        if not self.env.context.get('install_mode') and self.filtered(lambda budget: budget.state == 'approved'):
+            raise UserError('No se puede borrar un presupuesto aprobado. Reábralo primero.')
+        return super().unlink()
     
     @api.onchange('budget_type_id', 'client_id', 'building_id')
     def _onchange_budget_type_id(self):
@@ -72,55 +151,39 @@ class RetanaBudget(models.Model):
             # Unir todas las partes con espacio
             budget.title = " ".join(title_parts).upper()
 
-    @api.depends('line_ids.subtotal', 'line_ids.taxes_ids', 'discount', 'downpayment_amount')
+    @api.depends('line_ids.subtotal', 'line_ids.taxes_ids', 'line_ids.quantity', 'line_ids.unit_price',
+                 'line_ids.display_type', 'currency_id', 'discount', 'downpayment_amount')
     def _compute_amounts(self):
         for budget in self:
             subtotal = 0.0
             tax_total = 0.0
-            for line in budget.line_ids:
-                subtotal += line.subtotal
-                for tax in line.taxes_ids:
-                    tax_total += line.subtotal * tax.amount / 100
+            for line in budget.line_ids.filtered(lambda l: not l.display_type):
+                taxes = line._compute_taxes()
+                subtotal += taxes['total_excluded']
+                tax_total += sum(tax['amount'] for tax in taxes['taxes'])
             budget.subtotal_amount = subtotal
             budget.tax_amount = tax_total
             # El widget percentage guarda el valor como decimal (0.1 = 10%)
-            budget.discount_amount = subtotal * budget.discount
+            budget.discount_amount = budget.currency_id.round(subtotal * budget.discount) if budget.currency_id else subtotal * budget.discount
             budget.total_amount = subtotal + tax_total - budget.discount_amount - budget.downpayment_amount
-            _logger.info(f"{RED}Descuento: {budget.discount*100}%, Importe: {budget.discount_amount}{ENDC}")
 
     def copy(self, default=None):
         default = dict(default or {})
         default['name'] = 'Nuevo'
-        new_budget = super().copy(default=default)
-
-        if self.line_ids:
-            line_vals = []
-            for line in self.line_ids:
-                vals = line.copy_data()[0]
-                vals.pop('budget_id', None)
-                line_vals.append((0, 0, vals))
-            new_budget.write({'line_ids': line_vals})
-
-        return new_budget
+        line_vals = []
+        for line in self.line_ids:
+            vals = line.copy_data()[0]
+            vals.pop('budget_id', None)
+            line_vals.append((0, 0, vals))
+        # Las lineas viajan en el create para que las validaciones vean el presupuesto completo
+        default['line_ids'] = line_vals
+        return super().copy(default=default)
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('name') or vals.get('name') == 'Nuevo':
-                # Buscar si existe la secuencia, si no existe la crea
-                sequence = self.env['ir.sequence'].search([('code', '=', 'retana.budget')], limit=1)
-                if not sequence:
-                    sequence = self.env['ir.sequence'].create({
-                        'name': 'Retana Budget Sequence',
-                        'code': 'retana.budget',
-                        'prefix': 'RB',
-                        'padding': 4,
-                        'number_next': 1,
-                        'number_increment': 1,
-                    })
-                # Generar el siguiente número
-                next_number = self.env['ir.sequence'].next_by_code('retana.budget') or '0001'
-                vals['name'] = f"{next_number}"
+                vals['name'] = self.env['ir.sequence'].next_by_code('retana.budget') or '0001'
         return super().create(vals_list)
     
     @api.onchange('discount')
