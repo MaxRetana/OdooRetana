@@ -47,7 +47,7 @@ class RetanaBudget(models.Model):
     budget_type_id      =fields.Many2one('retana.budget.type', string='Tipo de Presupuesto', tracking=True)
     discount            =fields.Float(string='Descuento (%)', default=0.0, tracking=True)
     discount_amount     =fields.Monetary(string='Importe Descuento', compute='_compute_amounts', currency_field='currency_id', tracking=True)
-    line_ids            =fields.One2many('retana.budget.line', 'budget_id', string='Líneas de Presupuesto', tracking=True)
+    line_ids            =fields.One2many('retana.budget.line', 'budget_id', string='Líneas de Presupuesto')
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
