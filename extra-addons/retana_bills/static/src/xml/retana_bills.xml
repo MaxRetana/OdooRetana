@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="retana_bills.ChatterPositionToggle">
-        <button type="button" class="btn btn-secondary o_retana_chatter_toggle"
-                t-on-click="toggle"
-                t-att-title="isBottom ? 'Mover el chatter al lado' : 'Mover el chatter debajo del formulario'">
-            <i t-attf-class="fa {{ isBottom ? 'fa-columns' : 'fa-window-maximize' }} me-1"/>
-            <t t-if="isBottom">Chatter al lado</t>
-            <t t-else="">Chatter abajo</t>
-        </button>
+    <t t-name="retana_bills.Chatter" t-inherit="mail.Chatter" t-inherit-mode="extension">
+        <xpath expr="//button[@aria-label='Search Messages']" position="after">
+            <button t-if="showRetanaPositionToggle" type="button" class="btn btn-link text-action o_retana_chatter_toggle"
+                    t-on-click="toggleRetanaChatterPosition"
+                    t-att-title="isRetanaChatterBottom ? 'Mover el chatter al lado' : 'Mover el chatter debajo del formulario'">
+                <i t-attf-class="fa {{ isRetanaChatterBottom ? 'fa-columns' : 'fa-window-maximize' }}" role="img"/>
+            </button>
+        </xpath>
     </t>
     <t t-name="retana_bills.AmountSelectorField">
         <div class="retana_amount_selector">

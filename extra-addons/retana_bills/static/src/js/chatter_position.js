@@ -1,12 +1,14 @@
 /** @odoo-module **/
 
-import { Component, reactive, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import { reactive, useState } from "@odoo/owl";
+import { Chatter } from "@mail/chatter/web_portal/chatter";
 import { patch } from "@web/core/utils/patch";
+import { FormController } from "@web/views/form/form_controller";
 import { FormRenderer } from "@web/views/form/form_renderer";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 
 const STORAGE_KEY = "retana_bills.chatter_position";
+// Modelos cuyo chatter muestra el botón para cambiar de posición.
+const MODELS_WITH_TOGGLE = ["retana.budget"];
 
 function readStoredPosition() {
     try {
@@ -16,7 +18,7 @@ function readStoredPosition() {
     }
 }
 
-// Estado compartido entre el botón y el renderer del formulario.
+// Estado compartido entre el chatter, el controlador y el renderer del formulario.
 export const chatterPosition = reactive({ value: readStoredPosition() });
 
 function setPosition(value) {
@@ -28,28 +30,44 @@ function setPosition(value) {
     }
 }
 
-export class ChatterPositionToggle extends Component {
-    static template = "retana_bills.ChatterPositionToggle";
-    static props = { ...standardWidgetProps };
-
-    setup() {
-        this.state = useState(chatterPosition);
-    }
-
-    get isBottom() {
-        return this.state.value === "bottom";
-    }
-
-    toggle() {
-        setPosition(this.isBottom ? "side" : "bottom");
-    }
+function isBottomFor(resModel, state) {
+    return MODELS_WITH_TOGGLE.includes(resModel) && state.value === "bottom";
 }
 
-registry.category("view_widgets").add("retana_chatter_position_toggle", {
-    component: ChatterPositionToggle,
+// Botón dentro del chatter.
+patch(Chatter.prototype, {
+    setup() {
+        super.setup();
+        this.retanaChatterPosition = useState(chatterPosition);
+    },
+    get showRetanaPositionToggle() {
+        return MODELS_WITH_TOGGLE.includes(this.props.threadModel);
+    },
+    get isRetanaChatterBottom() {
+        return this.retanaChatterPosition.value === "bottom";
+    },
+    toggleRetanaChatterPosition() {
+        setPosition(this.isRetanaChatterBottom ? "side" : "bottom");
+    },
 });
 
-// Si el usuario eligió el chatter abajo, el layout lateral pasa a ser inferior.
+// Odoo fuerza el diseño en dos columnas con la clase o_xxl_form_view en pantallas
+// muy anchas; se quita cuando el usuario eligió el chatter abajo.
+patch(FormController.prototype, {
+    setup() {
+        super.setup();
+        this.retanaChatterPosition = useState(chatterPosition);
+    },
+    get className() {
+        const result = super.className;
+        if (isBottomFor(this.props.resModel, this.retanaChatterPosition)) {
+            delete result["o_xxl_form_view h-100"];
+        }
+        return result;
+    },
+});
+
+// El layout lateral pasa a ser inferior.
 patch(FormRenderer.prototype, {
     setup() {
         super.setup();
@@ -57,7 +75,10 @@ patch(FormRenderer.prototype, {
     },
     mailLayout(hasAttachmentContainer) {
         const layout = super.mailLayout(hasAttachmentContainer);
-        if (this.retanaChatterPosition.value === "bottom" && layout === "SIDE_CHATTER") {
+        if (
+            layout === "SIDE_CHATTER" &&
+            isBottomFor(this.props.record.resModel, this.retanaChatterPosition)
+        ) {
             return "BOTTOM_CHATTER";
         }
         return layout;
