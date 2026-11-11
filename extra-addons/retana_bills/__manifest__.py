@@ -41,6 +41,7 @@
         "web.assets_backend": [
             "retana_bills/static/src/js/retana_bills.js",
             "retana_bills/static/src/js/whatsapp_action.js",
+            "retana_bills/static/src/js/chatter_position.js",
             "retana_bills/static/src/xml/retana_bills.xml",
             "retana_bills/static/src/css/retana_bills.css",
         ],

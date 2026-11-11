@@ -37,6 +37,7 @@
                             invisible="state != 'rejected'"/>
                     <button name="action_draft" string="Reabrir" type="object"
                             invisible="state != 'approved'" groups="retana_bills.group_retana_admin"/>
+                    <widget name="retana_chatter_position_toggle"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,approved"/>
                 </header>
                 <sheet>
