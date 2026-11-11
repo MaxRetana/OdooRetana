@@ -41,6 +41,7 @@
         <field name="model">retana.downpayment.type.concept</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name"/>
                 <group>
                     <filter string="Name" name="name" domain="[]" context="{'group_by':'name'}"/>
                 </group>

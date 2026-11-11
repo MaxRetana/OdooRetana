@@ -7,4 +7,5 @@ from . import test_cleanup
 from . import test_chatter_tracking
 from . import test_downpayment_report
 from . import test_budget_material_list
+from . import test_downpayment_type_concept_search
 from . import test_bulk_downpayment_total
