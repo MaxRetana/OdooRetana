@@ -36,6 +36,7 @@ class RetanaBudget(models.Model):
     tax_amount          =fields.Monetary(string='IVA', compute='_compute_amounts', currency_field='currency_id', tracking=True)
     total_amount        =fields.Monetary(string='Total', compute='_compute_amounts', currency_field='currency_id', tracking=True)
     budget_type_id      =fields.Many2one('retana.budget.type', string='Tipo de Presupuesto', tracking=True)
+    is_material_list    =fields.Boolean(string='Es lista de materiales', related='budget_type_id.is_material_list')
     discount            =fields.Float(string='Descuento (%)', default=0.0, tracking=True)
     discount_amount     =fields.Monetary(string='Importe Descuento', compute='_compute_amounts', currency_field='currency_id', tracking=True)
     line_ids            =fields.One2many('retana.budget.line', 'budget_id', string='Líneas de Presupuesto')
