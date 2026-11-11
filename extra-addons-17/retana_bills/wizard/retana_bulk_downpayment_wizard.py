@@ -21,6 +21,11 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
         readonly=True,
         help='Muestra las lineas del mensaje cuya obra no fue encontrada en el sistema.'
     )
+    total_text = fields.Char(
+        string='Total de Anticipos',
+        readonly=True,
+        help='Suma de los montos de las lineas con obra encontrada, que son las que se crearan.'
+    )
     date = fields.Date(
         string='Fecha del Anticipo',
         required=True,
@@ -40,6 +45,7 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
             if not wizard.message_text:
                 wizard.found_lines_text = False
                 wizard.not_found_lines_text = False
+                wizard.total_text = False
                 continue
 
             analysis = wizard.analyze_bulk_message(wizard.message_text)
@@ -49,6 +55,7 @@ class RetanaBulkDownpaymentWizard(models.TransientModel):
 
             wizard.found_lines_text = analysis['found_lines_text']
             wizard.not_found_lines_text = analysis['not_found_lines_text']
+            wizard.total_text = '${:,.2f}'.format(analysis['found_total'])
 
             if analysis['suggested_client_id']:
                 wizard.client_id = analysis['suggested_client_id']

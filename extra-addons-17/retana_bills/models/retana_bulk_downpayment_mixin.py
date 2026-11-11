@@ -167,6 +167,7 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
 
         Returns:
             dict con 'updated_message', 'found_lines_text', 'not_found_lines_text',
+            'found_total' (suma de los montos de las lineas con obra encontrada),
             'found_client_ids' (lista de ids de cliente de las obras encontradas),
             'suggested_client_id' (cuando todas las obras comparten un solo cliente)
             y 'client_conflict' (True si hay mas de un cliente entre las obras encontradas).
@@ -175,6 +176,7 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
             'updated_message': message_text or '',
             'found_lines_text': False,
             'not_found_lines_text': False,
+            'found_total': 0.0,
             'found_client_ids': [],
             'suggested_client_id': False,
             'client_conflict': False,
@@ -186,6 +188,7 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
         found_lines = []
         not_found_lines = []
         found_client_ids = set()
+        found_total = 0.0
         updated_lines = []
 
         for raw_line in message_text.split('\n'):
@@ -204,6 +207,7 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
 
             building, match_type = self._find_building_with_match_info(parsed['building_name'])
             if building:
+                found_total += parsed['amount']
                 if match_type == 'fuzzy':
                     marked_line = self._mark_line_as_similar(original_line)
                     found_lines.append(marked_line)
@@ -221,6 +225,7 @@ class RetanaBulkDownpaymentMixin(models.AbstractModel):
         result['updated_message'] = '\n'.join(updated_lines)
         result['found_lines_text'] = '\n'.join(found_lines) if found_lines else False
         result['not_found_lines_text'] = '\n'.join(not_found_lines) if not_found_lines else False
+        result['found_total'] = found_total
         result['found_client_ids'] = list(found_client_ids)
 
         if len(found_client_ids) == 1:

@@ -18,6 +18,7 @@
                 <group colspan="2" style="width: 100%;" invisible="message_text == ''">
                     <field name="found_lines_text" widget="text" readonly="1" nolabel="0" placeholder="Las lineas con obra encontrada apareceran aqui" style="min-width: 600px; min-height: 90px; width: 98%;"/>
                     <field name="not_found_lines_text" widget="text" readonly="1" nolabel="0" placeholder="Las lineas sin obra encontrada apareceran aqui" style="min-width: 600px; min-height: 90px; width: 98%;"/>
+                    <field name="total_text" style="font-weight: bold;"/>
                 </group>
                 <footer>
                     <button name="action_create_downpayments" string="Crear Anticipos" type="object" class="oe_highlight"/>
