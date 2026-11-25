@@ -43,6 +43,7 @@ class RetanaBudget(models.Model):
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
+    notes               =fields.Text(string='Notas', tracking=True)
     
     @api.onchange('budget_type_id', 'client_id', 'building_id')
     def _onchange_budget_type_id(self):
