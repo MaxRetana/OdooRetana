@@ -4,7 +4,7 @@ from odoo.exceptions import UserError, ValidationError
 # Campos que no se pueden modificar cuando el presupuesto esta aprobado
 APPROVED_LOCKED_FIELDS = {
     'title', 'description', 'client_id', 'building_id', 'date', 'currency_id',
-    'budget_type_id', 'discount', 'line_ids', 'downpayment_amount', 'taxes_ids', 'show_sign',
+    'budget_type_id', 'discount', 'line_ids', 'downpayment_amount', 'taxes_ids', 'show_sign', 'notes',
 }
 
 
@@ -52,6 +52,7 @@ class RetanaBudget(models.Model):
     downpayment_amount  =fields.Monetary(string='Anticipo', currency_field='currency_id', tracking=True)
     taxes_ids           =fields.Many2many('account.tax', string='Impuestos', tracking=True)
     show_sign           =fields.Boolean(string='Mostrar firma', default=True, tracking=True)
+    notes               =fields.Text(string='Notas', tracking=True)
     state               =fields.Selection([
         ('draft', 'Borrador'),
         ('sent', 'Enviado'),

@@ -29,6 +29,7 @@
                     <group name="header_info" string="Información del Presupuesto">
                         <field name="title"/>
                         <field name="description"/>
+                        <field name="notes"/>
                     </group>
                     <group>
                         <group name="general_info" string="Información General">
