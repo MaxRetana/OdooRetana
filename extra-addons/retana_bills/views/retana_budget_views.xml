@@ -48,6 +48,7 @@
                     <group name="header_info" string="Información del Presupuesto">
                         <field name="title" readonly="state == 'approved'"/>
                         <field name="description" readonly="state == 'approved'"/>
+                        <field name="notes" readonly="state == 'approved'"/>
                     </group>
                     <group>
                         <group name="general_info" string="Información General">

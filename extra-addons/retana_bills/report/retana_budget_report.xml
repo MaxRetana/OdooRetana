@@ -242,6 +242,17 @@
                             </div>
                         </t>
 
+
+                        <!-- Notas al pie -->
+                        <t t-if="o.notes">
+                            <table style="width: 100%; margin-top: 40px; font-size: 9pt; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 1%; white-space: nowrap; vertical-align: top; font-weight: bold; padding-right: 6px;">NOTA:</td>
+                                    <td style="vertical-align: top; text-align: left; white-space: pre-line;"><t t-esc="o.notes.upper()"/></td>
+                                </tr>
+                            </table>
+                        </t>
+
                     </div>
                 </div>
             </t>
