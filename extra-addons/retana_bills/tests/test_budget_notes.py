@@ -15,4 +15,4 @@ class TestBudgetNotes(TransactionCase):
         html = self.env['ir.actions.report']._render_qweb_html(
             'retana_bills.report_retana_budget_document', budget.ids)[0].decode()
         self.assertIn('NOTA:', html)
-        self.assertIn('Vigencia de 15 días', html)
+        self.assertIn('VIGENCIA DE 15 DÍAS', html)
