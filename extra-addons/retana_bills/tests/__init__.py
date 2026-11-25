@@ -9,3 +9,4 @@ from . import test_downpayment_report
 from . import test_budget_material_list
 from . import test_downpayment_type_concept_search
 from . import test_bulk_downpayment_total
+from . import test_budget_notes
