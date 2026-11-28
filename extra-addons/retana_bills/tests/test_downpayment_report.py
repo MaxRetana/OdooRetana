@@ -14,3 +14,9 @@ class TestDownpaymentReport(TransactionCase):
         html = report._render_qweb_html(report.report_name, downpayment.ids)[0].decode()
         self.assertIn('retana_downpayment_page', html)
         self.assertRegex(html, r'\.retana_downpayment_page table[^{]*\{[^}]*border: none !important')
+        # Cada table/tr/td lleva el borde quitado en linea, para que ningun CSS externo lo pise
+        import re
+        tags = re.findall(r'<(?:table|tr|td)\b[^>]*>', html)
+        self.assertTrue(tags)
+        for tag in tags:
+            self.assertIn('border: none !important', tag)

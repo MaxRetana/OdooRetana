@@ -32,14 +32,14 @@
                         </div>
 
                         <!-- Información de contacto en dos columnas -->
-                        <table style="width: 100%; font-size: 11pt; margin-bottom: 8px; border-collapse: collapse;">
-                            <tr>
-                                <td style="text-align: left; width: 50%; font-weight: bold; line-height: 1.3;">
+                        <table style="border: none !important; width: 100%; font-size: 11pt; margin-bottom: 8px; border-collapse: collapse;">
+                            <tr style="border: none !important;">
+                                <td style="border: none !important; text-align: left; width: 50%; font-weight: bold; line-height: 1.3;">
                                     R.F.C. <t t-esc="company_info.rfc"/><br/>
                                     <t t-esc="company_info.address"/><br/>
                                     TEL <t t-esc="company_info.phone"/> CEL. <t t-esc="company_info.mobile"/>
                                 </td>
-                                <td style="text-align: right; width: 50%; font-weight: bold; line-height: 1.3;">
+                                <td style="border: none !important; text-align: right; width: 50%; font-weight: bold; line-height: 1.3;">
                                     C.U.R.P. <t t-esc="company_info.curp"/><br/>
                                     <t t-esc="company_info.zone"/><br/>
                                     C.P. <t t-esc="company_info.postal_code"/> <t t-esc="company_info.city"/>, <t t-esc="company_info.state"/>
@@ -71,12 +71,12 @@
 
                         <!-- Sección LA CANTIDAD DE -->
                         <div style="margin: 20px 0;">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="width: 30%; text-align: left; font-weight: bold; font-size: 13pt; vertical-align: top;">
+                            <table style="border: none !important; width: 100%; border-collapse: collapse;">
+                                <tr style="border: none !important;">
+                                    <td style="border: none !important; width: 30%; text-align: left; font-weight: bold; font-size: 13pt; vertical-align: top;">
                                         LA CANTIDAD DE:
                                     </td>
-                                    <td style="text-align: center; vertical-align: top;">
+                                    <td style="border: none !important; text-align: center; vertical-align: top;">
                                         <div style="display: inline-block; text-align: center; min-width: 200px;">
                                             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 3px;">
                                                 -
@@ -92,7 +92,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="width: 30%; text-align: right; vertical-align: top;">
+                                    <td style="border: none !important; width: 30%; text-align: right; vertical-align: top;">
                                         <div style="display: inline-block; text-align: center; min-width: 100px;">
                                             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 3px;">
                                                 -
@@ -117,21 +117,21 @@
 
                         <!-- Monto en texto -->
                         <div style="text-align: left; margin: 20px 0;">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="width: 15%; font-weight: bold; font-size: 13pt; vertical-align: top;">
+                            <table style="border: none !important; width: 100%; border-collapse: collapse;">
+                                <tr style="border: none !important;">
+                                    <td style="border: none !important; width: 15%; font-weight: bold; font-size: 13pt; vertical-align: top;">
                                         $<t t-esc="'{:,.2f}'.format(o.amount)"/>
                                     </td>
-                                    <td style="width: 5%; font-weight: bold; font-size: 13pt; vertical-align: top; text-align: center;">
+                                    <td style="border: none !important; width: 5%; font-weight: bold; font-size: 13pt; vertical-align: top; text-align: center;">
                                         -
                                     </td>
-                                    <td style="font-weight: bold; font-size: 13pt; vertical-align: top;">
+                                    <td style="border: none !important; font-weight: bold; font-size: 13pt; vertical-align: top;">
                                         (<t t-if="o.amount"><t t-esc="o.currency_id.amount_to_text(o.amount).upper()"/> M.N.---</t>)
                                     </td>
-                                    <td style="width: 5%; font-weight: bold; font-size: 13pt; vertical-align: top; text-align: center;">
+                                    <td style="border: none !important; width: 5%; font-weight: bold; font-size: 13pt; vertical-align: top; text-align: center;">
                                         -
                                     </td>
-                                    <td style="width: 10%; font-weight: bold; font-size: 13pt; vertical-align: top;">
+                                    <td style="border: none !important; width: 10%; font-weight: bold; font-size: 13pt; vertical-align: top;">
                                         -
                                     </td>
                                 </tr>
@@ -143,14 +143,14 @@
 
                         <!-- Líneas adicionales de guiones -->
                         <div style="margin: 20px 0;">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="font-weight: bold; font-size: 13pt; padding: 5px 0;">
+                            <table style="border: none !important; width: 100%; border-collapse: collapse;">
+                                <tr style="border: none !important;">
+                                    <td style="border: none !important; font-weight: bold; font-size: 13pt; padding: 5px 0;">
                                         -<span style="margin-left: 100px;">-</span><span style="margin-left: 200px;">-</span><span style="margin-left: 100px;">-</span><span style="margin-left: 100px;">-</span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style="font-weight: bold; font-size: 13pt; padding: 5px 0;">
+                                <tr style="border: none !important;">
+                                    <td style="border: none !important; font-weight: bold; font-size: 13pt; padding: 5px 0;">
                                         -<span style="margin-left: 100px;">-</span><span style="margin-left: 200px;">-</span><span style="margin-left: 100px;">-</span><span style="margin-left: 100px;">-</span>
                                     </td>
                                 </tr>
